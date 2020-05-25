@@ -43,7 +43,7 @@ public class DataSourceConfig {
 //        dataSource.setInitializationFailTimeout(15); // default: 1
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-
+        //TODO test preferred_url
         for (String host : hosts) {
             String url = prefix + "://" + host + ":" + port + "/" + dbname + params;
             logger.info("Testing DB connection: " + url);
@@ -51,6 +51,7 @@ public class DataSourceConfig {
             try {
                 dataSource.getConnection();
                 logger.info(url + " DB connected");
+                //TODO save preferred_url
                 return dataSource;
             } catch (SQLException ex) {
                 logger.info(url + " DB connection failed.");
