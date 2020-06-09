@@ -6,7 +6,12 @@
 package com.rent.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Scanner;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,50 +34,80 @@ public class DataSourceConfig {
     private long connectionTimeout;
     private String prefix;
     private String[] hosts;
+    private String preferredDatabaseUrlFilename;
     private String port;
     private String dbname;
     private String params;
     private String username;
     private String password;
+    
 
     @Bean
     public DataSource getDataSource() {
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setConnectionTimeout(connectionTimeout);
-//        dataSource.setInitializationFailTimeout(15); // default: 1
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-        //TODO test preferred_url
+
+        if (successfulConnectionToPreferredDatabaseHost(dataSource)) {
+            return dataSource;
+        }
+        if (successfulConnectionToAnyDatabaseHostFromHosts(dataSource)) {
+            return dataSource;
+        }
+        logger.info("No available any known Database host)");
+        return null;
+    }
+
+    private boolean successfulConnectionToPreferredDatabaseHost(HikariDataSource dataSource) {
+        boolean success = false;
+        try {
+            Scanner sc = new Scanner(new FileReader(preferredDatabaseUrlFilename));
+            if (sc.hasNextLine()) {
+                String preferredDatabaseUrl = sc.nextLine();
+                success = testConnection(preferredDatabaseUrl,dataSource);
+            }
+        } catch (FileNotFoundException ex) {
+            logger.info("Preferred Database URL not reachable.");
+        }
+        return success;
+    }
+
+    private boolean successfulConnectionToAnyDatabaseHostFromHosts(HikariDataSource dataSource) {
+        boolean success = false;
         for (String host : hosts) {
             String url = prefix + "://" + host + ":" + port + "/" + dbname + params;
-            logger.info("Testing DB connection: " + url);
-            dataSource.setJdbcUrl(url);
-            try {
-                dataSource.getConnection();
-                logger.info(url + " DB connected");
-                //TODO save preferred_url
-                return dataSource;
-            } catch (SQLException ex) {
-                logger.info(url + " DB connection failed.");
+            if (success = testConnection(url, dataSource)) {
+                break;
             }
         }
-        
-        // if no available known DB, then create embedded
-        logger.info("No available known DB)");
-//        logger.info("Creating embedded DB. (No available online DB)");
-//        String url = "jdbc:derby:rent;create=true";
-        // spring.jpa.hibernate.ddl-auto=update
-//        DataSource embeddedDataSource = DataSourceBuilder.create().url(url).build();
-//        try {
-//            System.out.println("Before ***");
-//            embeddedDataSource.getConnection().getClientInfo().list(System.out);
-//            System.out.println("After ***");
-//        } catch (SQLException ex) {
-//            java.util.logging.Logger.getLogger(DataSourceConfig.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return null;
-//        return embeddedDataSource;
+        return success;
+    }
+
+    private void savePreferredUrl(String url) {
+        try {
+            PrintWriter pr = new PrintWriter(new File(preferredDatabaseUrlFilename));
+            pr.print(url);
+            pr.flush();
+        } catch (FileNotFoundException ex) {
+            logger.info("Creating preferred Database URL file failed. (Filename: " + preferredDatabaseUrlFilename);
+        }
+    }
+
+    private boolean testConnection(String url, HikariDataSource dataSource) {
+        boolean success = false;
+        logger.info("Testing Database connection: " + url);
+        dataSource.setJdbcUrl(url);
+        try {
+            dataSource.getConnection();
+            logger.info("Database connected to: " + url);
+            success = true;
+            savePreferredUrl(url);
+        } catch (SQLException ex) {
+            logger.info("Database connection failed: " + url);
+        }
+        return success;
     }
 
     public void setConnectionTimeout(long connectionTimeout) {
@@ -85,6 +120,10 @@ public class DataSourceConfig {
 
     public void setHosts(String[] hosts) {
         this.hosts = hosts;
+    }
+
+    public void setPreferredDatabaseUrlFilename(String preferredDatabaseUrlFilename) {
+        this.preferredDatabaseUrlFilename = preferredDatabaseUrlFilename;
     }
 
     public void setPort(String port) {
@@ -106,4 +145,5 @@ public class DataSourceConfig {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
