@@ -6,11 +6,9 @@
 <body>
 
     <div layout:fragment="content">
-        
 
         <form name="login" th:action="@{/login}" method="post" class="form-signin">
             <h2 class="form-signin-heading">Kérlek jelentkezz be</h2>
-        <div id="testAdmin" th:unless="${existsAdmin} == 'false'">First Admin Registration</div>
             <div id="err" th:if="${param.error}" class="alert alert-danger">Hibás felhasználói név és/vagy jelszó!</div>
             <div id="succquit" th:if="${param.logout}" class="alert alert-success">Sikeresen kijelentkeztél</div>
             <div id="succreg" th:if="${result} == 'registered'" class="alert alert-success">Sikeresen regisztráltál!<br/>Aktiváláshoz kattints az emailben küldött linkre!</div>

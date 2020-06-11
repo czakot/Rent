@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
-import com.rent.repo.RoleRepository;
 import com.rent.service.UserService;
 import static java.lang.Thread.sleep;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,9 +28,12 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @Autowired
-    RoleRepository roleRepository;
-
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("existsAdmin", "true");
+        return "login";
+    }
+    
     @GetMapping("/masterreg")
     public String masterReg(Model model) {
         if (userService.notValidatedMasterExists()) {

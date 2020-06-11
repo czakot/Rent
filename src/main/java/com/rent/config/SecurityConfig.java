@@ -1,6 +1,5 @@
 package com.rent.config;
 
-import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,14 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+/*
     private UserService userService;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
+*/
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
@@ -47,11 +46,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/css/*", "/js/*").permitAll()
                 .antMatchers("/activation/*").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/registration", "/reg").permitAll()
+                .anyRequest().authenticated()
                 .and()
-            .requiresChannel().anyRequest().requiresSecure().and() // instead of server.ssl.enabled = true
-            .portMapper().http(8080).mapsTo(8443);
-        
+            .requiresChannel().anyRequest().requiresSecure()
+                .and() // instead of server.ssl.enabled = true
+            .portMapper().http(8080).mapsTo(8443)
+                .and()
+            .formLogin().loginPage("/login").permitAll()
+                .and()
+            .logout().logoutSuccessUrl("/login?logout").permitAll();
+    }
 
+}
+        
+/*
         if (!userService.enabledMasterExists()) {
             userService.deleteNotValidatedMaster();
             httpSec
@@ -62,18 +72,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/masterreg").permitAll();
             return;
         }
+*/
 
-        httpSec
-            .authorizeRequests()
-                .antMatchers("/registration", "/reg").permitAll()
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-            .formLogin().loginPage("/login").permitAll()
-                .and()
-            .logout()
-                .logoutSuccessUrl("/login?logout").permitAll();
-
-    }
-
-}
