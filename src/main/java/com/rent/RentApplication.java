@@ -10,6 +10,10 @@ public class RentApplication {
 
     private static ConfigurableApplicationContext context;
 
+    public static ConfigurableApplicationContext getContext() {
+        return context;
+    }
+
     public static void main(String[] args) {
 
         context = SpringApplication.run(RentApplication.class, args);

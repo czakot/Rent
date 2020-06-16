@@ -1,6 +1,9 @@
 package com.rent.controller;
 
 import com.rent.RentApplication;
+import com.rent.entity.HtmlMessage;
+import com.rent.entity.MessageType;
+import com.rent.entity.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +18,9 @@ import com.rent.entity.User;
 import com.rent.service.UserService;
 import static java.lang.Thread.sleep;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
@@ -26,12 +31,21 @@ public class AuthController {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
+    }    
 
-    @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("existsAdmin", "true");
-        return "login";
+    private ResourceBundleMessageSource messageSource;
+
+    @Autowired
+    public void setMessageSource(ResourceBundleMessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+    
+    @RequestMapping("/checkadmin")
+    public String checkadmin(RedirectAttributes redirectAttributes) {
+        HtmlMessage htmlMessage = new HtmlMessage("activateMaster", MessageType.SUCCESS/*, messageSource*/);
+        redirectAttributes.addFlashAttribute("message", htmlMessage);
+        redirectAttributes.addFlashAttribute("adminExists", "true");
+        return "redirect:/login";
     }
     
     @GetMapping("/masterreg")
@@ -53,6 +67,9 @@ public class AuthController {
 
     @RequestMapping(value = "/registration")
     public String registration(Model model) {
+        Role role;
+        String title = "Próba title";
+        model.addAttribute("title", title);
         model.addAttribute("user", new User());
         return "auth/registration";
     }

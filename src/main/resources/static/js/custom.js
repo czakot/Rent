@@ -21,3 +21,8 @@ function countDownWorker() {
         setTimeout("countDownWorker()", 1000);
     }
 }
+
+function checkreach() {
+    alert("Reached");
+}
+

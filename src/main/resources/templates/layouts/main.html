@@ -11,20 +11,24 @@ and open the template in the editor.
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Rent</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>
-    <link rel="stylesheet" href="../../static/css/rent.css" th:href="@{/css/rent.css}"/>
-    <!--<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />-->	
-    <!--<link href='https://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css' />-->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+    
+    <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
+ </head>
+    
 <body>
     <div id="wrap">
         <div id="main">
-            <div th:insert="layouts/header">header fragment</div>
-            <br>
+            <div th:replace="layouts/header :: header">header fragment</div>
+            <br/>
             <div layout:fragment="content">content fragment</div>
         </div>
     </div>
-    <span th:insert="layouts/footer">footer fragment</span>
+    <span th:replace="layouts/footer :: footer">footer fragment</span>
+
+    <!--<script src="../../static/js/custom.js" th:src="@{/js/custom.js}"></script>-->
 </body>
 </html>

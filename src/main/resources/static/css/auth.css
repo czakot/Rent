@@ -1,0 +1,42 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 14, 2020, 2:12:12 PM
+    Author     : czakot
+*/
+
+
+.login-content {
+     max-width: 40%;
+     margin: auto;
+}
+
+.login-message {
+    font-size: 70%;
+    text-align: center;
+}
+
+.form-border {
+    padding: 0px 20px 20px 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #dddddd;
+}
+
+.form-border input[type="text"], input[type="password"], button[type="submit"] {
+    margin-top: 20px;
+}
+
+.login-link-left {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.login-link-right {
+    float: right;
+    padding-right: 20px
+}
