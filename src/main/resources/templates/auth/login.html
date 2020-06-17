@@ -27,7 +27,7 @@
             <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required="true"/>
             <input type="checkbox" id="remember-me" name="remember-me"/>
             <label th:text="#{rememberMe}">Remember me</label>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button type="submit" th:text="#{login}" class="btn btn-primary btn-block">Login</button>
         </form>
         <a href="/registration" th:text="#{registration}" class="login-link-left">Registration</a>
         <a href="/forgottenpassword" th:text="#{forgottenPassword}" class="login-link-right">I forgot my password</a>
