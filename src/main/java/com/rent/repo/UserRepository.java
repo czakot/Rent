@@ -15,4 +15,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
                                         + "role_id = (SELECT id FROM roles WHERE role = 'MASTER'))", nativeQuery = true)
         User findMaster();
         
+        @Query(value = "SELECT COUNT(id) FROM users WHERE "
+                            + "id = (SELECT DISTINCT user_id FROM users_roles WHERE "
+                                        + "role_id = (SELECT id FROM roles WHERE role = 'ADMIN'))", nativeQuery = true)
+        int countAnyAdmins();
+        
 }

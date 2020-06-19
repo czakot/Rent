@@ -14,7 +14,7 @@
         <h2 th:text="#{login}" class="form-signin-heading">Login</h2>
         
         <!--<div th:if="${message}" th:text="${message.message}" class="alert alert-warning login-message">Activate Master</div>-->
-        <div th:if="${message}" th:text="${message}" class="alert alert-warning login-message">Activate Master</div>
+        <div th:if="${message}" th:text="${message.text}" class="login-message" th:classappend="${message.cssClass}">Activate Master</div>
 <!--
         <div id="err" th:if="${param.error}" class="alert alert-danger">Hibás felhasználói név és/vagy jelszó!</div>
         <div id="succquit" th:if="${param.logout}" class="alert alert-success">Sikeresen kijelentkeztél</div>

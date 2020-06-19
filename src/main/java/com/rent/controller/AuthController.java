@@ -1,8 +1,9 @@
 package com.rent.controller;
 
 import com.rent.RentApplication;
-import com.rent.entity.HtmlMessage;
-import com.rent.entity.MessageType;
+import com.rent.entity.htmlmessage.HtmlMessage;
+import com.rent.entity.htmlmessage.HtmlMessageFactory;
+import com.rent.entity.htmlmessage.MessageType;
 import com.rent.entity.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import com.rent.entity.User;
 import com.rent.service.UserService;
 import static java.lang.Thread.sleep;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,16 +33,19 @@ public class AuthController {
         this.userService = userService;
     }    
 
-    private ResourceBundleMessageSource messageSource;
+    HtmlMessageFactory htmlMessageFactory;
 
     @Autowired
-    public void setMessageSource(ResourceBundleMessageSource messageSource) {
-        this.messageSource = messageSource;
+    public void setHtmlMessageFactory(HtmlMessageFactory htmlMessageFactory) {
+        this.htmlMessageFactory = htmlMessageFactory;
     }
     
     @RequestMapping("/checkadmin")
     public String checkadmin(RedirectAttributes redirectAttributes) {
-        HtmlMessage htmlMessage = new HtmlMessage("activateMaster", MessageType.SUCCESS/*, messageSource*/);
+        // no admin => reg msg:reg first user as admin
+        // reg, but not activ admin => reg msg: activate or reg first user as admin again
+        // reg and activ admin = login
+        HtmlMessage htmlMessage = htmlMessageFactory.createHtmlMessage("activateMaster", MessageType.WARNING);
         redirectAttributes.addFlashAttribute("message", htmlMessage);
         redirectAttributes.addFlashAttribute("adminExists", "true");
         return "redirect:/login";

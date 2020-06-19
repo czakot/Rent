@@ -65,6 +65,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         register(masterToRegister, new String[]{USER_ROLE, ADMIN_ROLE, MASTER_ROLE});
         emailService.sendMessage(masterToRegister);
     }
+    
+    @Override
+    public int numberOfUsers(Role role, boolean validated) {
+        return 0;
+    }
 
     private boolean register(User user, String[] roles) {
         if (userRepository.findByEmail(user.getEmail()) != null) {
@@ -135,6 +140,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean isMaster(User user) {
         return user!= null && user.getRoles().contains(roleRepository.findByRole(MASTER_ROLE));
     }
-
 
 }
