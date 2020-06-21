@@ -31,7 +31,14 @@ public class AuthController {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }    
+    }
+    
+    private Role role;
+
+    @Autowired
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     HtmlMessageFactory htmlMessageFactory;
 
@@ -42,11 +49,24 @@ public class AuthController {
     
     @RequestMapping("/checkadmin")
     public String checkadmin(RedirectAttributes redirectAttributes) {
-        // no admin => reg msg:reg first user as admin
-        // reg, but not activ admin => reg msg: activate or reg first user as admin again
-        // reg and activ admin = login
-        HtmlMessage htmlMessage = htmlMessageFactory.createHtmlMessage("activateMaster", MessageType.WARNING);
-        redirectAttributes.addFlashAttribute("message", htmlMessage);
+        final boolean ACTIVATED = true;
+
+        if (userService.numberOfUsers("ADMIN", ACTIVATED) == 0) {
+            HtmlMessage htmlMessage;
+            redirectAttributes.addFlashAttribute("adminExists", "false");
+            
+            if (userService.numberOfUsers("ADMIN", !ACTIVATED) == 0) {
+                // no admin => register first user as admin
+                htmlMessage = htmlMessageFactory.createHtmlMessage("registerFirstUserAsAdmin", MessageType.WARNING);
+                redirectAttributes.addFlashAttribute("message", htmlMessage);
+            } else {
+                // first user registered as ADMIN, but not activated => activate or register first user as admin again
+                htmlMessage = htmlMessageFactory.createHtmlMessage("activateOrRegisterFirstAdmin", MessageType.WARNING);
+            }
+            redirectAttributes.addFlashAttribute("message", htmlMessage);
+            return "redirect:/register";
+        }
+
         redirectAttributes.addFlashAttribute("adminExists", "true");
         return "redirect:/login";
     }

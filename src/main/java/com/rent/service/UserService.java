@@ -11,7 +11,7 @@ public interface UserService {
     
     public void registerMaster(User adminToRegister);
     
-    public int numberOfUsers(Role role, boolean validated);
+    public int numberOfUsers(String role, boolean activated);
 
     public User userActivation(String code);
     

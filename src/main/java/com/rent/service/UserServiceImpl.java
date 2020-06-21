@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     
     @Override
-    public int numberOfUsers(Role role, boolean validated) {
-        return 0;
+    public int numberOfUsers(String role, boolean activated) {
+        return userRepository.countAdmins(role, activated);
     }
 
     private boolean register(User user, String[] roles) {

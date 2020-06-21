@@ -17,7 +17,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
         
         @Query(value = "SELECT COUNT(id) FROM users WHERE "
                             + "id = (SELECT DISTINCT user_id FROM users_roles WHERE "
-                                        + "role_id = (SELECT id FROM roles WHERE role = 'ADMIN'))", nativeQuery = true)
-        int countAnyAdmins();
+                                        + "role_id = (SELECT id FROM roles WHERE role = ?))", nativeQuery = true)
+        int countAdmins(String role, boolean activated);
         
 }

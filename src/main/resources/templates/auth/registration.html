@@ -1,20 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" layout:decorate="~{layouts/main}">
+<html lang="en" layout:decorate="~{layouts/main}">
 <head>
     <title>Rent</title>
+    <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
+    <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
+    <script>
+        var adminExists = "[[${adminExists}]]";
+        checkadmin();
+    </script>
 </head>
 <body>
-
-    <div layout:fragment="content">
-
-        <form name="registration" th:action="@{/registration}" th:object="${user}" method="post" class="form-signin">
-                <div th:text="#{alreadyExists}" id="err" th:if="${result} == 'already_exists'" class="alert alert-danger">Already exists.</div>
-                <h2 th:text="#{regTitle}" class="form-signin-heading">Registration</h2>
-                <div th:insert="auth/regforminput">Registration form input fields</div>
+    <div layout:fragment="content" class="login-content">
+        <h2 th:text="#{titleRegistration}" class="form-signin-heading">
+            Registration
+            <span th:if="${adminExists} == 'false'" th:text="#{firstUserAsAdmin}">first user as ADMIN</span>
+        </h2>
+        
+        <div th:if="${message}" th:text="${message.text}" class="login-message" th:classappend="${message.cssClass}">
+            Any Message
+        </div>
+<!--
+        <div id="err" th:if="${param.error}" class="alert alert-danger">Hibás felhasználói név és/vagy jelszó!</div>
+        <div id="succquit" th:if="${param.logout}" class="alert alert-success">Sikeresen kijelentkeztél</div>
+        <div id="succreg" th:if="${result} == 'registered'" class="alert alert-success">Sikeresen regisztráltál!<br/>Aktiváláshoz kattints az emailben küldött linkre!</div>
+        <div id="succact" th:if="${result} == 'activated'" class="alert alert-success">Sikeresen aktiváltad a regisztrációdat!</div>
+        <div id="failedact" th:if="${result} == 'notactivated'" class="alert alert-warning">Sikertelen aktiváció! (Nincs illeszkedő regisztrált felhasználó!</div>
+-->
+        <form name="registration" th:action="@{/registration}" th:object="${user}" method="post" class="form-signin form-border">
+            <span class="form-control">
+                <input type="text" id="fullName" name="fullName" th:field="*{fullName}" placeholder="full name" th:placeholder="#{fullName}" required="true"/> 
+                <input type="email" id="username" name="username" th:field="*{email}" placeholder="Email}" th:placeholder="#{email}" required="true"/> 
+                <input type="password" id="password" name="password" th:field="*{password}" th:placeholder="#{password}" required="true"/>
+            </span>
+            <button type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
-        <a th:text="#{login}" href="auth/login">Bejelenkezés</a>
-
+        <a href="/Login" th:text="#{linkLogin}" class="auth-link-left">Login</a>
+        <a href="/forgottenpassword" th:text="#{forgottenPassword}" class="auth-link-right">I forgot my password</a>
     </div>
-
 </body>
 </html>

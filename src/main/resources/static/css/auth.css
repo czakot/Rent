@@ -31,12 +31,12 @@ and open the template in the editor.
     margin-top: 20px;
 }
 
-.login-link-left {
+.auth-link-left {
     text-align: left;
     padding-left: 20px;
 }
 
-.login-link-right {
+.auth-link-right {
     float: right;
     padding-right: 20px
 }

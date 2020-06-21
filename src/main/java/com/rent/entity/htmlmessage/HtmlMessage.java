@@ -17,7 +17,7 @@ public class HtmlMessage {
 
     private final String text;
 
-    public String getMessage() {
+    public String getText() {
         return text;
     }
 
