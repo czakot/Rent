@@ -14,9 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addViewControllers(ViewControllerRegistry registry) {
 //		super.addViewControllers(registry); // deprecated
         registry.addViewController("/login").setViewName("auth/login");
-        registry.addViewController("/index").setViewName("index");
-        registry.addViewController("/bloggers").setViewName("bloggers");
-        registry.addViewController("/stories").setViewName("stories");
+        registry.addViewController("/registration").setViewName("auth/registration");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);		
 	}
 	

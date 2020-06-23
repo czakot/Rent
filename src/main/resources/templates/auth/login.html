@@ -1,36 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layouts/main}">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <title>Rent</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
     <script>
         var adminExists = "[[${adminExists}]]";
-        checkadmin();
+        checkAdmin();
     </script>
 </head>
 <body>
     <div layout:fragment="content" class="login-content">
-        <h2 th:text="#{loginTitle}" class="form-signin-heading">Login</h2>
+        <h2 th:text="#{titleLogin}">Login</h2>
         
-        <div th:if="${message}" th:text="${message.text}" class="login-message" th:classappend="${message.cssClass}">
+        <div th:if="${message}" th:utext="${message.text}" class="auth-message" th:classappend="${message.cssClass}">
             Any Message
         </div>
-<!--
-        <div id="err" th:if="${param.error}" class="alert alert-danger">Hibás felhasználói név és/vagy jelszó!</div>
-        <div id="succquit" th:if="${param.logout}" class="alert alert-success">Sikeresen kijelentkeztél</div>
-        <div id="succreg" th:if="${result} == 'registered'" class="alert alert-success">Sikeresen regisztráltál!<br/>Aktiváláshoz kattints az emailben küldött linkre!</div>
-        <div id="succact" th:if="${result} == 'activated'" class="alert alert-success">Sikeresen aktiváltad a regisztrációdat!</div>
-        <div id="failedact" th:if="${result} == 'notactivated'" class="alert alert-warning">Sikertelen aktiváció! (Nincs illeszkedő regisztrált felhasználó!</div>
--->
-        <form name="login" th:action="@{/login}" method="post" class="form-signin form-border">
-            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required="true"/> 
-            <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required="true"/>
+
+        <form name="login" th:action="@{/login}" method="post" class="form-border">
+            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required=""/> 
+            <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required=""/>
             <input type="checkbox" id="remember-me" name="remember-me"/>
             <label th:text="#{rememberMe}">Remember me</label>
             <button type="submit" th:text="#{buttonLogin}" class="btn btn-primary btn-block">Login</button>
         </form>
-        <a href="/registration" th:text="#{registration}" class="auth-link-left">Registration</a>
+        <a href="/registration" th:text="#{linkRegistration}" class="auth-link-left">Registration</a>
         <a href="/forgottenpassword" th:text="#{forgottenPassword}" class="auth-link-right">I forgot my password</a>
     </div>
 </body>

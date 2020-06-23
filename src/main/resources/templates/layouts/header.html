@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>-->
+    <title>Rent - header</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
 </head>
 <body>
     <header th:fragment="header" class="top-bar">
-        <a href="?lang=hu" onclick="document.cookie='rentLocal=hu'"> HU </a>
+        <a href="javascript" onclick="switchLang('hu')"> HU </a>
         | 
-        <a href="?lang=en" onclick="document.cookie='rentLocal=en'"> EN</a>
+        <a href="javascript" onclick="switchLang('en')"> EN</a>
     </header>
 </body>
 </html>

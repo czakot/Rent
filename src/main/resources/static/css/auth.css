@@ -14,9 +14,10 @@ and open the template in the editor.
      margin: auto;
 }
 
-.login-message {
+.auth-message {
     font-size: 70%;
     text-align: center;
+    margin-top: 20px;
 }
 
 .form-border {
@@ -27,7 +28,8 @@ and open the template in the editor.
     border-color: #dddddd;
 }
 
-.form-border input[type="text"], input[type="password"], button[type="submit"] {
+.form-border input[type="text"], input[type="password"],
+             button[type="submit"], input[type="email"] {
     margin-top: 20px;
 }
 

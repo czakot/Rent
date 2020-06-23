@@ -1,6 +1,5 @@
 package com.rent.service;
 
-import com.rent.entity.Role;
 import com.rent.entity.User;
 
 public interface UserService {
@@ -9,18 +8,20 @@ public interface UserService {
     
     public boolean registerUser(User user);
     
-    public void registerMaster(User adminToRegister);
+//    public void registerMaster(User adminToRegister);
     
     public int numberOfUsers(String role, boolean activated);
+    
+    public boolean getAdminExist();
 
     public User userActivation(String code);
     
-    public boolean enabledMasterExists();
-    
-    public boolean notValidatedMasterExists();
-    
-    public void deleteNotValidatedMaster();
-    
-    public boolean isMaster(User user);
+//    public boolean enabledMasterExists();
+//    
+//    public boolean notValidatedMasterExists();
+//    
+//    public void deleteNotValidatedMaster();
+//    
+//    public boolean isMaster(User user);
     
 }
