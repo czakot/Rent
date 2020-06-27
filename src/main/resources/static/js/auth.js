@@ -4,24 +4,24 @@
  * and open the template in the editor.
  */
 
-function checkAdmin() {
-    if (adminExists != "true") {
-        window.location.href = "/checkadmin";
+function checkAdmin(page) {
+    alert(adminExists + '  ' + page);
+    if (adminExists != "true" && adminExists != "false") {
+        window.location.href = "/checkadmin?page=" + page;
+        
     }
-//    if (adminExists == "true") {
-//        // activ ADMIN exists, so stay where you are
-//        //window.location.href = "/login";
-//    } else {
-//        if (adminExists == "false") {
-//            window.location.href = "/registration";
-//        } else {
-//            // adminExists not set (undefined, null or not true/false)
-//            window.location.href = "/checkadmin";
-//        }
-//    }
 }
 
 function switchLang(langCode) {
     document.cookie = 'rentLocal=' + langCode;
+    //let newHref = "/checkadmin?page=" + location.href.substr(location.href.lastIndexOf("/") + 1)
+//    let newHref = location.href.substr(location.href.lastIndexOf("/"))
+//    alert(newHref);
+//    window.location.href = newHref;
+    alert(location.href);
     location.reload();
+}
+
+function confirmPassword() {
+    alert("Confirm password")
 }

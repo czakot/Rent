@@ -11,22 +11,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
+    <script>
+        var adminExists = "[[${adminExists}]]";
+        checkAdmin("registration");
+    </script>
 </head>
 <body>
-    <div layout:fragment="content" class="login-content">
+    <div  th:if="${adminExists}" layout:fragment="content" class="login-content">
+        
+        
         <h2 th:text="#{titleRegistration}">Registration</h2>
         
-        <div th:if="${message}" th:utext="${message.text}" class="auth-message" th:classappend="${message.cssClass}">
-            Any Message
-        </div>
+        <div th:replace="auth/messages :: messages"></div>
 
-        <form name="registration" th:action="@{/processregistration}" th:object="${user}" method="post" class="form-border">
+        <form name="registration" th:action="@{/processregistration}" th:object="${user}" method="post" class="form-border" onsubmit="confirmPassword()">
             <input type="text" id="fullName" name="fullName" th:field="*{fullName}" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
-            <input type="email" id="username" name="username" th:field="*{email}" placeholder="Email}" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
-            <input type="password" id="password" name="password" th:field="*{password}" th:placeholder="#{password}" required="" class="form-control"/>
+            <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
+            <input type="password" id="password" name="password" th:field="*{password}" placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
+            <input type="password" id="confirmpwd" name="confirmpwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
             <button type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
-        <a th:if="${adminExists}" href="/login" th:text="#{linkLogin}" class="auth-link-left">Login</a>
+        <a th:if="${adminExists == 'true'}" href="/login" th:text="#{linkLogin}" class="auth-link-left">Login</a>
     </div>
 </body>
 </html>

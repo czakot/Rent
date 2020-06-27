@@ -14,7 +14,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
  * @author czakot
  */
 public class HtmlMessage {
-
+    
     private final String text;
 
     public String getText() {
@@ -26,12 +26,10 @@ public class HtmlMessage {
     public String getCssClass() {
         return cssClass;
     }
-    
-    
     public HtmlMessage(String messageKey, MessageType messageType, MessageSource messageSource) {
         Locale currentLocale = LocaleContextHolder.getLocale();
         this.text = messageSource.getMessage(messageKey, null, currentLocale);
         this.cssClass = messageType.cssClass;
     }
-
+    
 }

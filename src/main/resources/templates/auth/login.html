@@ -11,18 +11,18 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
-    <script>
-        var adminExists = "[[${adminExists}]]";
-        checkAdmin();
-    </script>
 </head>
 <body>
     <div layout:fragment="content" class="login-content">
+        
+        <script>
+            var adminExists = "[[${adminExists}]]";
+            checkAdmin("login");
+        </script>
+        
         <h2 th:text="#{titleLogin}">Login</h2>
         
-        <div th:if="${message}" th:utext="${message.text}" class="auth-message" th:classappend="${message.cssClass}">
-            Any Message
-        </div>
+            <div th:replace="auth/messages :: messages"></div>
 
         <form name="login" th:action="@{/login}" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required=""/> 

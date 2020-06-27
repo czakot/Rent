@@ -1,7 +1,6 @@
 package com.rent.controller;
 
-import com.rent.entity.htmlmessage.HtmlMessage;
-import com.rent.entity.htmlmessage.HtmlMessageFactory;
+import com.rent.entity.htmlmessage.HtmlMessages;
 import com.rent.entity.htmlmessage.MessageType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,87 +15,102 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.rent.entity.User;
 import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
 
-    private static final boolean ACTIVATED = true;
-
     @Qualifier("UserServiceImpl") // not nessessary, UserService unique here
     private UserService userService;
+    private MessageSource messageSource;
+    private HtmlMessages htmlMessages = null;
+
+    @GetMapping("/checkadmin")
+    public String checkAdmin(@RequestParam String page, RedirectAttributes ra) {
+        checkInitHtmlMessages();
+        boolean adminExists = embedAdminExists(ra);
+        if(adminExists) {
+            if (page.equals("registration")) {
+                return registration(ra);
+            }
+            return  "redirect:/login";
+        }
+        return registrationWithoutAdmin(ra);
+    }
+    
+    @PostMapping("/processregistration")
+    public String processRegistration(@ModelAttribute User userToRegister, RedirectAttributes ra) {
+        boolean registrationSuccessful = userService.registerUser(userToRegister);
+        String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
+        MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
+        htmlMessages.clearAndAddFirst(message, messageType);
+        
+        boolean adminExists = embedAdminExists(ra);
+        if(adminExists) {
+            ra.addFlashAttribute("messages", htmlMessages);
+            return "redirect:/login";
+        } else {
+            return registrationWithoutAdmin(ra);
+        }
+    }
+    
+    @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
+    public String activation(@PathVariable("code") String code, RedirectAttributes ra) {
+        checkInitHtmlMessages();
+        User activatedUser = userService.userActivation(code);
+        String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
+        MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
+        htmlMessages.clearAndAddFirst(message, messageType);
+        boolean adminExists = embedAdminExists(ra);
+        if (activatedUser != null) {
+            ra.addFlashAttribute("messages", htmlMessages);
+            return "redirect:/login";
+        }
+        return adminExists ? registration(ra) : registrationWithoutAdmin(ra);
+    }
+
+    private void checkInitHtmlMessages() {
+        if(htmlMessages == null) {
+            htmlMessages = new HtmlMessages(messageSource);
+        } else {
+            htmlMessages.clear();
+        }
+    }
+    
+    private boolean embedAdminExists(RedirectAttributes ra)  {
+        boolean adminExists = userService.getAdminExist();
+        ra.addFlashAttribute("adminExists", Boolean.toString(adminExists));
+        return adminExists;
+    }
+    
+    private String registrationWithoutAdmin(RedirectAttributes ra) {
+        String message =  existsNotActivatedAdmin() ? "firstUserAsAdmin" : "activateOrRegisterFirstAdmin";
+        htmlMessages.add(message, MessageType.WARNING);
+        return registration(ra);
+    }
+    
+    private String registration(RedirectAttributes ra) {
+        ra.addFlashAttribute("messages", htmlMessages);
+        ra.addFlashAttribute("user", new User());
+        return "redirect:/registration";
+    }
+    
+    private boolean existsNotActivatedAdmin() {
+        final boolean ACTIVATED = true;
+        return userService.numberOfUsers("ADMIN", !ACTIVATED) == 0;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
     
-    HtmlMessageFactory htmlMessageFactory;
-
     @Autowired
-    public void setHtmlMessageFactory(HtmlMessageFactory htmlMessageFactory) {
-        this.htmlMessageFactory = htmlMessageFactory;
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
-    
-    @GetMapping("/checkadmin")
-    public String checkAdmiForLogin(RedirectAttributes ra) {
-        if(userService.getAdminExist()) {
-            ra.addFlashAttribute("adminExists", "true");
-            return "redirect:";
-        }
-        return registration(ra);
-    }
-    
-    private void firstAdmin(RedirectAttributes ra) {
-        ra.addFlashAttribute("adminExists", "false");
-        String message = userService.numberOfUsers("ADMIN", !ACTIVATED) == 0 ? "firstUserAsAdmin" : "activateOrRegisterFirstAdmin";
-        HtmlMessage htmlMessage = htmlMessageFactory.createHtmlMessage(message, MessageType.WARNING);
-        ra.addFlashAttribute("message", htmlMessage);
-    }
-    
-    @GetMapping("/registration")
-    public String registration(RedirectAttributes ra) {
-        ra.addFlashAttribute("user", new User());
-        if (!userService.getAdminExist()) {
-            firstAdmin(ra);
-        }
-        return "redirect:/registration";
-    }
-    
-    @PostMapping("/processregistration")
-    public String processRegistration(@ModelAttribute User userToRegister, RedirectAttributes redirectionAttributes) {
-        System.err.println("process registration");
-        String message = userService.registerUser(userToRegister) ? "successfulRegistration" : "emailAlreadyRegistered";
-        HtmlMessage htmlMessage = htmlMessageFactory.createHtmlMessage(message, MessageType.SUCCESS);
-        redirectionAttributes.addFlashAttribute("message", htmlMessage);
-        return "redirect:/login";
-    }
-    
-/*    
 
-//	@RequestMapping(value = "/reg", method = RequestMethod.POST)
-    @PostMapping("/registration")
-    public String reg(@ModelAttribute User userToRegister, Model model) {
-        if (!userService.registerUser(userToRegister)) {
-            User newUser = new User();
-            newUser.setEmail(userToRegister.getEmail());
-            model.addAttribute("user", newUser);
-            model.addAttribute("result", "already_exists");
-            return "auth/registration";
-        } else {
-            model.addAttribute("result", "registered");
-        }
-        return "auth/login";
-    }
-*/
-    @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
-    public String activation(@PathVariable("code") String code, RedirectAttributes ra) {
-        if (userService.userActivation(code) == null) {
-            // unsuccessful activation, no registered user belongs to this token (expired, historic, ...)
-        } else {
-            // successfull activation with [data] intu message
-        };
-        return "redirect:/login";
-    }
 }
