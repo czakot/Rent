@@ -21,3 +21,7 @@ and open the template in the editor.
     border-radius: 4px;
     text-align: right;
 }
+
+.button-link-like {
+    cursor: pointer;
+}

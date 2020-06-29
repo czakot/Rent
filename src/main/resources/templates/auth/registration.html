@@ -28,7 +28,7 @@
             <input type="text" id="fullName" name="fullName" th:field="*{fullName}" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
             <input type="email" id="email" name="email" th:field="*{email}" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
             <input type="password" id="password" name="password" th:field="*{password}" placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
-            <input type="password" id="confirmpwd" name="confirmpwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
+            <!--<input type="password" id="confirmpwd" name="confirmpwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>-->
             <button type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
         <a th:if="${adminExists == 'true'}" href="/login" th:text="#{linkLogin}" class="auth-link-left">Login</a>

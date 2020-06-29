@@ -5,21 +5,30 @@
  */
 
 function checkAdmin(page) {
-    alert(adminExists + '  ' + page);
-    if (adminExists != "true" && adminExists != "false") {
+//    if (adminExists != "true" && adminExists != "false") {
+    if (!adminExists) {
         window.location.href = "/checkadmin?page=" + page;
-        
     }
+    setLanguageLinks();
 }
 
-function switchLang(langCode) {
+function switchLang(langCode, obj) {
     document.cookie = 'rentLocal=' + langCode;
-    //let newHref = "/checkadmin?page=" + location.href.substr(location.href.lastIndexOf("/") + 1)
-//    let newHref = location.href.substr(location.href.lastIndexOf("/"))
-//    alert(newHref);
-//    window.location.href = newHref;
-    alert(location.href);
     location.reload();
+}
+
+function setLanguageLinks() {
+//    console.log(obj);
+//    let linkLikes = document.querySelectorAll("header span");
+//    for(let idx = 0; idx < linkLikes.length; idx++) {
+//        if (obj. != linkLikes[idx]) {
+//            linkLikes[idx].class = "btn-link button-link-like";
+//        } else {
+//            linkLikes[idx].class = "";
+//        }
+//    }
+    alert();
+    obj.className = "";
 }
 
 function confirmPassword() {

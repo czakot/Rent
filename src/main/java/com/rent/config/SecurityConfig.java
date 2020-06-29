@@ -63,17 +63,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
-        
-/*
-        if (!userService.enabledMasterExists()) {
-            userService.deleteNotValidatedMaster();
-            httpSec
-                .authorizeRequests()
-                    .antMatchers("/masterreg", "/masterregdo").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin().loginPage("/masterreg").permitAll();
-            return;
-        }
-*/
-
