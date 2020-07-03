@@ -12,9 +12,11 @@
 </head>
 <body>
     <header th:fragment="header" class="top-bar">
-        <span onclick="switchLang('hu', this)" class="btn-link button-link-like"> HU </span>
-        | 
-        <span onclick="switchLang('en', this)" class="btn-link button-link-like"> EN </span>
+        <div id="languagelinks">
+            <span onclick="switchLang('hu')" class="btn-link button-link-like"> HU </span>
+            | 
+            <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
+        </div>
     </header>
 </body>
 </html>
