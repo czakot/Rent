@@ -99,8 +99,8 @@ public class AuthController {
     }
     
     private boolean existsNotActivatedAdmin() {
-        final boolean ACTIVATED = true;
-        return userService.numberOfUsers("ADMIN", !ACTIVATED) == 0;
+        final boolean ENABLED = true;
+        return userService.numberOfUsers("ADMIN", !ENABLED) == 0;
     }
 
     @Autowired

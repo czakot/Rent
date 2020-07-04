@@ -16,7 +16,9 @@
     <div layout:fragment="content" class="login-content">
         
         <script>
-            var adminExists = "[[${adminExists}]]";
+//            var adminExists = "[[${adminExists}]]";
+            var adminExists = adminExists();
+            alert("adminExists = " + adminExists);
             checkAdmin("login");
         </script>
         

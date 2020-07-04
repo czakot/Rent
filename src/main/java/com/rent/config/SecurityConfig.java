@@ -43,9 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSec) throws Exception {
         httpSec
+//            .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
             .authorizeRequests()
                 .antMatchers("/css/*", "/js/*").permitAll()
                 .antMatchers("/checkadmin").permitAll()
+                .antMatchers("/adminexists").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/processregistration").permitAll()
                 .antMatchers("/forgottenpassword").permitAll()

@@ -4,8 +4,21 @@
  * and open the template in the editor.
  */
 
+function adminExists() {
+    let http = new XMLHttpRequest();
+    let adminExists;
+    http.onreadystatechange = function() {
+        if (http.readyState === 4 && http.status === 200) {
+            adminExists = http.responseText;
+        }
+    };
+    http.open("GET", "/adminexists", false);
+    http.send();
+    return adminExists;
+}
+
 function checkAdmin(currentAuthPage) {
-    if (!adminExists) {
+    if (adminExists !== "true" && adminExists !== "false") {
         if (currentAuthPage === "registration") {
             window.location.href = "/checkadmin?page=" + currentAuthPage;
         } else {
