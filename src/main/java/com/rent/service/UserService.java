@@ -8,20 +8,10 @@ public interface UserService {
     
     public boolean registerUser(User user);
     
-//    public void registerMaster(User adminToRegister);
-    
-    public int numberOfUsers(String role, boolean activated);
-    
-    public boolean getAdminExist();
-
     public User userActivation(String code);
     
-//    public boolean enabledMasterExists();
-//    
-//    public boolean notValidatedMasterExists();
-//    
-//    public void deleteNotValidatedMaster();
-//    
-//    public boolean isMaster(User user);
+    public boolean adminExists();
+    
+    public boolean existsNotActivatedAdmin();
     
 }

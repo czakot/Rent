@@ -10,16 +10,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 	User findByActivation(String code);
         
-        @Query(value = "SELECT * FROM users WHERE "
-                            + "id = (SELECT user_id FROM users_roles WHERE "
-                                        + "role_id = (SELECT id FROM roles WHERE role = 'MASTER'))", nativeQuery = true)
-        User findMaster();
-        
         @Query(value = "SELECT COUNT(id) FROM users WHERE "
                             + "id = (SELECT DISTINCT user_id FROM users_roles WHERE "
                                         + "role_id = (SELECT id FROM roles WHERE role = ?1))"
                             + "AND enabled = ?2", nativeQuery = true)
-        int countAdmins(String role, boolean activated);
+        int countUsers(String role, boolean activated);
         
         void deleteAll();
         

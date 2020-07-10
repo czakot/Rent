@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserServiceImpl implements UserService, UserDetailsService {
     
     private static final boolean ACTIVATED = true;
-    private final Boolean adminExists;
+    private int numberOfActiveAdmins;
 
     private final String USER_ROLE = "USER";
     private final String ADMIN_ROLE = "ADMIN";
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.roleRepository = roleRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
-        adminExists = userRepository.countAdmins(ADMIN_ROLE, ACTIVATED) > 0;
+        numberOfActiveAdmins = numberOfUsers(ADMIN_ROLE, ACTIVATED);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean registerUser(User userToRegister) {
         boolean registered;
-        if (adminExists) {
+        if (adminExists()) {
             registered = register(userToRegister, new String[]{USER_ROLE});
         } else {
             userRepository.deleteAll();
@@ -69,14 +69,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return registered;
     }
 
-    @Override
-    public int numberOfUsers(String role, boolean activated) {
-        return userRepository.countAdmins(role, activated);
+    private int numberOfUsers(String role, boolean activated) {
+        return userRepository.countUsers(role, activated);
     }
     
     @Override
-    public boolean getAdminExist() {
-        return adminExists ? true : userRepository.countAdmins(ADMIN_ROLE, ACTIVATED) > 0;
+    public boolean adminExists() {
+        return numberOfActiveAdmins > 0;
     }
 
     private boolean register(User user, String[] roles) {
@@ -118,9 +117,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setEnabled(true);
             user.setActivation("");
             userRepository.save(user);
+            if (user.getRoles().contains(new Role(ADMIN_ROLE))) {
+                numberOfActiveAdmins++;
+            }
         }
 
         return user;
     }
 
+    @Override
+    public boolean existsNotActivatedAdmin() {
+        return userRepository.countUsers(ADMIN_ROLE, !ACTIVATED) > 0;
+    }
+    
 }

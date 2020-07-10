@@ -1,5 +1,6 @@
 package com.rent.entity;
 
+import com.rent.entity.utility.RegistrationForm;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,6 +46,18 @@ public class User {
     private Set<Role> roles = new HashSet<Role>();
 
     public User() {
+    }
+    
+    public User(String fullName, String email, String password) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+    }
+    
+    public User(RegistrationForm registrationForm) {
+        this.fullName = registrationForm.getFullName();
+        this.email = registrationForm.getEmail();
+        this.password = registrationForm.getPassword();
     }
 
     public Long getId() {

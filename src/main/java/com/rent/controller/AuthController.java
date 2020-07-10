@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
+import com.rent.entity.utility.RegistrationForm;
 import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -28,6 +31,18 @@ public class AuthController {
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
 
+    @GetMapping("/adminexists")
+    @ResponseBody
+    public boolean adminExists() {
+        return userService.adminExists();
+    }
+
+    @GetMapping("/getmessages")
+    @ResponseBody
+    public HtmlMessages getMessages() {
+        return htmlMessages;
+    }
+    
     @GetMapping("/checkadmin")
     public String checkAdmin(@RequestParam String page, RedirectAttributes ra) {
         checkInitHtmlMessages();
@@ -40,9 +55,14 @@ public class AuthController {
         }
         return registrationWithoutAdmin(ra);
     }
-    
+
     @PostMapping("/processregistration")
-    public String processRegistration(@ModelAttribute User userToRegister, RedirectAttributes ra) {
+    public String processRegistration(@RequestBody RegistrationForm registrationForm, RedirectAttributes ra) {
+//    public String processRegistration(RedirectAttributes ra,
+//                                      @RequestParam String fullName,
+//                                      @RequestParam String email,
+//                                      @RequestParam String password) {
+        User userToRegister = new User(registrationForm);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
@@ -56,6 +76,22 @@ public class AuthController {
             return registrationWithoutAdmin(ra);
         }
     }
+    
+//    @PostMapping("/processregistration")
+//    public String processRegistration(@ModelAttribute User userToRegister, RedirectAttributes ra) {
+//        boolean registrationSuccessful = userService.registerUser(userToRegister);
+//        String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
+//        MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
+//        htmlMessages.clearAndAddFirst(message, messageType);
+//        
+//        boolean adminExists = embedAdminExists(ra);
+//        if(adminExists) {
+//            ra.addFlashAttribute("messages", htmlMessages);
+//            return "redirect:/login";
+//        } else {
+//            return registrationWithoutAdmin(ra);
+//        }
+//    }
     
     @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
     public String activation(@PathVariable("code") String code, RedirectAttributes ra) {
@@ -81,13 +117,13 @@ public class AuthController {
     }
     
     private boolean embedAdminExists(RedirectAttributes ra)  {
-        boolean adminExists = userService.getAdminExist();
+        boolean adminExists = userService.adminExists();
         ra.addFlashAttribute("adminExists", Boolean.toString(adminExists));
         return adminExists;
     }
     
     private String registrationWithoutAdmin(RedirectAttributes ra) {
-        String message =  existsNotActivatedAdmin() ? "firstUserAsAdmin" : "activateOrRegisterFirstAdmin";
+        String message =  userService.existsNotActivatedAdmin() ? "firstUserAsAdmin" : "activateOrRegisterFirstAdmin";
         htmlMessages.add(message, MessageType.WARNING);
         return registration(ra);
     }
@@ -98,11 +134,6 @@ public class AuthController {
         return "redirect:/registration";
     }
     
-    private boolean existsNotActivatedAdmin() {
-        final boolean ENABLED = true;
-        return userService.numberOfUsers("ADMIN", !ENABLED) == 0;
-    }
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -112,5 +143,5 @@ public class AuthController {
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
-
+    
 }
