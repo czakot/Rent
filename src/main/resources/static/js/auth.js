@@ -4,16 +4,34 @@
  * and open the template in the editor.
  */
 let adminExists = checkAdminExists();
+let messages = [];
 
 if (adminExists === "false") {
     if (window.location.pathname === "/login") {
         window.location.pathname = "/registration";
     } else {
-        // if msg = null then msg: first admin
+        let message = { text: "Üzenet", cssClass: "alert alert-warning" };
+        messages.push(message);
+        message = { text: "Második", cssClass: "alert alert-info" };
+        messages.push(message);
+        
     }
 }
 
-let messages = getMessages();
+messages = getMessages();
+
+function checkAdminExists() {
+    let http = new XMLHttpRequest();
+    let adminExists;
+    http.onreadystatechange = function() {
+        if (http.readyState === 4 && http.status === 200) {
+            adminExists = http.responseText;
+        }
+    };
+    http.open("GET", "/adminexists", false);
+    http.send();
+    return adminExists;
+}
 
 function getMessages() {    
     let http = new XMLHttpRequest();
@@ -28,17 +46,16 @@ function getMessages() {
     return messages;
 }
 
-function checkAdminExists() {
-    let http = new XMLHttpRequest();
-    let adminExists;
-    http.onreadystatechange = function() {
-        if (http.readyState === 4 && http.status === 200) {
-            adminExists = http.responseText;
+function displayMessages() {
+    let messagesdiv = document.getElementById("messages");
+    messages.forEach(
+        function(message) {
+            let messagediv = document.createElement("div");
+            messagediv.className = "auth-message " + message["cssClass"];
+            messagediv.innerHTML = message["text"];
+            messagesdiv.appendChild(messagediv);
         }
-    };
-    http.open("GET", "/adminexists", false);
-    http.send();
-    return adminExists;
+    ) 
 }
 
 function switchLang(languageCode) {

@@ -15,7 +15,7 @@ import org.springframework.context.MessageSource;
  */
 public final class HtmlMessages {
     
-    private final List<HtmlMessage> htmlMessages = new ArrayList<>();
+    private final List<HtmlMessage> htmlMessagesList = new ArrayList<>();
     
     private final MessageSource messageSource;
 
@@ -30,20 +30,37 @@ public final class HtmlMessages {
     
     public void add(String messageKey, MessageType messageType) {
         final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        htmlMessages.add(htmlMessage);
+        htmlMessagesList.add(htmlMessage);
     }
     
     public void clearAndAddFirst(String messageKey, MessageType messageType) {
         clear();
         final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        htmlMessages.add(htmlMessage);
+        htmlMessagesList.add(htmlMessage);
     }
     
     public void clear() {
-        htmlMessages.clear();
+        htmlMessagesList.clear();
     }
     
     public List<HtmlMessage> getHtmlMessages() {
-        return htmlMessages;
+        return htmlMessagesList;
+    }
+    
+    public String toJson() {
+        StringBuilder json = new StringBuilder();
+        
+        for(HtmlMessage htmlMessage : htmlMessagesList) {
+            if (json.length() != 0) {
+                json.append(", ");
+            }
+            json.append("");
+        }
+        
+        
+        json.insert(0, "[");
+        json.append(']');
+        
+        return json.toString();
     }
 }

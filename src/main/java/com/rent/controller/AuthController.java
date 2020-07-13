@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
+import com.rent.entity.htmlmessage.HtmlMessage;
 import com.rent.entity.utility.RegistrationForm;
 import com.rent.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,22 +41,24 @@ public class AuthController {
 
     @GetMapping("/getmessages")
     @ResponseBody
-    public HtmlMessages getMessages() {
-        return htmlMessages;
+    public List<HtmlMessage> getMessages() {
+        checkInitHtmlMessages();
+        
+        return htmlMessages.getHtmlMessages();
     }
     
-    @GetMapping("/checkadmin")
-    public String checkAdmin(@RequestParam String page, RedirectAttributes ra) {
-        checkInitHtmlMessages();
-        boolean adminExists = embedAdminExists(ra);
-        if(adminExists) {
-            if (page.equals("registration")) {
-                return registration(ra);
-            }
-            return  "redirect:/login";
-        }
-        return registrationWithoutAdmin(ra);
-    }
+//    @GetMapping("/checkadmin")
+//    public String checkAdmin(@RequestParam String page, RedirectAttributes ra) {
+//        checkInitHtmlMessages();
+//        boolean adminExists = embedAdminExists(ra);
+//        if(adminExists) {
+//            if (page.equals("registration")) {
+//                return registration(ra);
+//            }
+//            return  "redirect:/login";
+//        }
+//        return registrationWithoutAdmin(ra);
+//    }
 
     @PostMapping("/processregistration")
     public String processRegistration(@RequestBody RegistrationForm registrationForm, RedirectAttributes ra) {

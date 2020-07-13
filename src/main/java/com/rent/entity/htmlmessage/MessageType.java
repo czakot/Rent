@@ -10,6 +10,7 @@ package com.rent.entity.htmlmessage;
  * @author czakot
  */
 public enum MessageType {
+    INFO("alert alert-info"),
     WARNING("alert alert-warning"),
     SUCCESS("alert alert-success"),
     DANGER("alert alert-danger");
