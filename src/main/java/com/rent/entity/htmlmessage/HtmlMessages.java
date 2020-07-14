@@ -15,9 +15,19 @@ import org.springframework.context.MessageSource;
  */
 public final class HtmlMessages {
     
-    private final List<HtmlMessage> htmlMessagesList = new ArrayList<>();
+    private final List<HtmlMessage> htmlMessageList = new ArrayList<>();
     
     private final MessageSource messageSource;
+    
+    private boolean adminExists;
+
+    public boolean isAdminExists() {
+        return adminExists;
+    }
+
+    public void setAdminExists(boolean adminExists) {
+        this.adminExists = adminExists;
+    }
 
     public HtmlMessages(String messageKey, MessageType messageType, MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -30,27 +40,27 @@ public final class HtmlMessages {
     
     public void add(String messageKey, MessageType messageType) {
         final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        htmlMessagesList.add(htmlMessage);
+        htmlMessageList.add(htmlMessage);
     }
     
     public void clearAndAddFirst(String messageKey, MessageType messageType) {
         clear();
         final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        htmlMessagesList.add(htmlMessage);
+        htmlMessageList.add(htmlMessage);
     }
     
     public void clear() {
-        htmlMessagesList.clear();
+        htmlMessageList.clear();
     }
     
-    public List<HtmlMessage> getHtmlMessages() {
-        return htmlMessagesList;
+    public List<HtmlMessage> getHtmlMessageList() {
+        return htmlMessageList;
     }
     
     public String toJson() {
         StringBuilder json = new StringBuilder();
         
-        for(HtmlMessage htmlMessage : htmlMessagesList) {
+        for(HtmlMessage htmlMessage : htmlMessageList) {
             if (json.length() != 0) {
                 json.append(", ");
             }

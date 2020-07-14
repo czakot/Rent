@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-let adminExists = checkAdminExists();
+//let authData = getAuthData();
+getAuthData(response);
+console.log("authData:");
+console.log(response);
+alert("See console for authData = ");
+let adminExists = JSON.parse();
+alert("adminExists = " + adminExists);
 let messages = [];
 
 if (adminExists === "false") {
@@ -18,19 +24,21 @@ if (adminExists === "false") {
     }
 }
 
-messages = getMessages();
+// messages = getMessages();
 
-function checkAdminExists() {
+function getAuthData(callback) {
     let http = new XMLHttpRequest();
-    let adminExists;
+//    let authData;
     http.onreadystatechange = function() {
         if (http.readyState === 4 && http.status === 200) {
-            adminExists = http.responseText;
+//            adminExists = http.responseText;
+            callback(http.responseText)
+//            authData = http.responseText;
         }
     };
     http.open("GET", "/adminexists", false);
     http.send();
-    return adminExists;
+//    return authData;
 }
 
 function getMessages() {    

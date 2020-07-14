@@ -1,5 +1,7 @@
 package com.rent.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rent.entity.htmlmessage.HtmlMessages;
 import com.rent.entity.htmlmessage.MessageType;
 
@@ -13,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
+import com.rent.entity.htmlmessage.AuthData;
 import com.rent.entity.htmlmessage.HtmlMessage;
 import com.rent.entity.utility.RegistrationForm;
 import com.rent.service.UserService;
+import java.awt.PageAttributes;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,18 +40,34 @@ public class AuthController {
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
 
-    @GetMapping("/adminexists")
-    @ResponseBody
-    public boolean adminExists() {
-        return userService.adminExists();
+    @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody AuthData getAuthData() {
+        checkInitHtmlMessages();
+//        ObjectMapper objectMapper = new ObjectMapper();
+        AuthData authData =  new AuthData(htmlMessages.getHtmlMessageList(), userService.adminExists());
+//        String htmlMessagesJson = null;
+//        try {
+//            htmlMessagesJson = objectMapper.writeValueAsString(htmlMessages);
+//        } catch (JsonProcessingException ex) {
+//            Logger.getLogger(AuthController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        System.err.println("htmlMessagesJson = " + htmlMessagesJson);
+//        return htmlMessagesJson;
+        return authData;
     }
+
+//    @GetMapping("/adminexists")
+//    @ResponseBody
+//    public boolean adminExists() {
+//        return userService.adminExists();
+//    }
 
     @GetMapping("/getmessages")
     @ResponseBody
-    public List<HtmlMessage> getMessages() {
+    public String getMessages() {
         checkInitHtmlMessages();
         
-        return htmlMessages.getHtmlMessages();
+        return "htmlMessages.getHtmlMessages()";
     }
     
 //    @GetMapping("/checkadmin")
