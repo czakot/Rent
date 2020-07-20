@@ -41,35 +41,19 @@ public class AuthController {
     private HtmlMessages htmlMessages = null;
 
     @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody AuthData getAuthData() {
-        checkInitHtmlMessages();
-//        ObjectMapper objectMapper = new ObjectMapper();
-        AuthData authData =  new AuthData(htmlMessages.getHtmlMessageList(), userService.adminExists());
-//        String htmlMessagesJson = null;
-//        try {
-//            htmlMessagesJson = objectMapper.writeValueAsString(htmlMessages);
-//        } catch (JsonProcessingException ex) {
-//            Logger.getLogger(AuthController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        System.err.println("htmlMessagesJson = " + htmlMessagesJson);
-//        return htmlMessagesJson;
+    public @ResponseBody AuthData getAuthData(@RequestParam String page) {
+//        initHtmlMessages();
+        if(htmlMessages == null) {
+            htmlMessages = new HtmlMessages(messageSource);
+        };
+        boolean adminExists = userService.adminExists();
+        
+        String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
+        htmlMessages.add(message, MessageType.WARNING);
+        AuthData authData =  new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
         return authData;
     }
 
-//    @GetMapping("/adminexists")
-//    @ResponseBody
-//    public boolean adminExists() {
-//        return userService.adminExists();
-//    }
-
-    @GetMapping("/getmessages")
-    @ResponseBody
-    public String getMessages() {
-        checkInitHtmlMessages();
-        
-        return "htmlMessages.getHtmlMessages()";
-    }
-    
 //    @GetMapping("/checkadmin")
 //    public String checkAdmin(@RequestParam String page, RedirectAttributes ra) {
 //        checkInitHtmlMessages();
@@ -95,13 +79,14 @@ public class AuthController {
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
         htmlMessages.clearAndAddFirst(message, messageType);
         
-        boolean adminExists = embedAdminExists(ra);
-        if(adminExists) {
-            ra.addFlashAttribute("messages", htmlMessages);
-            return "redirect:/login";
-        } else {
-            return registrationWithoutAdmin(ra);
-        }
+//        boolean adminExists = embedAdminExists(ra);
+//        if(adminExists) {
+//            ra.addFlashAttribute("messages", htmlMessages);
+//            return "redirect:/login";
+//        } else {
+//            return registrationWithoutAdmin(ra);
+//        }
+        return "redirect:/login";
     }
     
 //    @PostMapping("/processregistration")
@@ -122,7 +107,7 @@ public class AuthController {
     
     @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
     public String activation(@PathVariable("code") String code, RedirectAttributes ra) {
-        checkInitHtmlMessages();
+        initHtmlMessages();
         User activatedUser = userService.userActivation(code);
         String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
@@ -135,7 +120,7 @@ public class AuthController {
         return adminExists ? registration(ra) : registrationWithoutAdmin(ra);
     }
 
-    private void checkInitHtmlMessages() {
+    private void initHtmlMessages() {
         if(htmlMessages == null) {
             htmlMessages = new HtmlMessages(messageSource);
         } else {

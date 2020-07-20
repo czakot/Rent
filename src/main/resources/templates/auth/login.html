@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
 </head>
-<body>
+    <body style="display: none">
     <div layout:fragment="content" class="login-content">
         
         <h2 th:text="#{titleLogin}">Login</h2>
         
-        <div th:replace="auth/messages :: messages"></div>
+        <!--<div th:replace="auth/messages :: messages"></div>-->
+        <div id="messages"></div>
 
         <form name="login" th:action="@{/login}" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required=""/> 

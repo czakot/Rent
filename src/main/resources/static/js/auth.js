@@ -3,55 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//let authData = getAuthData();
-getAuthData(response);
-console.log("authData:");
-console.log(response);
-alert("See console for authData = ");
-let adminExists = JSON.parse();
-alert("adminExists = " + adminExists);
+let adminExists;;
 let messages = [];
+getAuthData();
 
-if (adminExists === "false") {
-    if (window.location.pathname === "/login") {
-        window.location.pathname = "/registration";
-    } else {
-        let message = { text: "Üzenet", cssClass: "alert alert-warning" };
-        messages.push(message);
-        message = { text: "Második", cssClass: "alert alert-info" };
-        messages.push(message);
-        
-    }
-}
-
-// messages = getMessages();
-
-function getAuthData(callback) {
+function getAuthData() {
     let http = new XMLHttpRequest();
-//    let authData;
     http.onreadystatechange = function() {
         if (http.readyState === 4 && http.status === 200) {
-//            adminExists = http.responseText;
-            callback(http.responseText)
-//            authData = http.responseText;
+            let authData = JSON.parse(http.responseText);
+            adminExists = authData.adminExists;
+            if (adminExists === false) {
+                if (window.location.pathname === "/login") {
+                    window.location.pathname = "/registration";
+                    return;
+                }
+                let loginlink = document.getElementsByTagName("a");
+                loginlink[0].style.display = "none";
+            }
+            messages = authData.htmlMessageList;
+            displayMessages();
+            let body = document.getElementsByTagName("body");
+            body[0].style.display = "block";
         }
     };
-    http.open("GET", "/adminexists", false);
+    let url = "/getauthdata?page=" + window.location.pathname;
+    http.open("GET", url, true);
     http.send();
-//    return authData;
-}
-
-function getMessages() {    
-    let http = new XMLHttpRequest();
-    let messages;
-    http.onreadystatechange = function() {
-        if (http.readyState === 4 && http.status === 200) {
-            messages = http.responseXML;
-        }
-    };
-    http.open("GET", "/getmessages", false);
-    http.send();
-    return messages;
 }
 
 function displayMessages() {

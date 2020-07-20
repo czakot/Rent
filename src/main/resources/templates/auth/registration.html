@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
 </head>
-<body>
+<body style="display: none">
     <div layout:fragment="content" class="login-content">
         
         <h2 th:text="#{titleRegistration}">Registration</h2>
         
-        <div th:replace="auth/messages :: messages"></div>
+        <!--<div th:replace="auth/messages :: messages"></div>-->
+        <div id="messages"></div>
 
         <form name="registration" th:action="@{/processregistration}" method="post" class="form-border" onsubmit="confirmPassword()">
             <input type="text" id="fullName" name="fullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
@@ -26,7 +27,8 @@
             <input type="password" id="confirmpwd" name="confirmpwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
             <button type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
-        <a th:if="${adminExists == 'true'}" href="/login" th:text="#{linkLogin}" class="auth-link-left">Login</a>
+        <!--<a th:if="${adminExists == 'true'}" href="/login" th:text="#{linkLogin}" class="auth-link-left">Login</a>-->
+        <a href="/login" th:text="#{linkLogin}" class="auth-link-left">Login</a>
 
     </div>
 </body>
