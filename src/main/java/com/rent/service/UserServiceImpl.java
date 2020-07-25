@@ -117,9 +117,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setEnabled(true);
             user.setActivation("");
             userRepository.save(user);
+            System.err.println("userActivation() - numberOfActiveAdmins before: " + numberOfActiveAdmins);
+            System.err.println("user.getRoles(): " + user.getRoles().toString());
             if (user.getRoles().contains(new Role(ADMIN_ROLE))) {
                 numberOfActiveAdmins++;
             }
+            System.err.println("userActivation() - numberOfActiveAdmins after: " + numberOfActiveAdmins);
         }
 
         return user;

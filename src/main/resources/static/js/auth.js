@@ -3,36 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-let adminExists;;
-let messages = [];
-getAuthData();
+//getAuthData();
 
-function getAuthData() {
+function getAuthData(keepmessages) {
     let http = new XMLHttpRequest();
     http.onreadystatechange = function() {
         if (http.readyState === 4 && http.status === 200) {
-            let authData = JSON.parse(http.responseText);
-            adminExists = authData.adminExists;
-            if (adminExists === false) {
-                if (window.location.pathname === "/login") {
-                    window.location.pathname = "/registration";
-                    return;
-                }
-                let loginlink = document.getElementsByTagName("a");
-                loginlink[0].style.display = "none";
-            }
-            messages = authData.htmlMessageList;
-            displayMessages();
-            let body = document.getElementsByTagName("body");
-            body[0].style.display = "block";
+            
+            processAuthData(JSON.parse(http.responseText), keepmessages);
         }
     };
-    let url = "/getauthdata?page=" + window.location.pathname;
+    let url = "/getauthdata?page=" + window.location.pathname + (keepmessages ? "&keepmessages=true" : "");
     http.open("GET", url, true);
     http.send();
 }
 
-function displayMessages() {
+function processAuthData(authData, keepmessages) {
+    console.log("processAuthData in " + window.location);
+    console.log(authData);
+    console.log(keepmessages);
+    alert("wait");
+    if (authData.adminExists === false) {
+        if (window.location.pathname === "/login") {
+            console.log("sending to /registration");
+            alert("wait");
+            window.location.pathname = "/registration" + (keepmessages ? "?keepmessages=true" : "");
+            return;
+        }
+        let loginlink = document.getElementsByTagName("a");
+        loginlink[0].style.display = "none";
+    }
+    displayMessages(authData.htmlMessageList);
+    let body = document.getElementsByTagName("body");
+    body[0].style.display = "block";
+}
+
+function displayMessages(messages) {
     let messagesdiv = document.getElementById("messages");
     messages.forEach(
         function(message) {

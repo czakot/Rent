@@ -19,16 +19,6 @@ public final class HtmlMessages {
     
     private final MessageSource messageSource;
     
-    private boolean adminExists;
-
-    public boolean isAdminExists() {
-        return adminExists;
-    }
-
-    public void setAdminExists(boolean adminExists) {
-        this.adminExists = adminExists;
-    }
-
     public HtmlMessages(String messageKey, MessageType messageType, MessageSource messageSource) {
         this.messageSource = messageSource;
         add(messageKey, messageType);
@@ -55,22 +45,5 @@ public final class HtmlMessages {
     
     public List<HtmlMessage> getHtmlMessageList() {
         return htmlMessageList;
-    }
-    
-    public String toJson() {
-        StringBuilder json = new StringBuilder();
-        
-        for(HtmlMessage htmlMessage : htmlMessageList) {
-            if (json.length() != 0) {
-                json.append(", ");
-            }
-            json.append("");
-        }
-        
-        
-        json.insert(0, "[");
-        json.append(']');
-        
-        return json.toString();
     }
 }

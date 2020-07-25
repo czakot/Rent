@@ -57,4 +57,19 @@ public class Role {
 		return "Role [id=" + id + ", role=" + role + "]";
 	}
 	
+        @Override
+        public boolean equals(Object obj) {
+        // compare by role only (leave out Id)
+            if(obj == this) {
+                return true;
+            }
+            if(obj == null) {
+                return false;
+            }
+            if(getClass() != obj.getClass()) {
+                return false;
+            }
+            Role r = (Role)obj;
+            return this.role.equalsIgnoreCase(r.getRole());
+        }
 }

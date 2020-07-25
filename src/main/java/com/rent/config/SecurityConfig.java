@@ -46,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
             .authorizeRequests()
                 .antMatchers("/css/*", "/js/*").permitAll()
-                .antMatchers("/checkadmin").permitAll()
-                .antMatchers("/adminexists").permitAll()
                 .antMatchers("/getauthdata").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/processregistration").permitAll()
@@ -60,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and() // instead of server.ssl.enabled = true
             .portMapper().http(8080).mapsTo(8443)
                 .and()
-            .formLogin().loginPage("/login").permitAll()
+            .formLogin().loginPage("/login").permitAll().failureForwardUrl("/login?redirection=/login")
                 .and()
             .logout().logoutSuccessUrl("/login?logout").permitAll();
     }
