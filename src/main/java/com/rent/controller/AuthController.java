@@ -53,11 +53,9 @@ public class AuthController {
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
-        htmlMessages.clearAndAddFirst(message, messageType);
-        ra.addFlashAttribute("keepmessages", "true");
         
         System.err.println("/processregistration controller | first message: " + message);
-        return "redirect:" + (userService.adminExists() ? "/login" : "/registration");
+        return redirectByAdminExists(message, messageType, ra);
     }
     
     @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
@@ -66,14 +64,19 @@ public class AuthController {
         User activatedUser = userService.userActivation(code);
         String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
+
+        boolean adminExists = userService.adminExists();
+        System.err.println("/activation/{code} controller | first message: " + message + " | adminExists: " + adminExists + "| redirect: " + (adminExists ? "/login" : "/registration"));
+
+        return redirectByAdminExists(message, messageType, ra);
+    }
+    
+    private String redirectByAdminExists(String message, MessageType messageType, RedirectAttributes ra) {
         htmlMessages.clearAndAddFirst(message, messageType);
         ra.addFlashAttribute("keepmessages", "true");
-        boolean adminExists = userService.adminExists();
-
-        System.err.println("/activation/{code} controller | first message: " + message + " | adminExists: " + adminExists + "| redirect: " + (adminExists ? "/login" : "/registration"));
-        return "redirect:" + (adminExists ? "/login" : "/registration");
+        return "redirect:" + (userService.adminExists() ? "/login" : "/registration");
     }
-
+ 
     private void initHtmlMessages() {
         if(htmlMessages == null) {
             htmlMessages = new HtmlMessages(messageSource);
