@@ -3,39 +3,72 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//getAuthData();
+let pageMode;
+let elements;
+let authElements = new Map();
+let adminExists;
+let messages;
 
-function getAuthData(keepmessages) {
+window.addEventListener("DOMContentLoaded", initAuthPage);
+
+function initAuthElement(key) {
+    let tmp = document.getElementById("registration" + key);
+    authElements.set(key, tmp);
+    tmp.remove();
+}
+
+function initAuthPage() {
+    pageMode = "login";
+    elements = ["title", "form", "swapauth", "forgot"];
+    elements.forEach(initAuthElement);
+    getAuthData();
+}
+
+function getAuthData() {
     let http = new XMLHttpRequest();
     http.onreadystatechange = function() {
         if (http.readyState === 4 && http.status === 200) {
-            
-            processAuthData(JSON.parse(http.responseText), keepmessages);
+            processAuthData(JSON.parse(http.responseText));
         }
     };
-    let url = "/getauthdata?page=" + window.location.pathname + (keepmessages ? "&keepmessages=true" : "");
+    let url = "/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : "");
     http.open("GET", url, true);
     http.send();
 }
 
-function processAuthData(authData, keepmessages) {
-    console.log("processAuthData in " + window.location);
-    console.log(authData);
-    console.log(keepmessages);
-    alert("wait");
-    if (authData.adminExists === false) {
-        if (window.location.pathname === "/login") {
-            console.log("sending to /registration");
-            alert("wait");
-            window.location.pathname = "/registration" + (keepmessages ? "?keepmessages=true" : "");
-            return;
-        }
-        let loginlink = document.getElementsByTagName("a");
-        loginlink[0].style.display = "none";
+function processAuthData(authData) {
+    adminExists = authData.adminExists;
+    messages = authData.htmlMessageList;
+    if (adminExists === false && pageMode === "login") {
+        exchangePageModeDisplay(); // switch to registration
+        document.getElementById("registrationswapauth").style.display = "none";
     }
-    displayMessages(authData.htmlMessageList);
-    let body = document.getElementsByTagName("body");
-    body[0].style.display = "block";
+    displayMessages(messages);
+    document.getElementsByTagName("body")[0].style.display = "block";
+}
+
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+function swapAuthElement(key) {
+    let positioningElement = document.getElementById(pageMode + key);
+    positioningElement.after(authElements.get(key));
+//    insertAfter(authElements.get(key), positioningElement);
+    positioningElement.remove();
+    authElements.set(key, positioningElement);
+}
+
+function exchangePageModeDisplay() {
+    elements.forEach((element) => {swapAuthElement(element);});
+    pageMode = pageMode === "login" ? "registration": "login";
+}
+
+function changePageMode() {
+    let body = document.getElementsByTagName("body")[0];
+    body.style.display = "none";
+    exchangePageModeDisplay();
+    body.style.display = "block";    
 }
 
 function displayMessages(messages) {
@@ -81,6 +114,13 @@ function getCookie(cookieName) {
     }
   }
   return "";}
+
+function getUrlParam(name) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const value = urlParams.get(name);
+    return value;
+}
 
 function confirmPassword() {
     alert("Confirm password")

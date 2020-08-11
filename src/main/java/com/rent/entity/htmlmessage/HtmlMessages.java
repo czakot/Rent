@@ -30,7 +30,9 @@ public final class HtmlMessages {
     
     public void add(String messageKey, MessageType messageType) {
         final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        htmlMessageList.add(htmlMessage);
+        if (!htmlMessageList.contains(htmlMessage)) {
+            htmlMessageList.add(htmlMessage);
+        }
     }
     
     public void clearAndAddFirst(String messageKey, MessageType messageType) {

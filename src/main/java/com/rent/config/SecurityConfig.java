@@ -43,14 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSec) throws Exception {
         httpSec
-//            .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
             .authorizeRequests()
                 .antMatchers("/css/*", "/js/*").permitAll()
                 .antMatchers("/getauthdata").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/processregistration").permitAll()
-                .antMatchers("/forgottenpassword").permitAll()
                 .antMatchers("/activation/*").permitAll()
+                .antMatchers("/forgottenpassword").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -58,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and() // instead of server.ssl.enabled = true
             .portMapper().http(8080).mapsTo(8443)
                 .and()
-            .formLogin().loginPage("/login").permitAll().failureForwardUrl("/login?redirection=/login")
+            .formLogin().loginPage("/authpage").permitAll()
+//            .formLogin().loginPage("/login").permitAll().failureForwardUrl("/login?redirection=/login")
                 .and()
             .logout().logoutSuccessUrl("/login?logout").permitAll();
     }

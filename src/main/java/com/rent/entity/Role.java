@@ -1,6 +1,7 @@
 package com.rent.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ public class Role {
 	@ManyToMany( mappedBy = "roles")
 	private Set<User> users = new HashSet<User>();
 	
-	private Role(){} 
+	public Role(){} 
 	
 	public Role(String role){
 		this.role=role;
@@ -71,5 +72,12 @@ public class Role {
             }
             Role r = (Role)obj;
             return this.role.equalsIgnoreCase(r.getRole());
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 29 * hash + Objects.hashCode(this.role);
+            return hash;
         }
 }

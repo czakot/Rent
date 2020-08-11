@@ -32,4 +32,20 @@ public class HtmlMessage {
         this.text = messageSource.getMessage(messageKey, null, currentLocale);
         this.cssClass = messageType.cssClass;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // compare by content only
+            if(obj == this) {
+                return true;
+            }
+            if(obj == null) {
+                return false;
+            }
+            if(getClass() != obj.getClass()) {
+                return false;
+            }
+            HtmlMessage r = (HtmlMessage)obj;
+            return this.text.equals(r.getText()) && this.cssClass.equals(r.getCssClass());
+    }
 }

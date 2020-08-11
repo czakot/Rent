@@ -11,31 +11,31 @@ package com.rent.entity.utility;
  */
 public class RegistrationForm {
 
-        private String fullName;
-        private String email;
-        private String password;
+        private String regFullName;
+        private String regEmail;
+        private String regPassword;
 
-    public String getFullName() {
-        return fullName;
+    public String getRegFullName() {
+        return regFullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setRegFullName(String regFullName) {
+        this.regFullName = regFullName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRegEmail() {
+        return regEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRegEmail(String regEmail) {
+        this.regEmail = regEmail;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRegPassword() {
+        return regPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRegPassword(String regPassword) {
+        this.regPassword = regPassword;
     }
 }

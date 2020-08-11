@@ -45,8 +45,7 @@ public class User {
     )
     private Set<Role> roles = new HashSet<Role>();
 
-    public User() {
-    }
+    public User() {}
     
     public User(String fullName, String email, String password) {
         this.fullName = fullName;
@@ -55,9 +54,9 @@ public class User {
     }
     
     public User(RegistrationForm registrationForm) {
-        this.fullName = registrationForm.getFullName();
-        this.email = registrationForm.getEmail();
-        this.password = registrationForm.getPassword();
+        this.fullName = registrationForm.getRegFullName();
+        this.email = registrationForm.getRegEmail();
+        this.password = registrationForm.getRegPassword();
     }
 
     public Long getId() {
@@ -101,7 +100,6 @@ public class User {
     }
 
     public Boolean getEnabled() {
-//		return true;
         return enabled;
     }
 

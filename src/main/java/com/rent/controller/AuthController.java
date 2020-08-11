@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,10 +31,10 @@ public class AuthController {
     private HtmlMessages htmlMessages = null;
 
     @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody AuthData getAuthData(@RequestParam String page,
-                                              @RequestParam(required = false) String keepmessages) {
+//    public @ResponseBody AuthData getAuthData() {
+    public @ResponseBody AuthData getAuthData(@RequestParam (required = false) String clearmessages) {
         initHtmlMessages();
-        if(keepmessages == null) {
+        if (clearmessages != null) { // && clearmessages.equals("true")) {
             htmlMessages.clear();
         }
         boolean adminExists = userService.adminExists();
@@ -46,15 +45,14 @@ public class AuthController {
 
         return new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
     }
-
-    @PostMapping("/processregistration")
+    
+    @PostMapping("/registration")
     public String processRegistration(RegistrationForm registrationForm, RedirectAttributes ra) {
         User userToRegister = new User(registrationForm);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
         
-        System.err.println("/processregistration controller | first message: " + message);
         return redirectByAdminExists(message, messageType, ra);
     }
     
@@ -65,16 +63,14 @@ public class AuthController {
         String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
 
-        boolean adminExists = userService.adminExists();
-        System.err.println("/activation/{code} controller | first message: " + message + " | adminExists: " + adminExists + "| redirect: " + (adminExists ? "/login" : "/registration"));
-
         return redirectByAdminExists(message, messageType, ra);
     }
     
     private String redirectByAdminExists(String message, MessageType messageType, RedirectAttributes ra) {
+        ra.addFlashAttribute("fromctl", "true");
         htmlMessages.clearAndAddFirst(message, messageType);
-        ra.addFlashAttribute("keepmessages", "true");
-        return "redirect:" + (userService.adminExists() ? "/login" : "/registration");
+
+        return "redirect:/authpage";
     }
  
     private void initHtmlMessages() {
