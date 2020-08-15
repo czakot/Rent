@@ -23,7 +23,7 @@
         
         <div id="messages"></div>
 
-        <form id="loginform" name="login" th:action="@{/login}" method="post" class="form-border">
+        <form id="loginform" name="login" action="/login" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required=""/> 
             <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required=""/>
             <input type="checkbox" id="remember-me" name="remember-me"/>
@@ -35,7 +35,7 @@
             <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
             <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
             <input type="password" id="regPassword" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
-            <!--<input type="password" id="confirmpwd" name="confirmpwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>-->
+            <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
             <button type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
         

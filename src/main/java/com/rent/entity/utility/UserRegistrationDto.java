@@ -9,7 +9,7 @@ package com.rent.entity.utility;
  *
  * @author czakot
  */
-public class RegistrationForm {
+public class UserRegistrationDto {
 
         private String regFullName;
         private String regEmail;

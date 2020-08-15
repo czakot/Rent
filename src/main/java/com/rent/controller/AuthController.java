@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
 import com.rent.entity.htmlmessage.AuthData;
-import com.rent.entity.utility.RegistrationForm;
+import com.rent.entity.utility.UserRegistrationDto;
 import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -47,8 +47,8 @@ public class AuthController {
     }
     
     @PostMapping("/registration")
-    public String processRegistration(RegistrationForm registrationForm, RedirectAttributes ra) {
-        User userToRegister = new User(registrationForm);
+    public String processRegistration(UserRegistrationDto userRegistrationDto, RedirectAttributes ra) {
+        User userToRegister = new User(userRegistrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;

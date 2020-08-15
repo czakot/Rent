@@ -9,6 +9,7 @@ let authElements = new Map();
 let adminExists;
 let messages;
 
+getAuthData();
 window.addEventListener("DOMContentLoaded", initAuthPage);
 
 function initAuthElement(key) {
@@ -17,18 +18,25 @@ function initAuthElement(key) {
     tmp.remove();
 }
 
-function initAuthPage() {
+async function initAuthPage() {
+    window.removeEventListener("DOMContentLoaded", initAuthPage);
     pageMode = "login";
+    document.getElementById("regEmail").addEventListener("input", validateEmail());
+    // document.getElementById("regEmail").oninput = validateEmail() {...};
+    document.getElementById("regPassword").addEventListener("input", validatePassword());
+    document.getElementById("confirmPwd").addEventListener("input", validatePassword());
     elements = ["title", "form", "swapauth", "forgot"];
     elements.forEach(initAuthElement);
-    getAuthData();
+    processAuthData();
 }
 
 function getAuthData() {
     let http = new XMLHttpRequest();
     http.onreadystatechange = function() {
         if (http.readyState === 4 && http.status === 200) {
-            processAuthData(JSON.parse(http.responseText));
+            let authData = JSON.parse(http.responseText);
+            adminExists = authData.adminExists;
+            messages = authData.htmlMessageList;
         }
     };
     let url = "/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : "");
@@ -36,9 +44,7 @@ function getAuthData() {
     http.send();
 }
 
-function processAuthData(authData) {
-    adminExists = authData.adminExists;
-    messages = authData.htmlMessageList;
+ function processAuthData(authData) {
     if (adminExists === false && pageMode === "login") {
         exchangePageModeDisplay(); // switch to registration
         document.getElementById("registrationswapauth").style.display = "none";
@@ -122,6 +128,11 @@ function getUrlParam(name) {
     return value;
 }
 
-function confirmPassword() {
-    alert("Confirm password")
+function validateEmail() {
+//    alert("Validate Email Address")
 }
+
+function validatePassword() {
+//    alert("Validate password")
+}
+

@@ -1,6 +1,6 @@
 package com.rent.entity;
 
-import com.rent.entity.utility.RegistrationForm;
+import com.rent.entity.utility.UserRegistrationDto;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,7 +53,7 @@ public class User {
         this.password = password;
     }
     
-    public User(RegistrationForm registrationForm) {
+    public User(UserRegistrationDto registrationForm) {
         this.fullName = registrationForm.getRegFullName();
         this.email = registrationForm.getRegEmail();
         this.password = registrationForm.getRegPassword();
