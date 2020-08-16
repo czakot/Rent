@@ -18,7 +18,7 @@ function initAuthElement(key) {
     tmp.remove();
 }
 
-async function initAuthPage() {
+function initAuthPage() {
     window.removeEventListener("DOMContentLoaded", initAuthPage);
     pageMode = "login";
     document.getElementById("regEmail").addEventListener("input", validateEmail());
