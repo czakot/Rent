@@ -31,7 +31,7 @@ function initAuthPage() {
     //document.getElementById("regPassword").addEventListener("input", validatePassword());
     elements = ["title", "form", "swapauth", "forgot"];
     let pageModeToSave = otherPageMode();
-    for (x of elements) {
+    for (let x of elements) {
         initAuthElement(x, pageModeToSave);
     }
     // elements.forEach(initAuthElement);
