@@ -42,3 +42,8 @@ and open the template in the editor.
     float: right;
     padding-right: 20px
 }
+
+#pwdmismatchmsg {
+    font-size: 60%;
+    color: red;
+}

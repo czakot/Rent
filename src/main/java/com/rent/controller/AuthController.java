@@ -31,7 +31,6 @@ public class AuthController {
     private HtmlMessages htmlMessages = null;
 
     @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public @ResponseBody AuthData getAuthData() {
     public @ResponseBody AuthData getAuthData(@RequestParam (required = false) String clearmessages) {
         initHtmlMessages();
         if (clearmessages != null) { // && clearmessages.equals("true")) {

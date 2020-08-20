@@ -9,52 +9,43 @@ let authElements = new Map();
 let adminExists;
 let messages;
 
-getAuthData();
 window.addEventListener("DOMContentLoaded", initAuthPage);
 
-function initAuthElement(key) {
-    let tmp = document.getElementById("registration" + key);
+function initAuthElement(key, pageModeToSave) {
+    let tmp = document.getElementById(pageModeToSave + key);
     authElements.set(key, tmp);
     tmp.remove();
 }
 
-async function initAuthPage() {
-    window.removeEventListener("DOMContentLoaded", initAuthPage);
-    pageMode = "login";
-    document.getElementById("regEmail").addEventListener("input", validateEmail());
-    // document.getElementById("regEmail").oninput = validateEmail() {...};
-    document.getElementById("regPassword").addEventListener("input", validatePassword());
-    document.getElementById("confirmPwd").addEventListener("input", validatePassword());
+function initAuthPage() {
+    fetch("/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : ""))
+            .then(response => response.json())
+            .then(responseJson => processAuthData(responseJson));
+    pageMode = getCookie("pageMode");
+    document.cookie = "pageMode=";
+    if (pageMode === "") {
+        pageMode = "login";
+    }
+    //document.getElementById("regEmail").addEventListener("input", validateEmail());
+    //// document.getElementById("regEmail").oninput = validateEmail() {...};
+    //document.getElementById("regPassword").addEventListener("input", validatePassword());
     elements = ["title", "form", "swapauth", "forgot"];
-    elements.forEach(initAuthElement);
-    processAuthData();
-}
-
-function getAuthData() {
-    let http = new XMLHttpRequest();
-    http.onreadystatechange = function() {
-        if (http.readyState === 4 && http.status === 200) {
-            let authData = JSON.parse(http.responseText);
-            adminExists = authData.adminExists;
-            messages = authData.htmlMessageList;
-        }
-    };
-    let url = "/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : "");
-    http.open("GET", url, true);
-    http.send();
+    let pageModeToSave = otherPageMode();
+    for (x of elements) {
+        initAuthElement(x, pageModeToSave);
+    }
+    // elements.forEach(initAuthElement);
 }
 
  function processAuthData(authData) {
+    adminExists = authData.adminExists;
+    messages = authData.htmlMessageList;
     if (adminExists === false && pageMode === "login") {
         exchangePageModeDisplay(); // switch to registration
         document.getElementById("registrationswapauth").style.display = "none";
     }
     displayMessages(messages);
     document.getElementsByTagName("body")[0].style.display = "block";
-}
-
-function insertAfter(newNode, referenceNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 function swapAuthElement(key) {
@@ -65,9 +56,13 @@ function swapAuthElement(key) {
     authElements.set(key, positioningElement);
 }
 
+function otherPageMode() {
+    return pageMode === "login" ? "registration": "login";
+}
+
 function exchangePageModeDisplay() {
     elements.forEach((element) => {swapAuthElement(element);});
-    pageMode = pageMode === "login" ? "registration": "login";
+    pageMode = otherPageMode();
 }
 
 function changePageMode() {
@@ -91,6 +86,7 @@ function displayMessages(messages) {
 
 function switchLang(languageCode) {
     document.cookie = 'rentLocal=' + languageCode;
+    document.cookie = "pageMode=" + pageMode;
     location.reload();
 }
 
@@ -136,3 +132,36 @@ function validatePassword() {
 //    alert("Validate password")
 }
 
+function checkMatchPasswords(e) {
+    let password = document.getElementById("regPassword").value;
+    let confirmPwd = document.getElementById("confirmPwd").value;
+    let button = document.getElementById("regButton");
+    let msg = document.getElementById("pwdmismatchmsg");
+    let showMsg = !(password.length === 0 || confirmPwd.length === 0 || password === confirmPwd);
+    msg.style.display = showMsg ? "block" : "none";
+    button.disabled = showMsg;
+}
+
+// NOT USED NOT USED NOT USED NOT USED NOT USED NOT USED NOT USED NOT USED
+//
+//let promisGetAuth = 
+//    fetch("/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : "")) // fromctl is not "ready"
+//        .then(response => response.json());
+//    
+//    Promise.all([promisGetAuth]).then(responsJsons => processAuthData(responsJsons[0]));
+
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+function getAuthData() {
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (http.readyState === 4 && http.status === 200) {
+            processAuthData(JSON.parse(http.responseText));
+        }
+    };
+    let url = "/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : "");
+    http.open("GET", url, true);
+    http.send();
+}
