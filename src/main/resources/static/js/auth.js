@@ -81,7 +81,7 @@ function displayMessages(messages) {
             messagediv.innerHTML = message["text"];
             messagesdiv.appendChild(messagediv);
         }
-    ) 
+    ); 
 }
 
 function switchLang(languageCode) {
