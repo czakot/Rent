@@ -38,4 +38,9 @@ public class UserRegistrationDto {
     public void setRegPassword(String regPassword) {
         this.regPassword = regPassword;
     }
+    
+    @Override
+    public String toString() {
+        return "[" + regFullName + "; " + regEmail + "; " + regPassword + "]";
+    }
 }

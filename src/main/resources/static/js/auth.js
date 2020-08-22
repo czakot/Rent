@@ -26,6 +26,7 @@ function initAuthPage() {
     if (pageMode === "") {
         pageMode = "login";
     }
+    setLanguageLinks();
     //document.getElementById("regEmail").addEventListener("input", validateEmail());
     //// document.getElementById("regEmail").oninput = validateEmail() {...};
     //document.getElementById("regPassword").addEventListener("input", validatePassword());

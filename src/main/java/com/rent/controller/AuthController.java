@@ -46,8 +46,9 @@ public class AuthController {
     }
     
     @PostMapping("/registration")
-    public String processRegistration(UserRegistrationDto userRegistrationDto, RedirectAttributes ra) {
-        User userToRegister = new User(userRegistrationDto);
+    public String processRegistration(UserRegistrationDto registrationDto, RedirectAttributes ra) {
+        System.err.println("at //registration controller with registrationDto: " + registrationDto.toString());
+        User userToRegister = new User(registrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
@@ -87,5 +88,7 @@ public class AuthController {
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
+    
+    
     
 }

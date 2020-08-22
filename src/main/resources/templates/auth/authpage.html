@@ -7,7 +7,7 @@
       layout:decorate="~{layouts/main}">
 <head>
     <title>Rent</title>
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/auth.css" th:href="@{/css/auth.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
@@ -23,7 +23,7 @@
         
         <div id="messages"></div>
 
-        <form id="loginform" name="login" action="/login" method="post" class="form-border">
+        <form id="loginform" name="login" action="/authpage" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required=""/> 
             <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required=""/>
             <input type="checkbox" id="remember-me" name="remember-me"/>

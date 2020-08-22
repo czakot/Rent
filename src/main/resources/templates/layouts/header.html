@@ -3,6 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layouts/main}">
 <head>
     <title>Rent - header</title>
@@ -17,9 +18,14 @@
             | 
             <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
         </div>
-        <script>
-            setLanguageLinks();
-        </script>
+        <div sec:authorize="isAuthenticated()">authenticated user</div> 
+<!--        <span sec:authorize="isAuthenticated()">
+            Üdvözlünk <span sec:authentication="name">Anonymous </span>
+            Üdvözlünk <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>
+            <form sec:authorize="isAuthenticated()" id="frmlogout" th:action="@{/logout}" method="post" class="form-inline">
+                | <a href="javascript:{}" onclick="document.getElementById('frmlogout').submit(); return false;">Kijelentkezés |</a>
+            </form>
+        </span>-->
     </header>
 </body>
 </html>

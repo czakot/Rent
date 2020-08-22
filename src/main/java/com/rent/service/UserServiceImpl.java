@@ -54,14 +54,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean registerUser(User userToRegister) {
+        System.err.println("User to register: " + userToRegister.toString());
         boolean registered;
         if (adminExists()) {
             registered = register(userToRegister, new String[]{USER_ROLE});
         } else {
+            System.err.println("registerUser and adminExists() = false");
             userRepository.deleteAll();
             registered = register(userToRegister, new String[]{ADMIN_ROLE});
         }
 
+        System.err.println("registered: " + registered);
         if (registered) {
             emailService.sendMessage(userToRegister);
         }

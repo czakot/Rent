@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSec) throws Exception {
         httpSec
+            .csrf().disable()
             .authorizeRequests()
                 .antMatchers("/css/*", "/js/*").permitAll()
                 .antMatchers("/getauthdata").permitAll()
@@ -54,14 +55,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-            .requiresChannel().anyRequest().requiresSecure()
-                .and() // instead of server.ssl.enabled = true
-            .portMapper().http(8080).mapsTo(8443)
-                .and()
+//            .requiresChannel().anyRequest().requiresSecure()
+//                .and() // instead of server.ssl.enabled = true
+//            .portMapper().http(8080).mapsTo(8443)
+//                .and()
             .formLogin().loginPage("/authpage").permitAll()
-//            .formLogin().loginPage("/login").permitAll().failureForwardUrl("/login?redirection=/login")
                 .and()
-            .logout().logoutSuccessUrl("/login?logout").permitAll();
+            .logout().permitAll()
+//            .formLogin().loginPage("/login").permitAll().failureForwardUrl("/login?redirection=/login")
+//                .and()
+//            .logout().logoutSuccessUrl("/login?logout").permitAll()
+                ;
     }
 
 }

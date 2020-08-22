@@ -53,10 +53,10 @@ public class User {
         this.password = password;
     }
     
-    public User(UserRegistrationDto registrationForm) {
-        this.fullName = registrationForm.getRegFullName();
-        this.email = registrationForm.getRegEmail();
-        this.password = registrationForm.getRegPassword();
+    public User(UserRegistrationDto registrationDto) {
+        this.fullName = registrationDto.getRegFullName();
+        this.email = registrationDto.getRegEmail();
+        this.password = registrationDto.getRegPassword();
     }
 
     public Long getId() {
@@ -125,7 +125,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+        return "User [id=" + id + " full name=" + fullName + ", email=" + email + ", password=" + password + "]";
     }
 
 }
