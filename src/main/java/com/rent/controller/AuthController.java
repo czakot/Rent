@@ -45,6 +45,11 @@ public class AuthController {
         return new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
     }
     
+//    @RequestMapping("/")
+//    public String basePage() {
+//        return "index";
+//    }
+    
     @PostMapping("/registration")
     public String processRegistration(UserRegistrationDto registrationDto, RedirectAttributes ra) {
         System.err.println("at //registration controller with registrationDto: " + registrationDto.toString());
