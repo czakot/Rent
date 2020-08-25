@@ -50,7 +50,7 @@ public class AuthController {
 //        return "index";
 //    }
     
-    @PostMapping("/registration")
+    @PostMapping(value = "/registration")
     public String processRegistration(UserRegistrationDto registrationDto, RedirectAttributes ra) {
         System.err.println("at //registration controller with registrationDto: " + registrationDto.toString());
         User userToRegister = new User(registrationDto);
