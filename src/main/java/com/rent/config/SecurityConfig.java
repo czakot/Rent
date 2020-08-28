@@ -46,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSec) throws Exception {
         httpSec
             .csrf().disable()
+              // avoiding console warning: "Strict-Transport-Security: The connection to the site is untrustworthy, so the specified header was ignored."
+            .headers().httpStrictTransportSecurity().disable();
+        httpSec
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/*").permitAll()
                 .antMatchers("/getauthdata").permitAll()

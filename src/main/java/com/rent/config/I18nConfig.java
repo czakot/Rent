@@ -38,8 +38,9 @@ public class I18nConfig implements WebMvcConfigurer {
       clr.setDefaultLocale(new Locale("hu"));
       clr.setCookieName("rentLocal");
       return clr;
+
 //      SessionLocaleResolver slr = new SessionLocaleResolver();
-//      slr.setDefaultLocale(Locale.ENGLISH);
+//      slr.setDefaultLocale(new Locale("hu"));
 //      return slr;
   }
 

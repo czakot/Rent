@@ -18,22 +18,22 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class HttpConfig {
-    @Value("${server.http.port}")
-    private int httpPort;
-    
-//    @Value("${server.port}")
-//    private int httpsPort;
-    
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        factory.addAdditionalTomcatConnectors(createStandardConnector());
-        return factory;
-    }
-    
-    private Connector createStandardConnector() {
-        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-        connector.setPort(httpPort);
-        return connector;
-    }
+//    @Value("${server.http.port}")
+//    private int httpPort;
+//    
+////    @Value("${server.port}")
+////    private int httpsPort;
+//    
+//    @Bean
+//    public ServletWebServerFactory servletContainer() {
+//        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+//        factory.addAdditionalTomcatConnectors(createStandardConnector());
+//        return factory;
+//    }
+//    
+//    private Connector createStandardConnector() {
+//        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+//        connector.setPort(httpPort);
+//        return connector;
+//    }
 }

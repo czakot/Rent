@@ -5,17 +5,18 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html lang="en" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main}">
-      <!--xmlns="http://www.w3.org/1999/xhtml"-->
       <!--xmlns:th="http://www.thymeleaf.org"-->
       <!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"-->
-      <!--xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
     <head>
         <title>Rent</title>
+        <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}"/>
     </head>
-    <body>
-        <div layout:fragment="content" class="login-content">
-            <h1>Welcome at RENT!</h1>
+      <body>
+        <div id="welcomefragment" layout:fragment="content">
+            <div >Welcome at RENT!</div>
         </div>
     </body>
 </html>

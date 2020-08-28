@@ -22,10 +22,15 @@ function initAuthPage() {
             .then(response => response.json())
             .then(responseJson => processAuthData(responseJson));
     pageMode = getCookie("pageMode");
-    document.cookie = "pageMode=";
+    document.cookie = "pageMode=; secure; max-age=0";
     if (pageMode === "") {
         pageMode = "login";
     }
+    
+    if (getCookie("rentLocal") === "") {
+        document.cookie = "rentLocal=" + local + ";secure";
+    }
+    
     setLanguageLinks();
     //document.getElementById("regEmail").addEventListener("input", validateEmail());
     //// document.getElementById("regEmail").oninput = validateEmail() {...};
@@ -86,8 +91,8 @@ function displayMessages(messages) {
 }
 
 function switchLang(languageCode) {
-    document.cookie = 'rentLocal=' + languageCode;
-    document.cookie = "pageMode=" + pageMode;
+    document.cookie = 'rentLocal=' + languageCode + "; Secure";
+    document.cookie = "pageMode=" + pageMode + "; Secure";
     location.reload();
 }
 
