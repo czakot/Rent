@@ -31,7 +31,7 @@ function initAuthPage() {
         document.cookie = "rentLocal=" + local + ";secure";
     }
     
-    setLanguageLinks();
+//    setLanguageLinks();
     //document.getElementById("regEmail").addEventListener("input", validateEmail());
     //// document.getElementById("regEmail").oninput = validateEmail() {...};
     //document.getElementById("regPassword").addEventListener("input", validatePassword());
@@ -90,24 +90,24 @@ function displayMessages(messages) {
     ); 
 }
 
-function switchLang(languageCode) {
-    document.cookie = 'rentLocal=' + languageCode + "; Secure";
-    document.cookie = "pageMode=" + pageMode + "; Secure";
-    location.reload();
-}
-
-function setLanguageLinks() {
-    let languageText = getCookie("rentLocal").toUpperCase();
-    let linkLikes = document.querySelectorAll("div#languagelinks > span");
-    for(let idx = 0; idx < linkLikes.length; idx++) {
-        const childText = linkLikes[idx].firstChild.data.toString().trim();
-        if (childText === languageText) {
-            linkLikes[idx].removeAttribute("class");
-            linkLikes[idx].removeAttribute("onclick");
-        }
-    }
-}
-
+////function switchLang(languageCode) {
+////    document.cookie = 'rentLocal=' + languageCode + "; Secure";
+////    document.cookie = "pageMode=" + pageMode + "; Secure";
+////    location.reload();
+////}
+////
+//function setLanguageLinks() {
+//    let languageText = getCookie("rentLocal").toUpperCase();
+//    let linkLikes = document.querySelectorAll("div#languagelinks > span");
+//    for(let idx = 0; idx < linkLikes.length; idx++) {
+//        const childText = linkLikes[idx].firstChild.data.toString().trim();
+//        if (childText === languageText) {
+//            linkLikes[idx].removeAttribute("class");
+//            linkLikes[idx].removeAttribute("onclick");
+//        }
+//    }
+//}
+//
 function getCookie(cookieName) {
   const internalCookieName = cookieName + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
