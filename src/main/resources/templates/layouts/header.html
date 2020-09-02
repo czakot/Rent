@@ -14,14 +14,31 @@
 </head>
 <body>
     <header th:fragment="header" class="top-bar">
-        <div id="languagelinks">
-            <span onclick="switchLang('hu')" class="btn-link button-link-like"> HU </span>
-            | 
-            <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
+        <div class="top-bar-left">
+            <div class="top-bar-inner">
+                <span class="rent-head"><strong>R</strong></span><span>ent</span>
+            </div>
+        </div><!-- eliminating whitespace gap from newline
+     --><div class="top-bar-right">
+            <div class="top-bar-inner">
+                <nav class="tbr-top">top
+<!--                    <div id="languagelinks">
+                        <span onclick="switchLang('hu')" class="btn-link button-link-like"> HU </span>
+                        | 
+                        <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
+                    </div>-->
+<!--                    <ul id="languagelinks">
+                        <li onclick="switchLang('hu')" class="btn-link button-link-like"> HU </li>
+                        <li onclick="switchLang('en')" class="btn-link button-link-like"> EN </li>
+                    </ul>-->
+                </nav>
+                <nav class="tbr-bottom"<span>Bottom</span>
+<!--                   <div sec:authorize="isAuthenticated()">
+                       <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>
+                   </div> -->
+                </nav>
+            </div>
         </div>
-        <div sec:authorize="isAuthenticated()">
-            <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>
-        </div> 
 <!--        <span sec:authorize="isAuthenticated()">
             Üdvözlünk <span sec:authentication="name">Anonymous </span>
             Üdvözlünk <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>

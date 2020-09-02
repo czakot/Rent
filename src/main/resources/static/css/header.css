@@ -10,16 +10,87 @@ and open the template in the editor.
 
 .top-bar {
     max-width: 95%;
+    height: 80px;
     margin: auto;
-    font-size: 80%;
-    padding: 10px;
-    background-color:#f8f9fa;
+    /*font-size: 80%;*/
+    /*padding: 10px;*/
     margin-top:1rem;
-    border-width:1px;
+/*    border-width:1px;
     border-style:solid;
     border-color: #dddddd;
-    border-radius: 4px;
+    border-radius: 4px;*/
+    /*text-align: right;*/
+    /*box-shadow: 0 0 10px 0 rgba(0,0,0,.5);*/
+    /*display: inline-block;*/
+}
+
+.top-bar .top-bar-left {
+    width: 40%;
+    font-size: 300%;
+    border-width: 1px 0 1px 1px;
+    border-style:solid;
+    border-color: #dddddd;
+    border-radius: 4px 0 0 4px;
+    /*background-color:#f8f9fa;*/
+    /*margin: 0;*/
+}
+
+.top-bar .top-bar-right {
+    width: 60%;
+    /*background-color: #1f6991;*/
+    background-color: green;
+    border-radius: 0 4px 4px 0;
+}
+
+.top-bar .top-bar-left, .top-bar .top-bar-right {
+/*    border-radius: 6px;*/
+    height: 80px;
+    vertical-align: top;
+    display: inline-block;
+/*    padding: 0;
+    margin: 0;
+    border-width: 0;*/
+}
+
+.top-bar-inner {
+    text-align: center;
+}
+
+.top-bar .top-bar-right .top-bar-inner {
+    width: 100%;
+    /*display: block;*/
     text-align: right;
+    height: 100%;
+    /*padding: 0 0 0 20px;*/
+}
+
+.top-bar .top-bar-right .top-bar-inner .tbr-top {
+    height: 30px;
+    background-color: #024d6b;
+}
+
+.top-bar .top-bar-right .top-bar-inner .tbr-bottom {
+    height: 50px;
+    line-height: 50px;
+    background-color: #1f6991;
+}
+
+.rent-head {
+    color: green;
+}
+
+.rent-tail {
+    
+}
+
+#languagelinks {
+    /*list-style-type: none;*/
+    display: inline-block;
+    /*vertical-align: top;*/
+    /*height: 30px;*/
+    /*line-height: 30px;*/
+    /*margin: 0 20px 0 20px;*/
+    /*font-size: 0;*/
 }
 
 .button-link-like {
