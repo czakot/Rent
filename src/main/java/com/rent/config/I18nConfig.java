@@ -35,7 +35,7 @@ public class I18nConfig implements WebMvcConfigurer {
   @Bean
   public LocaleResolver localeResolver() {
       CookieLocaleResolver clr = new CookieLocaleResolver();
-      clr.setDefaultLocale(new Locale("hu"));
+//      clr.setDefaultLocale(new Locale("hu"));
       clr.setCookieName("rentLocal");
       return clr;
 

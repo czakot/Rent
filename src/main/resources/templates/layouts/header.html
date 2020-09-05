@@ -10,34 +10,43 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
-    <!--<script src="/../../static/js/header.js" th:src="@{/js/header.js}"></script>-->
 </head>
 <body>
     <header th:fragment="header" class="top-bar">
         <div class="top-bar-left">
-            <div class="top-bar-inner">
-                <span class="rent-head"><strong>R</strong></span><span>ent</span>
+            <div class="top-bar-left-content">
+                <div id="headerlogo">
+                    <span class="logo-head">R</span><span class="logo-tail">ent</span>
+                </div>
             </div>
         </div><!-- eliminating whitespace gap from newline
      --><div class="top-bar-right">
-            <div class="top-bar-inner">
-                <nav class="tbr-top">top
-<!--                    <div id="languagelinks">
-                        <span onclick="switchLang('hu')" class="btn-link button-link-like"> HU </span>
-                        | 
-                        <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
-                    </div>-->
-<!--                    <ul id="languagelinks">
-                        <li onclick="switchLang('hu')" class="btn-link button-link-like"> HU </li>
-                        <li onclick="switchLang('en')" class="btn-link button-link-like"> EN </li>
-                    </ul>-->
-                </nav>
+            <nav class="tbr-top">
+                <div id="languagelinks">
+                    <a href="?lang=hu"> HU </a>
+                    <span>|</span>
+                    <a href="?lang=en"> EN </a>
+                </div>
+<!--                <div id="languagelinks">
+                    <span onclick="switchLang('hu')" class="btn-link button-link-like"> HU </span>
+                    | 
+                    <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
+                </div>-->
+<!--                <ul class="languagelinks">
+                    <li onclick="switchLang('hu')"> HU </li>
+                    <li> | </li>
+                    <li> <a href="?lang=hu" class="languagerefs"> HUR </a> </li>
+                    <li> | </li>
+                    <li onclick="switchLang('en')"> EN </li>
+                    <li> | </li>
+                    <li> <a href="?lang=en" class="languagerefs"> ENR </a> </li>
+                </ul>-->
+            </nav>
                 <nav class="tbr-bottom"<span>Bottom</span>
 <!--                   <div sec:authorize="isAuthenticated()">
                        <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>
                    </div> -->
                 </nav>
-            </div>
         </div>
 <!--        <span sec:authorize="isAuthenticated()">
             Üdvözlünk <span sec:authentication="name">Anonymous </span>
@@ -46,7 +55,7 @@
                 | <a href="javascript:{}" onclick="document.getElementById('frmlogout').submit(); return false;">Kijelentkezés |</a>
             </form>
         </span>-->
-<script src="/../../static/js/header.js" th:src="@{/js/header.js}"></script>
+        <script src="/../../static/js/header.js" th:src="@{/js/header.js}"></script>
     </header>
 </body>
 </html>
