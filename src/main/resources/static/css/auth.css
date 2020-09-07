@@ -36,6 +36,7 @@ and open the template in the editor.
 .auth-link-left {
     text-align: left;
     padding-left: 20px;
+    cursor: pointer;
 }
 
 .auth-link-right {

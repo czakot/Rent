@@ -12,12 +12,12 @@ and open the template in the editor.
     max-width: 95%;
     height: 80px;
     margin: auto;
-    margin-top:1rem;
+    margin-top: 1rem;
 }
 
 .top-bar .top-bar-left, .top-bar .top-bar-right {
     display: inline-block;
-    border-style:solid;
+    border-style: solid;
 }
 
 .top-bar .top-bar-left {
@@ -25,24 +25,24 @@ and open the template in the editor.
     border-width: 1px 0 1px 1px;
     border-radius: 10px 0 0 10px;
     border-color: #dddddd;
-    background-color:#f8f9fa;
-}
-
-.top-bar .top-bar-left .top-bar-left-content {
+    background-color: #f8f9fa;
+    text-align: center;
 }
 
 #headerlogo {
     line-height: 80px;
     font-size: 300%;
-    text-align: center;
     font-style: italic;
+    text-decoration: none;
 }
 
 #headerlogo .logo-head {
     font-weight: 900;
     color: green;
 }
+
 #headerlogo .logo-tail {
+    color: #000;
 }
 
 .top-bar .top-bar-right {
@@ -94,34 +94,29 @@ and open the template in the editor.
     text-decoration: none;
 }
 
-/*.languagelinks {
-    list-style-type: none;
+#headermenu {
     display: inline-block;
-    font-weight: 900;
+}
+
+#headermenu .user, #headermenu .button {
     color: #fff;
 }
 
-.languagelinks li{
+#headermenu .user {
     display: inline-block;
-    opacity: 0.42;
-    cursor: pointer;
+    font-size: 12px;
 }
 
-.languagelinks li.activelanguage {
-    opacity: 1;
-    cursor: default;
-}
-
-a.languagerefs {
+#headermenu .button {
     display: inline-block;
-    opacity: 0.42;
-    cursor: pointer;
-    font-weight: 900;
-    color: #ffffff;
+    background-color: #e95d0f;
+    height: 30px;
+    line-height: 30px;
+    border-width: 0;
+    border-radius: 40px;
+    padding: 0 15px;
+    margin: 0 2px;
+    text-transform: uppercase;
     text-decoration: none;
+    font-size: 13px;
 }
-
-.languagenorefs {
-    opacity: 1;
-    cursor: default;
-}*/

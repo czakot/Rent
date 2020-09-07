@@ -13,12 +13,11 @@
 </head>
 <body>
     <header th:fragment="header" class="top-bar">
+        <script>document.cookie = "rentLocal=" + "[[#{local}]]";</script>
         <div class="top-bar-left">
-            <div class="top-bar-left-content">
-                <div id="headerlogo">
-                    <span class="logo-head">R</span><span class="logo-tail">ent</span>
-                </div>
-            </div>
+                <a id="headerlogo" href="/">
+                        <span class="logo-head">R</span><span class="logo-tail">ent</span>
+                </a>
         </div><!-- eliminating whitespace gap from newline
      --><div class="top-bar-right">
             <nav class="tbr-top">
@@ -27,26 +26,28 @@
                     <span>|</span>
                     <a href="?lang=en"> EN </a>
                 </div>
-<!--                <div id="languagelinks">
-                    <span onclick="switchLang('hu')" class="btn-link button-link-like"> HU </span>
-                    | 
-                    <span onclick="switchLang('en')" class="btn-link button-link-like"> EN </span>
-                </div>-->
-<!--                <ul class="languagelinks">
-                    <li onclick="switchLang('hu')"> HU </li>
-                    <li> | </li>
-                    <li> <a href="?lang=hu" class="languagerefs"> HUR </a> </li>
-                    <li> | </li>
-                    <li onclick="switchLang('en')"> EN </li>
-                    <li> | </li>
-                    <li> <a href="?lang=en" class="languagerefs"> ENR </a> </li>
-                </ul>-->
             </nav>
-                <nav class="tbr-bottom"<span>Bottom</span>
-<!--                   <div sec:authorize="isAuthenticated()">
-                       <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>
-                   </div> -->
-                </nav>
+            <nav class="tbr-bottom">
+                <div id="headermenu">
+                    <div sec:authorize="isAuthenticated()" class="user">
+                        <span>E-mail: </span>
+                        <strong><span th:text="${#authentication.getPrincipal().getUsername()}">E-mail Address</span></strong>
+                        <span th:text="#{headerName}">Name: </span>
+                        <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
+                    </div> 
+                    <span  sec:authorize="!isAuthenticated()" id="authlinks">
+                        <a href="/authpage.html?pageMode=login" class="button"><span th:text="#{buttonLogin}">login</span></a>
+                        <a href="/authpage.html?pageMode=registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>
+                    </span>
+                    <span>
+                        <a href="/dashboard.html" class="button">dashboard</a>
+                    </span>
+                    <span sec:authorize="isAuthenticated()">
+                        <a href="/logout" class="button">logout</a>
+                        <!--<input type="button" value="logout" name="headerlogout" class="button"/>-->
+                    </span>
+                </div>
+            </nav>
         </div>
 <!--        <span sec:authorize="isAuthenticated()">
             Üdvözlünk <span sec:authentication="name">Anonymous </span>

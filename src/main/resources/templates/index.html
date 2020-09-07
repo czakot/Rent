@@ -7,8 +7,8 @@ and open the template in the editor.
 <html lang="en" 
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org"
     layout:decorate="~{layouts/main}">
-    <!--xmlns:th="http://www.thymeleaf.org"-->
     <!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"-->
 <head>
     <meta charset="UTF-8"/>
@@ -18,10 +18,11 @@ and open the template in the editor.
 </head>
 <body>
     <div id="welcomefragment" layout:fragment="content">
-        <div id="huwelcome">
+        <div id="huwelcome"  th:if="#{local} == 'hu'">
             <div >Üdvözlet a RENT oldalán!</div>
         </div>
-        <div id="enwelcome">
+        <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "en" --> 
+        <div id="enwelcome"  th:if="#{local} == 'en'">
             <div >Welcome at RENT!</div>
         </div>
     </div>

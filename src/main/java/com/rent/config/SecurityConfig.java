@@ -20,14 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-/*
-    private UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-*/
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
@@ -43,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity httpSec) throws Exception {
+    protected void configure(final HttpSecurity httpSec) throws Exception {
         httpSec
             .csrf().disable()
               // avoiding console warning: "Strict-Transport-Security: The connection to the site is untrustworthy, so the specified header was ignored."
@@ -52,22 +45,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/*").permitAll()
                 .antMatchers("/").permitAll()
+                .antMatchers("/dashboard").permitAll()
                 .antMatchers("/getauthdata", "/registration", "/activation/*").permitAll()
                 .antMatchers("/forgottenpassword").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-            .requiresChannel().anyRequest().requiresSecure()
-//                .and() // instead of server.ssl.enabled = true
+            .requiresChannel().anyRequest().requiresSecure() // instead of server.ssl.enabled = true
 //            .portMapper().http(8080).mapsTo(8443)
                 .and()
-//            .formLogin().loginPage("/authpage").successForwardUrl("/index").permitAll()
-            .formLogin().loginPage("/authpage").defaultSuccessUrl("/dashboard", true).permitAll()
+//            .formLogin().loginPage("/authpage").defaultSuccessUrl("/dashboard.html", true).permitAll()
+//            .formLogin().loginPage("/authpage").defaultSuccessUrl("/dashboard.html").permitAll()
+            .formLogin().loginPage("/authpage").permitAll()
+//                .defaultSuccessUrl("/index.html")
+//                .successForwardUrl("/index")
+//                .failureForwardUrl("/login?redirection=/login")
                 .and()
-            .logout().logoutSuccessUrl("/authpage").permitAll()
-//            .formLogin().loginPage("/login").permitAll().failureForwardUrl("/login?redirection=/login")
-//                .and()
-//            .logout().logoutSuccessUrl("/login?logout").permitAll()
+            .logout()
+                .logoutSuccessUrl("/authpage.html?logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 ;
     }
 
