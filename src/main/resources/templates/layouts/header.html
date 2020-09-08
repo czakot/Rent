@@ -40,7 +40,8 @@
                         <a href="/authpage.html?pageMode=registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>
                     </span>
                     <span>
-                        <a href="/dashboard.html" class="button">dashboard</a>
+                        <!--<a href="/dashboard.html" class="button">dashboard</a>-->
+                        <a href="../dashboard.html" class="button">dashboard</a>
                     </span>
                     <span sec:authorize="isAuthenticated()">
                         <a href="/logout" class="button">logout</a>

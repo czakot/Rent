@@ -22,7 +22,7 @@ function initAuthPage() {
             .then(response => response.json())
             .then(responseJson => processAuthData(responseJson));
     let urlPageMode = getUrlParam("pageMode");
-    alert("urlPageMode: '" + urlPageMode + "'");
+//    alert("urlPageMode: '" + urlPageMode + "'");
     if (urlPageMode === null) {
         pageMode = getCookie("pageMode");
         document.cookie = "pageMode=; secure; max-age=0";
@@ -131,11 +131,11 @@ function getCookie(cookieName) {
 
 function getUrlParam(name) {
     const queryString = window.location.search;
-    alert("queryString: " + queryString);
+//    alert("queryString: " + queryString);
     const urlParams = new URLSearchParams(queryString);
-    alert("urlParams: " + urlParams);
+//    alert("urlParams: " + urlParams);
     const value = urlParams.get(name);
-    alert("value: " + value);
+//    alert("value: " + value);
     return value;
 }
 

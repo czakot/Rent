@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RentController {
 
-    @RequestMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
-    }
+//    @RequestMapping("/dashboard")
+//    public String dashboard() {
+//        return "dashboard";
+//    }
 }

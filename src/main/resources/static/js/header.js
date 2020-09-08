@@ -24,7 +24,7 @@ function setLanguageLinks() {
 function setAuthLinks() {
     if (window.location.pathname !== "/" /* or authenticated */) {
         document.getElementById("authlinks").remove();
-S    }
+    }
 }
 
 function getCookieValue(key) {
