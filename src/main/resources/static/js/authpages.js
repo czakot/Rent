@@ -3,51 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//let pageMode;
-//let elements;
-//let authElements = new Map();
+let pageMode;
+let elements;
+let authElements = new Map();
 let adminExists;
 let messages;
 
 window.addEventListener("DOMContentLoaded", initAuthPage);
 
-//function initAuthElement(key, pageModeToSave) {
-//    let tmp = document.getElementById(pageModeToSave + key);
-//    authElements.set(key, tmp);
-//    tmp.remove();
-//}
+function initAuthElement(key, pageModeToSave) {
+    let tmp = document.getElementById(pageModeToSave + key);
+    authElements.set(key, tmp);
+    tmp.remove();
+}
 
 function initAuthPage() {
     fetch("/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : ""))
             .then(response => response.json())
             .then(responseJson => processAuthData(responseJson));
-//    let urlPageMode = getUrlParam("pageMode");
+    let urlPageMode = getUrlParam("pageMode");
 //    alert("urlPageMode: '" + urlPageMode + "'");
-//    if (urlPageMode === null) {
-//        pageMode = getCookie("pageMode");
-//        document.cookie = "pageMode=; secure; max-age=0";
-//        if (pageMode === "") {
-//            pageMode = "login";
-//        }
-//    } else {
-//        pageMode = urlPageMode;
-//    }
+    if (urlPageMode === null) {
+        pageMode = getCookie("pageMode");
+        document.cookie = "pageMode=; secure; max-age=0";
+        if (pageMode === "") {
+            pageMode = "login";
+        }
+    } else {
+        pageMode = urlPageMode;
+    }
     
-//    if (getCookie("rentLocal") === "") {
-//        document.cookie = "rentLocal=" + local + ";secure";
-//    }
+    if (getCookie("rentLocal") === "") {
+        document.cookie = "rentLocal=" + local + ";secure";
+    }
     
 //    setLanguageLinks();
     //document.getElementById("regEmail").addEventListener("input", validateEmail());
     //// document.getElementById("regEmail").oninput = validateEmail() {...};
     //document.getElementById("regPassword").addEventListener("input", validatePassword());
-
-    
-//    elements = ["title", "form", "swapauth", "forgot"];
-//    let pageModeToSave = otherPageMode();
-//    for (let x of elements) {
-//        initAuthElement(x, pageModeToSave);
-//    }
+    elements = ["title", "form", "swapauth", "forgot"];
+    let pageModeToSave = otherPageMode();
+    for (let x of elements) {
+        initAuthElement(x, pageModeToSave);
+    }
+    // elements.forEach(initAuthElement);
 }
 
  function processAuthData(authData) {
@@ -57,37 +56,33 @@ function initAuthPage() {
         exchangePageModeDisplay(); // switch to registration
         document.getElementById("registrationswapauth").style.display = "none";
     }
-//    if (adminExists === false && pageMode === "login") {
-//        exchangePageModeDisplay(); // switch to registration
-//        document.getElementById("registrationswapauth").style.display = "none";
-//    }
     displayMessages(messages);
-//    document.getElementsByTagName("body")[0].style.display = "block";
+    document.getElementsByTagName("body")[0].style.display = "block";
 }
 
-//function swapAuthElement(key) {
-//    let positioningElement = document.getElementById(pageMode + key);
-//    positioningElement.after(authElements.get(key));
-////    insertAfter(authElements.get(key), positioningElement);
-//    positioningElement.remove();
-//    authElements.set(key, positioningElement);
-//}
+function swapAuthElement(key) {
+    let positioningElement = document.getElementById(pageMode + key);
+    positioningElement.after(authElements.get(key));
+//    insertAfter(authElements.get(key), positioningElement);
+    positioningElement.remove();
+    authElements.set(key, positioningElement);
+}
 
-//function otherPageMode() {
-//    return pageMode === "login" ? "registration": "login";
-//}
+function otherPageMode() {
+    return pageMode === "login" ? "registration": "login";
+}
 
-//function exchangePageModeDisplay() {
-//    elements.forEach((element) => {swapAuthElement(element);});
-//    pageMode = otherPageMode();
-//}
+function exchangePageModeDisplay() {
+    elements.forEach((element) => {swapAuthElement(element);});
+    pageMode = otherPageMode();
+}
 
-//function changePageMode() {
-//    let body = document.getElementsByTagName("body")[0];
-//    body.style.display = "none";
-//    exchangePageModeDisplay();
-//    body.style.display = "block";    
-//}
+function changePageMode() {
+    let body = document.getElementsByTagName("body")[0];
+    body.style.display = "none";
+    exchangePageModeDisplay();
+    body.style.display = "block";    
+}
 
 function displayMessages(messages) {
     let messagesdiv = document.getElementById("messages");

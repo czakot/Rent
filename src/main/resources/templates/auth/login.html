@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Rent - Login</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/authpages.css" th:href="@{/css/authpages.css}"/>
+    <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
+    <script>
+        let fromctl = "[[${fromctl}]]";
+    </script>
+</head>
+<body>
+    <div layout:fragment="content" class="login-content">
+        
+        <h2 id="logintitle" th:text="#{titleLogin}">Login</h2>
+        
+        <div id="messages"></div>
+
+        <form id="loginform" name="login" action="/login" method="post" class="form-border">
+            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required="" value="czakotamas@freemail.hu"/> 
+            <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required="" value="jelszo"/>
+            <input type="checkbox" id="remember-me" name="remember-me"/>
+            <label th:text="#{rememberMe}">Remember me</label>
+            <button type="submit" th:text="#{buttonLogin}" class="btn btn-primary btn-block">Login</button>
+        </form>
+        
+        <a id="loginforgot" href="/forgottenpassword" th:text="#{forgottenPassword}" class="auth-link-right">I forgot my password</a>
+    </div>
+</body>
+</html>

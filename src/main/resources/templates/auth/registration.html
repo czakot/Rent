@@ -6,32 +6,23 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main}">
 <head>
-    <title>Rent</title>
+    <title>Rent - Registration</title>
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/authpages.css" th:href="@{/css/authpages.css}"/>
-    <script src="/../../static/js/authpages.js" th:src="@{/js/authpages.js}"></script>
+    <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
     <script>
         let fromctl = "[[${fromctl}]]";
     </script>
 </head>
-<body style="display: none">
+<body>
     <div layout:fragment="content" class="login-content">
         
-        <h2 id="logintitle" th:text="#{titleLogin}">Login</h2>
         <h2 id="registrationtitle" th:text="#{titleRegistration}">Registration</h2>
         
         <div id="messages"></div>
 
-        <form id="loginform" name="login" action="/authpage" method="post" class="form-border">
-            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required="" value="czakotamas@freemail.hu"/> 
-            <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required="" value="jelszo"/>
-            <input type="checkbox" id="remember-me" name="remember-me"/>
-            <label th:text="#{rememberMe}">Remember me</label>
-            <button type="submit" th:text="#{buttonLogin}" class="btn btn-primary btn-block">Login</button>
-        </form>
-        
-        <form id="registrationform" name="registration" action="/registration" method="post" class="form-border">
+        <form id="registrationform" name="registrationprocess" action="/registration" method="post" class="form-border">
             <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
             <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
             <input type="password" id="regPassword" oninput="checkMatchPasswords()" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
@@ -39,11 +30,6 @@
             <div id="pwdmismatchmsg" style="display: none" th:text="#{pwdMismatch}"></div>
             <button id="regButton" type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
-        
-        <span id="loginswapauth" onclick="changePageMode()" th:text="#{linkRegistration}" class="btn-link auth-link-left">Registration</span>
-        <span id="registrationswapauth" onclick="changePageMode()" th:text="#{linkLogin}" class="btn-link auth-link-left">Login</span>
-        <a id="loginforgot" href="/forgottenpassword" th:text="#{forgottenPassword}" class="auth-link-right">I forgot my password</a>
-        <span id="registrationforgot"></span>
     </div>
 </body>
 </html>

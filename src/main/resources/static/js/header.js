@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+document.cookie = "rentLocal=" + rentLocal + "; secure";
 setLanguageLinks();
 setAuthLinks();
 
@@ -23,7 +24,9 @@ function setLanguageLinks() {
 
 function setAuthLinks() {
     if (window.location.pathname !== "/" /* or authenticated */) {
-        document.getElementById("authlinks").remove();
+        try {
+            document.getElementById("authlinks").remove();
+        } catch (e) {} // Nothing to do
     }
 }
 

@@ -13,7 +13,6 @@
 </head>
 <body>
     <header th:fragment="header" class="top-bar">
-        <script>document.cookie = "rentLocal=" + "[[#{local}]]";</script>
         <div class="top-bar-left">
                 <a id="headerlogo" href="/">
                         <span class="logo-head">R</span><span class="logo-tail">ent</span>
@@ -36,12 +35,10 @@
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
-                        <a href="/authpage.html?pageMode=login" class="button"><span th:text="#{buttonLogin}">login</span></a>
-                        <a href="/authpage.html?pageMode=registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>
-                    </span>
-                    <span>
-                        <!--<a href="/dashboard.html" class="button">dashboard</a>-->
-                        <a href="../dashboard.html" class="button">dashboard</a>
+                        <a id="loginlink" href="/login" class="button"><span th:text="#{buttonLogin}">login</span></a>
+                        <a id="registrationlink" href="/registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>
+<!--                        <a href="/authpage?pageMode=login" class="button"><span th:text="#{buttonLogin}">login</span></a>
+                        <a href="/authpage?pageMode=registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>-->
                     </span>
                     <span sec:authorize="isAuthenticated()">
                         <a href="/logout" class="button">logout</a>
@@ -57,6 +54,8 @@
                 | <a href="javascript:{}" onclick="document.getElementById('frmlogout').submit(); return false;">Kijelentkezés |</a>
             </form>
         </span>-->
+        <script>let rentLocal = "[[#{local}]]";</script>
+        <!--<script>document.cookie = "rentLocal=" + "[[#{local}]]" + "; Secure";</script>-->
         <script src="/../../static/js/header.js" th:src="@{/js/header.js}"></script>
     </header>
 </body>

@@ -4,13 +4,24 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html lang="en" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/main}">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rent -Dashboard</title>
     </head>
     <body>
-        <div>TODO write content: Dashboard</div>
+    <div id="dashboardfragment" layout:fragment="content">
+        <div id="hudashboard"  th:if="#{local} == 'hu'">
+            <div >Műszerfal</div>
+        </div>
+        <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "en" --> 
+        <div id="endashboard"  th:if="#{local} == 'en'">
+            <div >Dashboard</div>
+        </div>
+    </div>
+
     </body>
 </html>

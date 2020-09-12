@@ -10,7 +10,7 @@ and open the template in the editor.
 
 .top-bar {
     max-width: 95%;
-    height: 80px;
+    height: 82px;
     margin: auto;
     margin-top: 1rem;
 }
@@ -18,6 +18,7 @@ and open the template in the editor.
 .top-bar .top-bar-left, .top-bar .top-bar-right {
     display: inline-block;
     border-style: solid;
+    box-sizing: border-box;
 }
 
 .top-bar .top-bar-left {

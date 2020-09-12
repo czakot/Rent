@@ -29,6 +29,17 @@ public class AuthController {
     private UserService userService;
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
+    
+//    @GetMapping(path = "/authpage/login")
+//    public String authpage(@PathVariable("pageMode") String pageMode) {
+//    @GetMapping(path = "/authpage/{pageMode}")
+//    public String authpage(@PathVariable("pageMode") String pageMode) {
+    @RequestMapping(value = "/authpage")
+    public String authpage( @RequestParam ("pageMode") String pageMode) {
+        System.err.println("/authpage controller");
+        System.err.println("pageMode = '" + pageMode + "'");
+        return "/auth/authpage";
+    }
 
     @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody AuthData getAuthData(@RequestParam (required = false) String clearmessages) {
@@ -45,9 +56,8 @@ public class AuthController {
         return new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
     }
     
-    @PostMapping(value = "/registration")
+    @PostMapping(value = "/registrationprocess")
     public String processRegistration(UserRegistrationDto registrationDto, RedirectAttributes ra) {
-        System.err.println("at //registration controller with registrationDto: " + registrationDto.toString());
         User userToRegister = new User(registrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
