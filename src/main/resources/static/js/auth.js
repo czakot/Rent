@@ -6,9 +6,8 @@
 //let pageMode;
 //let elements;
 //let authElements = new Map();
-let adminExists;
-let messages;
-
+//let adminExists;
+//let messages;
 window.addEventListener("DOMContentLoaded", initAuthPage);
 
 //function initAuthElement(key, pageModeToSave) {
@@ -18,9 +17,15 @@ window.addEventListener("DOMContentLoaded", initAuthPage);
 //}
 
 function initAuthPage() {
-    fetch("/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : ""))
-            .then(response => response.json())
-            .then(responseJson => processAuthData(responseJson));
+if (window.location.pathname === "/registration") {
+    alert("add EL");
+    document.getElementById("regPassword").addEventListener("oninput", checkMatchPasswords);
+    document.getElementById("confirmPwd").addEventListener("oninput", checkMatchPasswords);
+}
+
+//    fetch("/getauthdata" + (fromctl !== "true" ? "?clearmessages=true" : ""))
+//            .then(response => response.json())
+//            .then(responseJson => processAuthData(responseJson));
 //    let urlPageMode = getUrlParam("pageMode");
 //    alert("urlPageMode: '" + urlPageMode + "'");
 //    if (urlPageMode === null) {
@@ -50,18 +55,19 @@ function initAuthPage() {
 //    }
 }
 
- function processAuthData(authData) {
-    adminExists = authData.adminExists;
-    messages = authData.htmlMessageList;
-    if (adminExists === false && pageMode === "login") {
-        exchangePageModeDisplay(); // switch to registration
-        document.getElementById("registrationswapauth").style.display = "none";
-    }
+ function processAuthData() {
+// function processAuthData(authData) {
+//    adminExists = authData.adminExists;
+//    messages = authData.htmlMessageList;
+//    if (!adminExists) {
+//        document.getElementById("loginlink").remove();
+//    }
 //    if (adminExists === false && pageMode === "login") {
 //        exchangePageModeDisplay(); // switch to registration
 //        document.getElementById("registrationswapauth").style.display = "none";
 //    }
-    displayMessages(messages);
+    displayMessages();
+//    displayMessages(messages);
 //    document.getElementsByTagName("body")[0].style.display = "block";
 }
 
@@ -89,16 +95,21 @@ function initAuthPage() {
 //    body.style.display = "block";    
 //}
 
-function displayMessages(messages) {
-    let messagesdiv = document.getElementById("messages");
-    messages.forEach(
-        function(message) {
-            let messagediv = document.createElement("div");
-            messagediv.className = "auth-message " + message["cssClass"];
-            messagediv.innerHTML = message["text"];
-            messagesdiv.appendChild(messagediv);
-        }
-    ); 
+function displayMessages() {
+//function displayMessages(messages) {
+//    let messagesdiv = document.getElementById("messages");
+//    if (messagediv !== null) {
+//        alert("messages_length = " + messages.length);
+//        for(let message of messages)
+//    //    messages.forEach(
+//          /*  function(message) */ {
+//                let messagediv = document.createElement("div");
+//                messagediv.className = "auth-message " + message["cssClass"];
+//                messagediv.innerHTML = message["text"];
+//                messagesdiv.appendChild(messagediv);
+//            }
+//    //    ); 
+//    }
 }
 
 ////function switchLang(languageCode) {

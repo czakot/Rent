@@ -7,26 +7,25 @@
       layout:decorate="~{layouts/main}">
 <head>
     <title>Rent - Registration</title>
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="../../static/css/authpages.css" th:href="@{/css/authpages.css}"/>
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
-    <script>
-        let fromctl = "[[${fromctl}]]";
-    </script>
 </head>
 <body>
     <div layout:fragment="content" class="login-content">
         
         <h2 id="registrationtitle" th:text="#{titleRegistration}">Registration</h2>
         
-        <div id="messages"></div>
+        <div th:unless="${messageList.empty}" th:replace="auth/messages">messages fragment</div>
 
         <form id="registrationform" name="registrationprocess" action="/registration" method="post" class="form-border">
             <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
             <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
-            <input type="password" id="regPassword" oninput="checkMatchPasswords()" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
-            <input type="password" id="confirmPwd" oninput="checkMatchPasswords()" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
+            <input type="password" id="regPassword" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
+            <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
+<!--            <input type="password" id="regPassword" oninput="checkMatchPasswords()" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
+            <input type="password" id="confirmPwd" oninput="checkMatchPasswords()" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>-->
             <div id="pwdmismatchmsg" style="display: none" th:text="#{pwdMismatch}"></div>
             <button id="regButton" type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>

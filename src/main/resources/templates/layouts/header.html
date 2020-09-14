@@ -21,9 +21,9 @@
      --><div class="top-bar-right">
             <nav class="tbr-top">
                 <div id="languagelinks">
-                    <a href="?lang=hu"> HU </a>
-                    <span>|</span>
-                    <a href="?lang=en"> EN </a>
+                    <a href="?lang=hu">HU</a>
+                    <span class="separator">|</span>
+                    <a href="?lang=en">EN</a>
                 </div>
             </nav>
             <nav class="tbr-bottom">
@@ -31,31 +31,26 @@
                     <div sec:authorize="isAuthenticated()" class="user">
                         <span>E-mail: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getUsername()}">E-mail Address</span></strong>
+                        <span class="separator">|</span>
                         <span th:text="#{headerName}">Name: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
+                        <!--Üdvözlünk <span sec:authentication="name">Anonymous </span>-->
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
-                        <a id="loginlink" href="/login" class="button"><span th:text="#{buttonLogin}">login</span></a>
-                        <a id="registrationlink" href="/registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>
-<!--                        <a href="/authpage?pageMode=login" class="button"><span th:text="#{buttonLogin}">login</span></a>
-                        <a href="/authpage?pageMode=registration" class="button"><span th:text="#{buttonRegistration}">registration</span></a>-->
+                        <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">
+                            <span th:text="#{buttonLogin}">login</span>
+                        </a>
+                        <a id="registrationlink" href="/registration?holdmessages=true" class="button">
+                            <span th:text="#{buttonRegistration}">registration</span>
+                        </a>
                     </span>
                     <span sec:authorize="isAuthenticated()">
-                        <a href="/logout" class="button">logout</a>
-                        <!--<input type="button" value="logout" name="headerlogout" class="button"/>-->
+                        <a href="/logout" class="button" th:text="#{buttonLogout}">logout</a>
                     </span>
                 </div>
             </nav>
         </div>
-<!--        <span sec:authorize="isAuthenticated()">
-            Üdvözlünk <span sec:authentication="name">Anonymous </span>
-            Üdvözlünk <span th:text="${#authentication.getPrincipal().getFullName()}">Anonymous </span>
-            <form sec:authorize="isAuthenticated()" id="frmlogout" th:action="@{/logout}" method="post" class="form-inline">
-                | <a href="javascript:{}" onclick="document.getElementById('frmlogout').submit(); return false;">Kijelentkezés |</a>
-            </form>
-        </span>-->
         <script>let rentLocal = "[[#{local}]]";</script>
-        <!--<script>document.cookie = "rentLocal=" + "[[#{local}]]" + "; Secure";</script>-->
         <script src="/../../static/js/header.js" th:src="@{/js/header.js}"></script>
     </header>
 </body>

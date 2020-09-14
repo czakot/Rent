@@ -14,9 +14,11 @@ import com.rent.entity.User;
 import com.rent.entity.htmlmessage.AuthData;
 import com.rent.entity.utility.UserRegistrationDto;
 import com.rent.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,31 +32,55 @@ public class AuthController {
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
     
-//    @GetMapping(path = "/authpage/login")
-//    public String authpage(@PathVariable("pageMode") String pageMode) {
-//    @GetMapping(path = "/authpage/{pageMode}")
-//    public String authpage(@PathVariable("pageMode") String pageMode) {
-    @RequestMapping(value = "/authpage")
-    public String authpage( @RequestParam ("pageMode") String pageMode) {
-        System.err.println("/authpage controller");
-        System.err.println("pageMode = '" + pageMode + "'");
-        return "/auth/authpage";
-    }
-
-    @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody AuthData getAuthData(@RequestParam (required = false) String clearmessages) {
+    @GetMapping({"/login", "/registration"})
+    public String login(@RequestParam (required = false) String holdmessages,
+                        HttpServletRequest request,
+                        Model model) {
+//                        RedirectAttributes ra) {
         initHtmlMessages();
-        if (clearmessages != null) { // && clearmessages.equals("true")) {
+//        System.err.println("holdmessages = " + holdmessages);
+        if (holdmessages == null || !holdmessages.equals("true")) {
+//            System.err.println("clear htmlMessages");
             htmlMessages.clear();
         }
+//        return "redirect:" + request.getRequestURI();
         boolean adminExists = userService.adminExists();
+        String targetUri = request.getRequestURI();
         if (!adminExists) {
+            targetUri = "/registration";
             String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
             htmlMessages.add(message, MessageType.WARNING);
         }
-
-        return new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
+        /* htmlMessages just for testing */
+//            htmlMessages.add("activateOrRegisterFirstAdmin", MessageType.WARNING);
+        model.addAttribute("adminExists", adminExists);
+        model.addAttribute("messageList", htmlMessages.getHtmlMessageList());
+//        ra.addFlashAttribute("adminExists", adminExists);
+//        ra.addFlashAttribute("messageList", htmlMessages.getHtmlMessageList());
+        return "/auth" + targetUri;
     }
+
+//    @RequestMapping(value = "/authpage")
+//    public String authpage( @RequestParam ("pageMode") String pageMode) {
+//        System.err.println("/authpage controller");
+//        System.err.println("pageMode = '" + pageMode + "'");
+//        return "/auth/authpage";
+//    }
+
+//    @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody AuthData getAuthData(@RequestParam (required = false) String clearmessages) {
+//        initHtmlMessages();
+//        if (clearmessages != null) { // && clearmessages.equals("true")) {
+//            htmlMessages.clear();
+//        }
+//        boolean adminExists = userService.adminExists();
+//        if (!adminExists) {
+//            String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
+//            htmlMessages.add(message, MessageType.WARNING);
+//        }
+//
+//        return new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
+//    }
     
     @PostMapping(value = "/registrationprocess")
     public String processRegistration(UserRegistrationDto registrationDto, RedirectAttributes ra) {

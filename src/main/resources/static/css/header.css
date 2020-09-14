@@ -106,6 +106,7 @@ and open the template in the editor.
 #headermenu .user {
     display: inline-block;
     font-size: 12px;
+    padding-right: 10px;
 }
 
 #headermenu .button {
@@ -120,4 +121,8 @@ and open the template in the editor.
     text-transform: uppercase;
     text-decoration: none;
     font-size: 13px;
+}
+
+.top-bar .separator {
+    padding: 0 5px;
 }

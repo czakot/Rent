@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 
-document.cookie = "rentLocal=" + rentLocal + "; secure";
+document.cookie = "rentLocal=" + rentLocal + "; SameSite=Strict; Secure";
+console.log("document.cookie: " + document.cookie);
 setLanguageLinks();
 setAuthLinks();
 
 function setLanguageLinks() {
-    let languageText = getCookieValue("rentLocal").toUpperCase();
+    let languageText = rentLocal.toUpperCase();
+//    let languageText = getCookieValue("rentLocal").toUpperCase();
     let linkLikes = document.querySelectorAll("#languagelinks a");
 //    linkLikes = linkLikes.filter(e.firstChild.data.toString().trim() === languageText);
 //    console.log("linkLikes = ");
@@ -23,10 +25,26 @@ function setLanguageLinks() {
 }
 
 function setAuthLinks() {
-    if (window.location.pathname !== "/" /* or authenticated */) {
-        try {
-            document.getElementById("authlinks").remove();
-        } catch (e) {} // Nothing to do
+    let authlinks = document.getElementById("authlinks");
+    if (authlinks !== null) {
+        switch (window.location.pathname) {
+            case "/":
+                let loginlink = document.getElementById("loginlink");
+                if (loginlink !== null) {
+                    loginlink.href = "/login";
+                }
+                document.getElementById("registrationlink").href = "/registration";
+                break;
+            case "/login":
+                document.getElementById("loginlink").remove();
+                break;
+            case "/registration":
+                document.getElementById("registrationlink").remove();
+                break;
+            default:
+                authlinks.remove();
+                break;
+        }
     }
 }
 

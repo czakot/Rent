@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .headers().httpStrictTransportSecurity().disable();
         httpSec
             .authorizeRequests()
-                .antMatchers("/css/**", "/js/*").permitAll()
+                .antMatchers("/css/**", "/js/*", "/favicon.ico").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login*", "/registration*").permitAll()
 //                .antMatchers("/authpage*").permitAll()
