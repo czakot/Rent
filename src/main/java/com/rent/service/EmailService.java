@@ -42,7 +42,7 @@ public class EmailService {
 			helper.setTo(email);
 			helper.setSubject("Sikeres regisztrálás");
 			String msgContent = "Kedves " + user.getFullName() + "! <br/><br/> Köszönjük, hogy regisztráltál az oldalunkra!<br/><br/>" +
-                                            "Regisztrációdat <a href=\"http://localhost:8080/activation/" + activation + "\">ide</a> kattintva aktiválhatod.";
+                                            "Regisztrációdat <a href=\"https://localhost:8443/activation/" + activation + "\">ide</a> kattintva aktiválhatod.";
                         helper.setText(msgContent, true);
 			javaMailSender.send(message);
 			

@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-document.cookie = "rentLocal=" + rentLocal + "; SameSite=Strict; Secure";
-console.log("document.cookie: " + document.cookie);
 setLanguageLinks();
 setAuthLinks();
 
@@ -46,9 +44,4 @@ function setAuthLinks() {
                 break;
         }
     }
-}
-
-function getCookieValue(key) {
-    let values = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
-    return values ? values.pop() : '';
 }

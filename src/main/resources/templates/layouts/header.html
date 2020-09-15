@@ -34,7 +34,6 @@
                         <span class="separator">|</span>
                         <span th:text="#{headerName}">Name: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
-                        <!--Üdvözlünk <span sec:authentication="name">Anonymous </span>-->
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
                         <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">

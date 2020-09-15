@@ -19,13 +19,11 @@
         
         <div th:unless="${messageList.empty}" th:replace="auth/messages">messages fragment</div>
 
-        <form id="registrationform" name="registrationprocess" action="/registration" method="post" class="form-border">
+        <form id="registrationform" name="registrationform" action="/registrationprocess" method="post" class="form-border">
             <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
             <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
             <input type="password" id="regPassword" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
             <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
-<!--            <input type="password" id="regPassword" oninput="checkMatchPasswords()" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
-            <input type="password" id="confirmPwd" oninput="checkMatchPasswords()" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>-->
             <div id="pwdmismatchmsg" style="display: none" th:text="#{pwdMismatch}"></div>
             <button id="regButton" type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>

@@ -14,12 +14,6 @@ and open the template in the editor.
      margin: auto;
 }
 
-.auth-message {
-    font-size: 70%;
-    text-align: center;
-    margin-top: 20px;
-}
-
 .form-border {
     padding: 0px 20px 20px 20px;
     border-style: solid;
@@ -31,17 +25,6 @@ and open the template in the editor.
 .form-border input[type="text"], input[type="password"],
              button[type="submit"], input[type="email"] {
     margin-top: 20px;
-}
-
-.auth-link-left {
-    text-align: left;
-    padding-left: 20px;
-    cursor: pointer;
-}
-
-.auth-link-right {
-    float: right;
-    padding-right: 20px
 }
 
 #pwdmismatchmsg {

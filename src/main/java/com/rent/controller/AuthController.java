@@ -11,23 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
-import com.rent.entity.htmlmessage.AuthData;
 import com.rent.entity.utility.UserRegistrationDto;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
-import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
 
-    @Qualifier("UserServiceImpl") // not nessessary, UserService unique here
     private UserService userService;
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
@@ -36,14 +30,10 @@ public class AuthController {
     public String login(@RequestParam (required = false) String holdmessages,
                         HttpServletRequest request,
                         Model model) {
-//                        RedirectAttributes ra) {
         initHtmlMessages();
-//        System.err.println("holdmessages = " + holdmessages);
         if (holdmessages == null || !holdmessages.equals("true")) {
-//            System.err.println("clear htmlMessages");
             htmlMessages.clear();
         }
-//        return "redirect:" + request.getRequestURI();
         boolean adminExists = userService.adminExists();
         String targetUri = request.getRequestURI();
         if (!adminExists) {
@@ -51,62 +41,32 @@ public class AuthController {
             String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
             htmlMessages.add(message, MessageType.WARNING);
         }
-        /* htmlMessages just for testing */
-//            htmlMessages.add("activateOrRegisterFirstAdmin", MessageType.WARNING);
         model.addAttribute("adminExists", adminExists);
         model.addAttribute("messageList", htmlMessages.getHtmlMessageList());
-//        ra.addFlashAttribute("adminExists", adminExists);
-//        ra.addFlashAttribute("messageList", htmlMessages.getHtmlMessageList());
         return "/auth" + targetUri;
     }
 
-//    @RequestMapping(value = "/authpage")
-//    public String authpage( @RequestParam ("pageMode") String pageMode) {
-//        System.err.println("/authpage controller");
-//        System.err.println("pageMode = '" + pageMode + "'");
-//        return "/auth/authpage";
-//    }
-
-//    @GetMapping(value = "/getauthdata", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public @ResponseBody AuthData getAuthData(@RequestParam (required = false) String clearmessages) {
-//        initHtmlMessages();
-//        if (clearmessages != null) { // && clearmessages.equals("true")) {
-//            htmlMessages.clear();
-//        }
-//        boolean adminExists = userService.adminExists();
-//        if (!adminExists) {
-//            String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
-//            htmlMessages.add(message, MessageType.WARNING);
-//        }
-//
-//        return new AuthData(htmlMessages.getHtmlMessageList(), adminExists);
-//    }
-    
     @PostMapping(value = "/registrationprocess")
-    public String processRegistration(UserRegistrationDto registrationDto, RedirectAttributes ra) {
+    public String processRegistration(UserRegistrationDto registrationDto) {
         User userToRegister = new User(registrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
-        
-        return redirectByAdminExists(message, messageType, ra);
+        return redirectToLoginHoldingMessage(message, messageType);
     }
     
     @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
-    public String activation(@PathVariable("code") String code, RedirectAttributes ra) {
+    public String activation(@PathVariable("code") String code) {
         initHtmlMessages();
         User activatedUser = userService.userActivation(code);
         String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
-
-        return redirectByAdminExists(message, messageType, ra);
+        return redirectToLoginHoldingMessage(message, messageType);
     }
     
-    private String redirectByAdminExists(String message, MessageType messageType, RedirectAttributes ra) {
-        ra.addFlashAttribute("fromctl", "true");
+    private String redirectToLoginHoldingMessage(String message, MessageType messageType) {
         htmlMessages.clearAndAddFirst(message, messageType);
-
-        return "redirect:/authpage";
+        return "redirect:/login?holdmessages=true";
     }
  
     private void initHtmlMessages() {
@@ -124,7 +84,5 @@ public class AuthController {
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
-    
-    
     
 }
