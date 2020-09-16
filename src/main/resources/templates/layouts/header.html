@@ -14,9 +14,9 @@
 <body>
     <header th:fragment="header" class="top-bar">
         <div class="top-bar-left">
-                <a id="headerlogo" href="/">
-                        <span class="logo-head">R</span><span class="logo-tail">ent</span>
-                </a>
+            <a id="headerlogo" th:href="${#authorization.expression('isAuthenticated()')} ? '' : '/'">
+                <span class="logo-head">R</span><span class="logo-tail">ent</span>
+            </a>
         </div><!-- eliminating whitespace gap from newline
      --><div class="top-bar-right">
             <nav class="tbr-top">
