@@ -22,8 +22,6 @@
         <form id="loginform" name="login" action="/login" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required="" value="czakotamas@freemail.hu"/> 
             <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required="" value="jelszo"/>
-            <input type="checkbox" id="remember-me" name="remember-me"/>
-            <label th:text="#{rememberMe}">Remember me</label>
             <button type="submit" th:text="#{buttonLogin}" class="btn btn-primary btn-block">Login</button>
         </form>
         

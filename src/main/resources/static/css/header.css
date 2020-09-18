@@ -30,11 +30,14 @@ and open the template in the editor.
     text-align: center;
 }
 
+.top-bar .top-bar-left #headerlogoanchor {
+    text-decoration: none;
+}
+
 #headerlogo {
     line-height: 80px;
     font-size: 300%;
     font-style: italic;
-    text-decoration: none;
 }
 
 #headerlogo .logo-head {
