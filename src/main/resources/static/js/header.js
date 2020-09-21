@@ -6,6 +6,7 @@
 
 setLanguageLinks();
 setAuthLinks();
+setRoleSelector();
 
 function setLanguageLinks() {
     let languageText = rentLocal.toUpperCase();
@@ -45,3 +46,16 @@ function setAuthLinks() {
         }
     }
 }
+
+function setRoleSelector() {
+    console.log("befor chosing #roleselector select");
+    let roleSelector = document.querySelector("#roleselector");
+    let roleSelectorForm = document.querySelector("#roleselectorform");
+    console.log("#roleselector: " + roleSelector);
+    console.log("#roleselectorform: " + roleSelectorForm);
+    if (roleSelector !== null && roleSelectorForm !== null)
+    roleSelector.addEventListener("change",function(){roleSelectorForm.submit();});
+//    roleSelector.addEventListener("change",function(){roleSelectorForm.submit();}, { once: true});
+}
+
+    

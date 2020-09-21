@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rent.entity.htmlmessage;
+package garage;
 
+import com.rent.entity.htmlmessage.HtmlMessage;
 import java.util.List;
 
 /**

@@ -43,10 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .headers().httpStrictTransportSecurity().disable();
         httpSec
             .authorizeRequests()
-                .antMatchers("/css/**", "/js/*", "/favicon.ico").permitAll()
+                .antMatchers("/css/**", "/js/**", "/favicon.ico").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/login*", "/registration*").permitAll()
-//                .antMatchers("/authpage*").permitAll()
+                .antMatchers("/login", "/registration").permitAll()
                 .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").permitAll()
                 .antMatchers("/forgottenpassword").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")

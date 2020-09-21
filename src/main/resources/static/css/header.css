@@ -98,7 +98,7 @@ and open the template in the editor.
     text-decoration: none;
 }
 
-#headermenu {
+#headermenu, #roleselectorform {
     display: inline-block;
 }
 
@@ -128,4 +128,11 @@ and open the template in the editor.
 
 .top-bar .separator {
     padding: 0 5px;
+}
+
+#roleselector {
+    color: inherit;
+    background-color: inherit;
+    font-weight: 900;
+    border: 0;
 }

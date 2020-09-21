@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
-<!--    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>-->
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Rent - footer</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>
+    </head>
     <body>
         <div th:fragment="footer">
             <div id="footer">
-                <!--<footer class="container">-->
-                <footer id="footer" th:text="#{footer}" class="container">
-                    <!--<span th:text="#{footer}">footer</span>-->
+                <footer th:text="#{footer}" class="container">
                     footer
                 </footer>
             </div>

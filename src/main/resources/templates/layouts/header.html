@@ -14,8 +14,13 @@
 <body>
     <header th:fragment="header" class="top-bar">
         <div class="top-bar-left">
-            <a sec:authorize="!isAuthenticated()" id="headerlogoanchor" href='/' th:insert=":: headerlogo"></a>
-            <span sec:authorize="isAuthenticated()" th:insert=":: headerlogo"></span>
+            <a    th:unless="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}" 
+                  th:insert=":: headerlogo" 
+                  id="headerlogoanchor" href='/'>
+            </a>
+            <span th:if="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}" 
+                  th:insert=":: headerlogo">
+            </span>
             <span style="display: none">
                 <span th:fragment="headerlogo" id="headerlogo">
                     <span  class="logo-head">R</span><span class="logo-tail">ent</span>
@@ -33,11 +38,44 @@
             <nav class="tbr-bottom">
                 <div id="headermenu">
                     <div sec:authorize="isAuthenticated()" class="user">
+        <span th:text="${#authentication.getPrincipal().getAvailableAuthorities()}"></span>
+        <span class="separator">|</span>
+        <span th:text="${#authentication.getPrincipal().getAuthorities()[0]}"></span>
+        <span class="separator">|</span>
                         <span>E-mail: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getUsername()}">E-mail Address</span></strong>
                         <span class="separator">|</span>
                         <span th:text="#{headerName}">Name: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
+                        <span class="separator">|</span>
+                        <span th:text="#{role}">Name: </span>
+                        <!--<strong><span th:text="${#authentication.getPrincipal().getRoles().toArray()[0].toString()}">Full Name</span></strong>-->
+                            <!--<span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>-->
+                            <!--<span th:text="${#authentication.expression('getAuthorities().toString()')}"></span>-->
+                            <!--<select th:field="*{roleselector}">-->
+                            <form id="roleselectorform" action="/roleselection" method="post"
+                                  th:unless="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1">
+                                <strong>
+                                    <select id="roleselector" name="roleselector">
+                                        <option th:each="role: ${#authentication.getPrincipal().getAvailableAuthorities()}"
+                                                th:value="${role}"
+                                                th:text="${role}"
+                                                th:selected="${role == #authentication.getPrincipal().getAuthorities()[0]}">
+                                            Role list
+                                        </option>
+                                    </select>
+                                </strong>
+                                <span style="display: none">
+                                    <input type="submit" name="submitname" value="Submit"/>
+                                </span>
+                            </form>
+                            <strong>
+                                <span id="roleselectsingle"
+                                      th:if="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1"
+                                      th:text="${#authentication.getPrincipal().getAuthorities()[0]}">
+                                    Single role
+                                </span>
+                            </strong>
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
                         <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">

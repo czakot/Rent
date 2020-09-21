@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -44,6 +45,9 @@ public class User {
                 @JoinColumn(name = "role_id")}
     )
     private Set<Role> roles = new HashSet<Role>();
+    
+    @Transient
+    private Role selectedRole;
 
     public User() {}
     
@@ -97,6 +101,17 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Role getSelectedRole() {
+        if (selectedRole == null) {
+            selectedRole = (Role)(roles.toArray()[0]);
+        }
+        return selectedRole;
+    }
+
+    public void setSelectedRole(Role selectedRole) {
+        this.selectedRole = selectedRole;
     }
 
     public Boolean getEnabled() {

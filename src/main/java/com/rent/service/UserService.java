@@ -14,4 +14,6 @@ public interface UserService {
     
     public boolean existsNotActivatedAdmin();
     
+    public boolean setSelectedRole(String userByEmail, String roleName);
+    
 }

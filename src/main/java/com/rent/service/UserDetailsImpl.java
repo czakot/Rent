@@ -11,58 +11,65 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.rent.entity.Role;
 import com.rent.entity.User;
 
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
 
-	private static final long serialVersionUID = 3185970362329652822L;
+    private static final long serialVersionUID = 3185970362329652822L;
 
-	private User user;
+    private final User user;
 
-	public UserDetailsImpl(User user) {
-		this.user = user;
-	}
+    public UserDetailsImpl(User user) {
+        this.user = user;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> authorities = new HashSet<>();
-		Set<Role> roles = user.getRoles();
-		for (Role role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role.getRole()));
-		}
-		return authorities;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+            Collection<GrantedAuthority> authorities = new HashSet<>();
+            authorities.add(new SimpleGrantedAuthority(user.getSelectedRole().getRole()));
+        return authorities;
+    }
 
-	@Override
-	public String getPassword() {
-		return user.getPassword();
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAvailableAuthorities() {
+            Collection<GrantedAuthority> authorities = new HashSet<>();
+            Set<Role> roles = user.getRoles();
+            roles.forEach((role) -> {
+                authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        });
+        return authorities;
+    }
 
-	@Override
-	public String getUsername() {
-		return user.getEmail();
-	}
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return user.getEmail();
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return user.getEnabled();
-	}
-        
-        public String getFullName() {
-                return user.getFullName();
-        }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return user.getEnabled();
+    }
+
+    public String getFullName() {
+        return user.getFullName();
+    }
 
 }

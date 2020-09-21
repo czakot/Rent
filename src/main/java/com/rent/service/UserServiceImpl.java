@@ -129,5 +129,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean existsNotActivatedAdmin() {
         return userRepository.countUsers(ADMIN_ROLE, !ACTIVATED) > 0;
     }
+
+    @Override
+    public boolean setSelectedRole(String email, String roleName) {
+        boolean success = false;
+        User user = findByEmail(email);
+        Role role = roleRepository.findByRole(roleName);
+        System.err.println("in UserServiceImpl - user: " + user + "   role: " + role);
+        if (user != null && role != null) {
+            user.setSelectedRole(role);
+            System.err.println("in UserServiceImpl - check selectedRole" + user.getSelectedRole());
+            success = true;
+        }
+        return success;
+    }
     
 }
