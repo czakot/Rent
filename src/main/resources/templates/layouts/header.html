@@ -38,10 +38,6 @@
             <nav class="tbr-bottom">
                 <div id="headermenu">
                     <div sec:authorize="isAuthenticated()" class="user">
-        <span th:text="${#authentication.getPrincipal().getAvailableAuthorities()}"></span>
-        <span class="separator">|</span>
-        <span th:text="${#authentication.getPrincipal().getAuthorities()[0]}"></span>
-        <span class="separator">|</span>
                         <span>E-mail: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getUsername()}">E-mail Address</span></strong>
                         <span class="separator">|</span>
@@ -49,10 +45,6 @@
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
                         <span class="separator">|</span>
                         <span th:text="#{role}">Name: </span>
-                        <!--<strong><span th:text="${#authentication.getPrincipal().getRoles().toArray()[0].toString()}">Full Name</span></strong>-->
-                            <!--<span th:text="${#authentication.getPrincipal().getAuthorities()}"></span>-->
-                            <!--<span th:text="${#authentication.expression('getAuthorities().toString()')}"></span>-->
-                            <!--<select th:field="*{roleselector}">-->
                             <form id="roleselectorform" action="/roleselection" method="post"
                                   th:unless="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1">
                                 <strong>

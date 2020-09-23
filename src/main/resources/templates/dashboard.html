@@ -14,11 +14,11 @@ and open the template in the editor.
     </head>
     <body>
     <div id="dashboardfragment" layout:fragment="content">
-        <div id="hudashboard"  th:if="#{local} == 'hu'">
-            <div >Műszerfal</div>
+        <div id="hudashboard"  th:if="#{local} == 'HU'">
+            <div >Vezérlőpult</div>
         </div>
-        <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "en" --> 
-        <div id="endashboard"  th:if="#{local} == 'en'">
+        <!--<div id="enwelcome"  th:if="#{local} != 'HU'">  supposed local = "EN" --> 
+        <div id="endashboard"  th:if="#{local} == 'EN'">
             <div >Dashboard</div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 package com.rent.entity;
 
+import com.rent.entity.utility.RoleUtility;
 import com.rent.entity.utility.UserRegistrationDto;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,9 +47,6 @@ public class User {
     )
     private Set<Role> roles = new HashSet<Role>();
     
-    @Transient
-    private Role selectedRole;
-
     public User() {}
     
     public User(String fullName, String email, String password) {
@@ -101,17 +99,6 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public Role getSelectedRole() {
-        if (selectedRole == null) {
-            selectedRole = (Role)(roles.toArray()[0]);
-        }
-        return selectedRole;
-    }
-
-    public void setSelectedRole(Role selectedRole) {
-        this.selectedRole = selectedRole;
     }
 
     public Boolean getEnabled() {

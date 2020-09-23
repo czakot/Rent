@@ -5,9 +5,8 @@
  */
 package com.rent.controller;
 
-import com.rent.entity.User;
+import com.rent.service.UserDetailsImpl;
 import com.rent.service.UserService;
-import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RentController {
     
     UserService userService;
-
+    
     @RequestMapping({"/", "/index"})
     public String index(Authentication authentication, Model model) {
         if (authentication!=null && authentication.isAuthenticated()) {
@@ -40,18 +39,18 @@ public class RentController {
     }
     
     @PostMapping("/roleselection")
-    public String roleSelection(@RequestParam ("roleselector") String roleName , Principal principal) {
-        System.err.println("roleSelection controller");
-        System.err.println("Principal name: " + principal.getName());
-        System.err.println("Chosen role: " + roleName);
-        userService.setSelectedRole(principal.getName(), roleName);
-        
+    public String roleSelection(@RequestParam ("roleselector") String roleName, Authentication authentication) {
+        setSelectedRoleOfAuthenticatedUser(authentication, roleName);
         return "redirect:/dashboard";
     }
     
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+    
+    private void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {
+        ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
     }
 
 }

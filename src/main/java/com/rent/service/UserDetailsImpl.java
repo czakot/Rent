@@ -10,24 +10,30 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.rent.entity.Role;
 import com.rent.entity.User;
+import com.rent.entity.utility.RoleUtility;
 
 public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
 
     private static final long serialVersionUID = 3185970362329652822L;
 
     private final User user;
+    private Role selectedRole;
 
     public UserDetailsImpl(User user) {
         this.user = user;
+        selectedRole = getUserMostWeightetRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
             Collection<GrantedAuthority> authorities = new HashSet<>();
-            authorities.add(new SimpleGrantedAuthority(user.getSelectedRole().getRole()));
+            if (!user.getRoles().contains(selectedRole)) {
+                selectedRole = getUserMostWeightetRole();
+            }
+            authorities.add(new SimpleGrantedAuthority(selectedRole.getRole()));
         return authorities;
     }
-
+    
     @Override
     public Collection<? extends GrantedAuthority> getAvailableAuthorities() {
             Collection<GrantedAuthority> authorities = new HashSet<>();
@@ -70,6 +76,14 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
 
     public String getFullName() {
         return user.getFullName();
+    }
+    
+    private Role getUserMostWeightetRole() {
+        return RoleUtility.getMostWeightedRole(user.getRoles());
+    }
+
+    public void setUserSelectedRoleByName(String roleName) {
+        selectedRole = RoleUtility.getRoleFromSetByRoleName(user.getRoles(), roleName);
     }
 
 }

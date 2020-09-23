@@ -9,26 +9,17 @@ setAuthLinks();
 setRoleSelector();
 
 function setLanguageLinks() {
-    let languageText = rentLocal.toUpperCase();
-//    let languageText = getCookieValue("rentLocal").toUpperCase();
-    let linkLikes = document.querySelectorAll("#languagelinks a");
-//    linkLikes = linkLikes.filter(e.firstChild.data.toString().trim() === languageText);
-//    console.log("linkLikes = ");
-//    console.log(linkLikes);
-    for(let idx = 0; idx < linkLikes.length; idx++) {
-        const childText = linkLikes[idx].firstChild.data.toString().trim();
-        if (childText === languageText) {
-            linkLikes[idx].className="activelanguage";
-        }
-    }
+    const links = Array.from(document.querySelectorAll("#languagelinks a"));
+    const curr = links.filter(link => link.firstChild.data.toString() === rentLocal);
+    curr[0].className="activelanguage";
 }
 
 function setAuthLinks() {
-    let authlinks = document.getElementById("authlinks");
+    const authlinks = document.getElementById("authlinks");
     if (authlinks !== null) {
         switch (window.location.pathname) {
             case "/":
-                let loginlink = document.getElementById("loginlink");
+                const loginlink = document.getElementById("loginlink");
                 if (loginlink !== null) {
                     loginlink.href = "/login";
                 }
@@ -48,14 +39,10 @@ function setAuthLinks() {
 }
 
 function setRoleSelector() {
-    console.log("befor chosing #roleselector select");
-    let roleSelector = document.querySelector("#roleselector");
-    let roleSelectorForm = document.querySelector("#roleselectorform");
-    console.log("#roleselector: " + roleSelector);
-    console.log("#roleselectorform: " + roleSelectorForm);
+    const roleSelector = document.querySelector("#roleselector");
+    const roleSelectorForm = document.querySelector("#roleselectorform");
     if (roleSelector !== null && roleSelectorForm !== null)
     roleSelector.addEventListener("change",function(){roleSelectorForm.submit();});
-//    roleSelector.addEventListener("change",function(){roleSelectorForm.submit();}, { once: true});
 }
 
     
