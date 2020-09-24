@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.rent.entity.Role;
 import com.rent.entity.User;
-import com.rent.repo.RoleRepository;
 import com.rent.repo.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,21 +19,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private static final boolean ACTIVATED = true;
     private int numberOfActiveAdmins;
 
-    private final String USER_ROLE = "USER";
-    private final String ADMIN_ROLE = "ADMIN";
-
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
-        numberOfActiveAdmins = numberOfUsers(ADMIN_ROLE, ACTIVATED);
+        numberOfActiveAdmins = numberOfUsersByRoleAndActivation(Role.ADMIN, ACTIVATED);
     }
 
     @Override
@@ -43,7 +37,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-
         return new UserDetailsImpl(user);
     }
 
@@ -56,21 +49,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean registerUser(User userToRegister) {
         boolean registered;
         if (adminExists()) {
-            registered = register(userToRegister, new String[]{USER_ROLE});
+            registered = register(userToRegister, Role.USER);
         } else {
             userRepository.deleteAll();
-            registered = register(userToRegister, new String[]{ADMIN_ROLE});
+            registered = register(userToRegister, Role.ADMIN);
         }
 
         if (registered) {
             emailService.sendMessage(userToRegister);
         }
-
         return registered;
     }
 
-    private int numberOfUsers(String role, boolean activated) {
-        return userRepository.countUsers(role, activated);
+    private int numberOfUsersByRoleAndActivation(Role role, boolean activated) {
+        return userRepository.countUsersByRoleAndActivation(role.name(), activated);
     }
     
     @Override
@@ -78,25 +70,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return numberOfActiveAdmins > 0;
     }
 
-    private boolean register(User user, String[] roles) {
+    private boolean register(User user, Role role) {
         if (userRepository.findByEmail(user.getEmail()) != null) {
             return false;
         }
-
-        for (String roleName : roles) {
-            Role role = roleRepository.findByRole(roleName);
-            if (role != null) {
-                user.getRoles().add(role);
-            } else {
-                user.addRoles(roleName);
-            }
-        }
-
+        user.addRole(role);
         user.setEnabled(false);
         user.setActivation(generateKey());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
         return true;
     }
 
@@ -117,17 +99,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setEnabled(true);
             user.setActivation("");
             userRepository.save(user);
-            if (user.getRoles().contains(new Role(ADMIN_ROLE))) {
+            if (user.getRoles().contains(Role.ADMIN)) {
                 numberOfActiveAdmins++;
             }
         }
-
         return user;
     }
 
     @Override
     public boolean existsNotActivatedAdmin() {
-        return userRepository.countUsers(ADMIN_ROLE, !ACTIVATED) > 0;
+        return numberOfUsersByRoleAndActivation(Role.ADMIN, !ACTIVATED) > 0;
     }
 
 }

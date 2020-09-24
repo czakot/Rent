@@ -1,25 +1,25 @@
 package com.rent.entity;
 
-import com.rent.entity.utility.RoleUtility;
 import com.rent.entity.utility.UserRegistrationDto;
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue
@@ -37,15 +37,12 @@ public class User {
 
     private Boolean enabled;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = {
-                @JoinColumn(name = "user_id")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "role_id")}
-    )
-    private Set<Role> roles = new HashSet<Role>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+               joinColumns = @JoinColumn(name = "user_id", unique = false))
+    @Column(name = "id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = EnumSet.noneOf(Role.class);
     
     public User() {}
     
@@ -97,7 +94,7 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(EnumSet<Role> roles) {
         this.roles = roles;
     }
 
@@ -117,12 +114,9 @@ public class User {
         this.activation = activation;
     }
 
-    public void addRoles(String roleName) {
-//        if (this.roles == null || this.roles.isEmpty()) {
-        if (this.roles == null) {
-            this.roles = new HashSet<>();
-        }
-        this.roles.add(new Role(roleName));
+    
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override

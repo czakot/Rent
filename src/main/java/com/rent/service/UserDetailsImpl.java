@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.rent.entity.Role;
 import com.rent.entity.User;
-import com.rent.entity.utility.RoleUtility;
 
 public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
 
@@ -21,16 +20,16 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
 
     public UserDetailsImpl(User user) {
         this.user = user;
-        selectedRole = getUserMostWeightetRole();
+        selectedRole = getUserMostWeightedRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
             Collection<GrantedAuthority> authorities = new HashSet<>();
             if (!user.getRoles().contains(selectedRole)) {
-                selectedRole = getUserMostWeightetRole();
+                selectedRole = getUserMostWeightedRole();
             }
-            authorities.add(new SimpleGrantedAuthority(selectedRole.getRole()));
+            authorities.add(new SimpleGrantedAuthority(selectedRole.name()));
         return authorities;
     }
     
@@ -39,7 +38,7 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
             Collection<GrantedAuthority> authorities = new HashSet<>();
             Set<Role> roles = user.getRoles();
             roles.forEach((role) -> {
-                authorities.add(new SimpleGrantedAuthority(role.getRole()));
+                authorities.add(new SimpleGrantedAuthority(role.name()));
         });
         return authorities;
     }
@@ -78,12 +77,15 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
         return user.getFullName();
     }
     
-    private Role getUserMostWeightetRole() {
-        return RoleUtility.getMostWeightedRole(user.getRoles());
+    private Role getUserMostWeightedRole() {
+        return Role.getMostWeightedRole(user.getRoles());
     }
 
     public void setUserSelectedRoleByName(String roleName) {
-        selectedRole = RoleUtility.getRoleFromSetByRoleName(user.getRoles(), roleName);
+        selectedRole = Role.getRoleFromSetOfRolesByRoleName(user.getRoles(), roleName);
+        if (selectedRole == null) {
+            selectedRole = getUserMostWeightedRole();
+        }
     }
 
 }

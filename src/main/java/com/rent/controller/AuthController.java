@@ -15,6 +15,7 @@ import com.rent.entity.utility.UserRegistrationDto;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,15 @@ public class AuthController {
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
     
+    @RequestMapping({"/", "/index"})
+    public String index(Authentication authentication, Model model) {
+        if (authentication!=null && authentication.isAuthenticated()) {
+            return "redirect:/dashboard";
+        }
+        model.addAttribute("adminExists", userService.adminExists());
+        return "/index";
+    }
+
     @GetMapping({"/login", "/registration"})
     public String login(@RequestParam (required = false) String holdmessages,
                         HttpServletRequest request,
