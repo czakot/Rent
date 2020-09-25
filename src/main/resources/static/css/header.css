@@ -9,10 +9,7 @@ and open the template in the editor.
 */
 
 .top-bar {
-    max-width: 95%;
     height: 82px;
-    margin: auto;
-    margin-top: 1rem;
 }
 
 .top-bar .top-bar-left, .top-bar .top-bar-right {
@@ -102,7 +99,7 @@ and open the template in the editor.
     display: inline-block;
 }
 
-#headermenu .user, #headermenu .button {
+#headermenu .user, #headermenu .button, #headermenu a {
     color: #fff;
 }
 

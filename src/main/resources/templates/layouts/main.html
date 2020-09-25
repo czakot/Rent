@@ -18,7 +18,7 @@
         <div id="main">
             <div th:replace="layouts/header :: header">header fragment</div>
             <br/>
-            <div layout:fragment="content">content fragment</div>
+            <div id="content" layout:fragment="content">content fragment</div>
         </div>
     </div>
     <span th:replace="layouts/footer :: footer">footer fragment</span>

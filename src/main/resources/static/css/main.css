@@ -7,6 +7,14 @@ and open the template in the editor.
     Created on : Mar 4, 2020, 7:08:28 PM
     Author     : czakot
 */
+#wrap {
+    margin-top: 0.5rem;
+}
+
+#wrap, #footer {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
 
 html, body, #wrap {height: 100%;}
 
@@ -18,7 +26,3 @@ body > #wrap {height: auto; min-height: 100%;}
 	margin-top: -60px; /* negative value of footer height */
 	height: 60px;
 	clear:both;}
-/*
-html, footer, #langselector {font-size: xx-small; }
-.header {}
-*/

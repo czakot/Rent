@@ -17,11 +17,11 @@ and open the template in the editor.
 </head>
 <body>
     <div id="welcomefragment" layout:fragment="content">
-        <div id="huwelcome"  th:if="#{local} == 'hu'">
+        <div id="huwelcome"  th:if="#{local} == 'HU'">
             <div >Üdvözlet a RENT oldalán!</div>
         </div>
-        <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "en" --> 
-        <div id="enwelcome"  th:if="#{local} == 'en'">
+        <!--<div id="enwelcome"  th:if="#{local} != 'HU'">  supposed local = "EN" --> 
+        <div id="enwelcome"  th:if="#{local} == 'EN'">
             <div >Welcome at RENT!</div>
         </div>
     </div>

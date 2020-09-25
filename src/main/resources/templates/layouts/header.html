@@ -45,29 +45,31 @@
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
                         <span class="separator">|</span>
                         <span th:text="#{role}">Name: </span>
-                            <form id="roleselectorform" action="/roleselection" method="post"
-                                  th:unless="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1">
-                                <strong>
-                                    <select id="roleselector" name="roleselector">
-                                        <option th:each="role: ${#authentication.getPrincipal().getAvailableAuthorities()}"
-                                                th:value="${role}"
-                                                th:text="${role}"
-                                                th:selected="${role == #authentication.getPrincipal().getAuthorities()[0]}">
-                                            Role list
-                                        </option>
-                                    </select>
-                                </strong>
-                                <span style="display: none">
-                                    <input type="submit" name="submitname" value="Submit"/>
-                                </span>
-                            </form>
+                        <form id="roleselectorform" action="/roleselection" method="post"
+                              th:unless="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1">
                             <strong>
-                                <span id="roleselectsingle"
-                                      th:if="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1"
-                                      th:text="${#authentication.getPrincipal().getAuthorities()[0]}">
-                                    Single role
-                                </span>
+                                <select id="roleselector" name="roleselector">
+                                    <option th:each="role: ${#authentication.getPrincipal().getAvailableAuthorities()}"
+                                            th:value="${role}"
+                                            th:text="${role}"
+                                            th:selected="${role == #authentication.getPrincipal().getAuthorities()[0]}">
+                                        Role list
+                                    </option>
+                                </select>
                             </strong>
+                            <span style="display: none">
+                                <input type="submit" name="submitname" value="Submit"/>
+                            </span>
+                        </form>
+                        <strong>
+                            <span id="roleselectsingle"
+                                  th:if="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1"
+                                  th:text="${#authentication.getPrincipal().getAuthorities()[0]}">
+                                Single role
+                            </span>
+                        </strong>
+                        <span class="separator">|</span>
+                        <a href="/userprofile">Profile</a>
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
                         <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">
