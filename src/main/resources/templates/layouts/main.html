@@ -14,6 +14,17 @@
     <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
 </head>
 <body>
+    <div th:replace="layouts/header :: header">header fragment</div>
+    <div class="main-container">
+        <div id="content" layout:fragment="content">content fragment</div>
+    </div>
+    <div class="wrap-footer">
+        <div th:replace="layouts/footer :: footer">footer fragment</div>
+    </div>
+</body>
+    <!--  Up to 2020.09.27 -->
+    <!--*******************-->
+<!--<body>
     <div id="wrap">
         <div id="main">
             <div th:replace="layouts/header :: header">header fragment</div>
@@ -23,5 +34,5 @@
     </div>
     <span th:replace="layouts/footer :: footer">footer fragment</span>
 
-</body>
+</body>-->
 </html>

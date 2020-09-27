@@ -7,7 +7,30 @@ and open the template in the editor.
     Created on : Mar 4, 2020, 7:08:28 PM
     Author     : czakot
 */
-#wrap {
+body {
+    margin: 0.4rem;
+    
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+.main-container {
+    max-height: 100%;
+}
+
+.wrap-footer {
+    
+}
+
+#footer {
+    position: relative; /* must be same height as the footer */
+    margin-top: -60px;  /* negative value of footer height */
+}
+/* Up to 2020.09.27*/
+/*-----------------*/
+/*#wrap {
     margin-top: 0.5rem;
 }
 
@@ -20,9 +43,9 @@ html, body, #wrap {height: 100%;}
 
 body > #wrap {height: auto; min-height: 100%;}
 
-#main {padding-bottom: 60px;}  /* must be same height as the footer */
+#main {padding-bottom: 60px;}   must be same height as the footer 
 
 #footer {position: relative;
-	margin-top: -60px; /* negative value of footer height */
+	margin-top: -60px;  negative value of footer height 
 	height: 60px;
-	clear:both;}
+	clear:both;}*/

@@ -10,6 +10,6 @@ and open the template in the editor.
 
 #welcomefragment {
     text-align: center;
-     max-width: 85%;
+     /*max-width: 85%;*/
      margin: auto;
 }
