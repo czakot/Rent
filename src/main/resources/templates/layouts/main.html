@@ -2,37 +2,26 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      <!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"-->
 <head>
     <title>Rent</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>
+    <!--<link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>-->
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
 </head>
 <body>
-    <div th:replace="layouts/header :: header">header fragment</div>
-    <div class="main-container">
-        <div id="content" layout:fragment="content">content fragment</div>
+    <div class="wrap">
+        <div th:replace="layouts/header :: header">header fragment</div>
+        <div class="main-container">
+            <div id="content" layout:fragment="content">content fragment</div>
+        </div>
     </div>
     <div class="wrap-footer">
         <div th:replace="layouts/footer :: footer">footer fragment</div>
     </div>
 </body>
-    <!--  Up to 2020.09.27 -->
-    <!--*******************-->
-<!--<body>
-    <div id="wrap">
-        <div id="main">
-            <div th:replace="layouts/header :: header">header fragment</div>
-            <br/>
-            <div id="content" layout:fragment="content">content fragment</div>
-        </div>
-    </div>
-    <span th:replace="layouts/footer :: footer">footer fragment</span>
-
-</body>-->
 </html>

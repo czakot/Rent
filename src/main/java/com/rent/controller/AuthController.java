@@ -15,6 +15,7 @@ import com.rent.entity.utility.UserRegistrationDto;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class AuthController {
     private UserService userService;
     private MessageSource messageSource;
     private HtmlMessages htmlMessages = null;
-    
+
     @RequestMapping({"/", "/index"})
     public String index(Authentication authentication, Model model) {
         if (authentication!=null && authentication.isAuthenticated()) {

@@ -10,7 +10,7 @@ setRoleSelector();
 
 function setLanguageLinks() {
     const links = Array.from(document.querySelectorAll("#languagelinks a"));
-    const curr = links.filter(link => link.firstChild.data.toString() === rentLocal);
+    const curr = links.filter(link => link.firstChild.data.toString().toLowerCase() === rentLocal);
     curr[0].className="activelanguage";
 }
 
