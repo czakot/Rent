@@ -10,19 +10,14 @@ and open the template in the editor.
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layouts/main}">
 <head>
-    <title>Rent - Dashboard</title>
+    <title>Rent - main</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../static/css/content.css" th:href="@{/css/content.css}"/>
 </head>
 <body>
-
-    <div id="dashboardfragment" layout:fragment="content">
-        <div id="hudashboard"  th:if="#{local} == 'hu'">
-            <div >Vezérlőpult</div>
-        </div>
-        <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "hu" --> 
-        <div id="endashboard"  th:if="#{local} == 'en'">
-            <div >Dashboard</div>
-        </div>
+    <div id="content" layout:fragment="content">
+        <div class="menu-container">Menu</div><!-- for eliminating gap
+        --><div class="core-container">Core</div>
     </div>
-
 </body>
 </html>

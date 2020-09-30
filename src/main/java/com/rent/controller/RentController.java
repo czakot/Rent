@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RentController {
     
+    @RequestMapping("/content")
+    public String content() {
+        //TODO redirection to starting pages by role
+        return "content";
+    }
+    
     @RequestMapping("/dashboard")
     public String dashboard() {
         //TODO redirection to starting pages by role

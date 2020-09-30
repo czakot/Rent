@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
     <title>Rent - messages</title>
+    <meta charset="UTF-8"/>
     <link rel="stylesheet" href="../static/css/authmessages.css" th:href="@{/css/authmessages.css}"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+    
     <div th:fragment="messages">
         <div th:each="message : ${messageList}">
             <div th:text="${message.text}" th:class="auth-message" th:classappend="${message.cssClass}">
@@ -21,5 +16,6 @@ and open the template in the editor.
             </div>
         </div>
     </div>
+    
 </body>
 </html>

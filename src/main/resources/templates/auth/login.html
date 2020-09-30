@@ -17,7 +17,7 @@
         
         <h2 id="logintitle" th:text="#{titleLogin}">Login</h2>
         
-        <div th:unless="${messageList.empty}" th:replace="auth/messages">messages fragment</div>
+        <div th:unless="${messageList.empty}" th:replace="auth/messages :: messages">messages fragment</div>
 
         <form id="loginform" name="login" action="/login" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required="" value="czakotamas@freemail.hu"/> 
