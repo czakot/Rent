@@ -31,14 +31,14 @@ public class AuthController {
     @RequestMapping({"/", "/index"})
     public String index(Authentication authentication, Model model) {
         if (authentication!=null && authentication.isAuthenticated()) {
-            return "redirect:/dashboard";
+            return "redirect:/content";
         }
         model.addAttribute("adminExists", userService.adminExists());
         return "/index";
     }
 
     @GetMapping({"/login", "/registration"})
-    public String login(@RequestParam (required = false) String holdmessages,
+    public String auth(@RequestParam (required = false) String holdmessages,
                         HttpServletRequest request,
                         Model model) {
         initHtmlMessages();

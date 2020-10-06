@@ -15,15 +15,15 @@ public class RentApplication {
         context = SpringApplication.run(RentApplication.class, args);
     }
 
-    public static void restart() {
-        ApplicationArguments args = context.getBean(ApplicationArguments.class);
-
-        Thread thread = new Thread(() -> {
-            context.close();
-            context = SpringApplication.run(RentApplication.class, args.getSourceArgs());
-        });
-
-        thread.setDaemon(false);
-        thread.start();
-    }
+//    public static void restart() {
+//        ApplicationArguments args = context.getBean(ApplicationArguments.class);
+//
+//        Thread thread = new Thread(() -> {
+//            context.close();
+//            context = SpringApplication.run(RentApplication.class, args.getSourceArgs());
+//        });
+//
+//        thread.setDaemon(false);
+//        thread.start();
+//    }
 }
