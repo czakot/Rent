@@ -5,7 +5,7 @@
  */
 package garage;
 
-import com.rent.entity.Role;
+import com.rent.domain.Role;
 import java.util.EnumSet;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

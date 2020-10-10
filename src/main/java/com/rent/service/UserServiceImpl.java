@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.rent.entity.Role;
+import com.rent.domain.Role;
 import com.rent.entity.User;
 import com.rent.repo.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rent.entity.htmlmessage;
+package com.rent.domain.htmlmessage;
 
 import java.util.Locale;
 import org.springframework.context.MessageSource;

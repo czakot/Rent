@@ -1,4 +1,4 @@
-package com.rent.entity;
+package com.rent.domain;
 
 import java.util.Set;
 

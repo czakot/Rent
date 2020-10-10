@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.rent.entity.Role;
+import com.rent.domain.Role;
 import com.rent.entity.User;
 
 public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {

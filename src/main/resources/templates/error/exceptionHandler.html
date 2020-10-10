@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Rent - Error</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>
+            <p>
+                <span><strong>Exeption message: </strong></span>
+                <span th:text="${exceptionMessage}">Exeption message</span>
+            </p>
+            <p>
+                <span><strong>Source of error: </strong></span>
+                <span th:text="${sourceUri}">URI of error's source</span>
+            </p>
+        </div>
+    </body>
+</html>
+

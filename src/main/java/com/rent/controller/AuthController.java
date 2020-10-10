@@ -1,7 +1,7 @@
 package com.rent.controller;
 
-import com.rent.entity.htmlmessage.HtmlMessages;
-import com.rent.entity.htmlmessage.MessageType;
+import com.rent.domain.htmlmessage.HtmlMessages;
+import com.rent.domain.htmlmessage.MessageType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rent.entity.User;
-import com.rent.entity.utility.UserRegistrationDto;
+import com.rent.domain.UserRegistrationDto;
+import com.rent.exception.MissingActivationCodeInUriException;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -66,8 +68,14 @@ public class AuthController {
         return redirectToLoginHoldingMessage(message, messageType);
     }
     
-    @RequestMapping(path = "/activation/{code}", method = RequestMethod.GET)
-    public String activation(@PathVariable("code") String code) {
+    @RequestMapping(path = {"/activation/", "/activation/{code}"}, method = RequestMethod.GET)
+    public String activation(@PathVariable(name = "code", required = false) String code,
+                             HttpServletRequest request,
+                             Model model) {
+        // Just trying error handling
+        if (code == null) {
+            throw new MissingActivationCodeInUriException("Activation link incomplete, missing activation code.", request.getServletPath());
+        }
         initHtmlMessages();
         User activatedUser = userService.userActivation(code);
         String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";

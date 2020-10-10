@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rent.entity.menu;
+package com.rent.domain.menu;
 
-import com.rent.entity.Role;
+import com.rent.domain.Role;
 import java.util.ArrayList;
 import java.util.List;
 

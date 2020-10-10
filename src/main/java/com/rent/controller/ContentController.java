@@ -5,11 +5,12 @@
  */
 package com.rent.controller;
 
-import com.rent.entity.menu.Menu;
+import com.rent.domain.menu.Menu;
 import com.rent.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,8 @@ public class ContentController {
     Menu menu;
 
     @RequestMapping("/content")
-    public String content() {
+    public String content(Model model) {
+        model.addAttribute("menuitems", menu.getMenuItems());
         //TODO redirection to starting pages by role
         return "content";
     }
@@ -45,7 +47,6 @@ public class ContentController {
         ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
     }
 
-    @Autowired
     public Menu getMenu() {
         return menu;
     }

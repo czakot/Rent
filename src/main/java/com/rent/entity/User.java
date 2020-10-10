@@ -1,6 +1,7 @@
 package com.rent.entity;
 
-import com.rent.entity.utility.UserRegistrationDto;
+import com.rent.domain.Role;
+import com.rent.domain.UserRegistrationDto;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Set;

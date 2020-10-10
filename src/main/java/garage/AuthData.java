@@ -5,7 +5,7 @@
  */
 package garage;
 
-import com.rent.entity.htmlmessage.HtmlMessage;
+import com.rent.domain.htmlmessage.HtmlMessage;
 import java.util.List;
 
 /**

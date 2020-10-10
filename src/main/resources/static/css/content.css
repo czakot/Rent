@@ -16,16 +16,20 @@ and open the template in the editor.
 .menu-container, .core-container {
     border-color: greenyellow;
     border-width: 2px;
-    border-style: dashed;
     display: inline-block;
-    text-align: center;
+    /*text-align: center;*/
+    margin: 1rem;
 }
 
 .menu-container {
-    width: 200px;
+    max-width: 200px;
+    background-color: #1f6991;
+    padding: 0;
+    
 }
 
 .core-container {
-    width: calc(100% - 200px);
+    border-style: dashed;
+    /*width: calc(100% - 200px);*/
 }
 
