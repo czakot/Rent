@@ -35,8 +35,20 @@ body > .wrap {
     padding-bottom: 60px; /*must be same height as the footer */
 }
 
+#header-container {
+    
+}
+
 .main-container {
     margin: 1.5rem 1.1rem 1.5rem 1.1rem;
+}
+
+#menu-container {
+    
+}
+
+#content-container {
+    
 }
 
 .wrap-footer {
