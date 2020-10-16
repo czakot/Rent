@@ -12,16 +12,22 @@
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" href="../../static/css/menu.css" th:href="@{/css/menu.css}"/>
 </head>
 <body>
     <div class="wrap">
-        <div  id="header-container" th:insert="layouts/header :: header">header fragment</div>
-        <div class="main-container">
-            <div sec:authorize="isAuthenticated()">
-                <div id="menu-container" th:insert="layouts/menu :: menu">menu</div>
-            </div>
-            <div id="content-container">
-                <div layout:fragment="content">content fragment</div>
+        <div  id="header-container" th:insert="layouts/header :: header">
+            header fragment
+        </div>
+        <div id="main-container">
+            <div id="menu-container" sec:authorize="isAuthenticated()" th:insert="layouts/menu :: menu">
+                Menu
+            </div><!--
+            --><div id="content-container">
+                <h1 sec:authorize="isAuthenticated()" th:text="${selectedMenuItem}">
+                    Content header
+                </h1>
+                <div id="content-body" layout:fragment="content">content fragment</div>
             </div>
         </div>
     </div>

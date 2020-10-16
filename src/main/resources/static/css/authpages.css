@@ -10,8 +10,8 @@ and open the template in the editor.
 
 
 .login-content {
-     max-width: 40%;
-     margin: auto;
+    width: 40%;
+    margin: auto;
 }
 
 .form-border {

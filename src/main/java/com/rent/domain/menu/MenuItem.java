@@ -5,24 +5,30 @@
  */
 package com.rent.domain.menu;
 
-import com.rent.domain.Role;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author czakot
  */
 public class MenuItem {
     
-    String displayName;
+    private final String displayName;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+    private final String contentPage;
+
+    public String getContentPage() {
+        return contentPage;
+    }
 //    boolean switchedOn;
 //    boolean clickable;
 //    String controller;
 //    List<MenuItem> subMenu = new ArrayList<>();
 
-    public MenuItem(String displayName) {
+    public MenuItem(String displayName, String contentPage) {
         this.displayName = displayName;
+        this.contentPage = contentPage;
     }
     
 //    public MenuItem(String displayName, boolean clickable, String controller) {

@@ -8,3 +8,20 @@ and open the template in the editor.
     Author     : czakot
 */
 
+#menuitem a {
+    width: 200px;
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #1f6991;
+    padding: 10px;
+    border-bottom: 1px solid #175576;
+    /*white-space: nowrap;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#menuitem a:hover {
+    background-color: #e95d0f;
+}
+

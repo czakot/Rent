@@ -19,10 +19,14 @@ and open the template in the editor.
 }
 
 .top-bar .top-bar-left {
-    width: 40%;
+    width: 30%;
+    border-width: 1px 0 1px 0px;
+/*
     border-width: 1px 0 1px 1px;
     border-radius: 10px 0 0 10px;
+*/
     border-color: #dddddd;
+    border-color: #bbbbbb;
     background-color: #f8f9fa;
     text-align: center;
 }
@@ -47,16 +51,18 @@ and open the template in the editor.
 }
 
 .top-bar .top-bar-right {
-    width: 60%;
+    width: 70%;
+    border-width: 1px 0px 1px 0px;
+/*
     border-width: 1px 1px 1px 0px;
     border-radius: 0 10px 10px 0;
+*/
     border-color: #555555;
     vertical-align: top;
 }
 
 .top-bar .top-bar-right .tbr-top, .top-bar .top-bar-right .tbr-bottom {
     text-align: right;
-    padding-right: 20px;
 } 
 
 .top-bar .top-bar-right .tbr-top {
@@ -64,14 +70,20 @@ and open the template in the editor.
     line-height: 30px;
     background-color: #024d6b;
     font-size: 80%;
+    padding-right: 30px;
+/*
     border-radius: 0 9px 0 0;
+*/
 }
 
 .top-bar .top-bar-right .tbr-bottom {
     height: 50px;
     line-height: 50px;
     background-color: #1f6991;
+    padding-right: 20px;
+/*
     border-radius: 0 0 9px 0;
+*/
 }
 
 #languagelinks {
@@ -95,7 +107,7 @@ and open the template in the editor.
     text-decoration: none;
 }
 
-#headermenu, #roleselectorform {
+#roleselectorform {
     display: inline-block;
 }
 
@@ -124,7 +136,7 @@ and open the template in the editor.
 }
 
 .top-bar .separator {
-    padding: 0 5px;
+    padding: 0 3px;
 }
 
 #roleselector {

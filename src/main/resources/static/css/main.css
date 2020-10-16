@@ -11,11 +11,12 @@ body {
     min-width: 1024px;
     margin: 0; /* override default 8px */
 }
-
+/*
 *, ::before, ::after {
     box-sizing: border-box;
-}
+}*/
 
+/*
 body > .wrap {
     padding-top: 0.4rem;
 }
@@ -24,7 +25,7 @@ body > .wrap, .wrap-footer {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
 }
-
+*/
 html, body, body > .wrap {
     height: 100%;
 }
@@ -32,30 +33,57 @@ html, body, body > .wrap {
 body > .wrap {
     height: auto;
     min-height: 100%;
-    padding-bottom: 60px; /*must be same height as the footer */
+    padding-bottom: 0; /*should (must) be same height as the footer */
 }
 
 #header-container {
     
 }
 
-.main-container {
-    margin: 1.5rem 1.1rem 1.5rem 1.1rem;
+#main-container {
+    display: flex;
+    margin: 40px 20px 20px 20px;
 }
 
 #menu-container {
-    
+    /*flex-basis: 200px;*/
+    font-size: 14px;
+    margin-right: 20px;
 }
 
 #content-container {
-    
+    flex-grow: 1;
+    /*vertical-align: top;*/
+}
+
+#content-container h1 {
+    display: block;
+    font-size: 18px;
+    font-weight: normal;
+    color: #1f6991;
+    margin: 0 0 10px 0;;
+    /*padding: 0;*/
+    border-bottom: 1px solid #e95d0f;
+}
+
+#content-body {
+    display: block;
 }
 
 .wrap-footer {
     position: relative;
-    margin-top: -60px;  /*negative value of footer height */
-    height: 60px;
+    margin-top: -30px;  /*negative value of footer height */
+    height: 30px;
     clear:both;
+/*    
+    background-color: #1f6991;
+    color: #fff;
+*/    
+    line-height: 30px;
+}
+
+footer {
+    padding: 0 20px 0 20px;
 }
 
 :root {

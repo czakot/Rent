@@ -6,6 +6,7 @@
 package com.rent.domain.menu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -16,22 +17,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class Menu {
     
-    private static final String[] DISPLAY_NAMES = {"Logs, messages", "User details"};
-//    private static final String[] CONTROLLER = {"/userinterests", "/userdetails"};
+    private final List<MenuItem> menuItems = new ArrayList<>();
     
-    private final List<String> menuItems = new ArrayList<>();
-//    private final List<MenuItem> menuItems = new ArrayList<>();
-
-    public List<String> getMenuItems() {
-//    public List<MenuItem> getMenuItems() {
+    public List<MenuItem> getMenuItems() {
         return menuItems;
     }
 
+    private MenuItem selectedMenuItem;
+
+    public MenuItem getSelectedMenuItem() {
+        return selectedMenuItem;
+    }
+
+    public void setSelectedMenuItem(MenuItem selectedMenuItem) {
+        this.selectedMenuItem = selectedMenuItem;
+    }
+
     public Menu() {
-        for (String displayName : DISPLAY_NAMES) {
-            menuItems.add(displayName);
-//            menuItems.add(new MenuItem(displayName));
-        }
+        MenuItem menuItem;
+        menuItem = new MenuItem("Notice board", "noticeboard");
+        menuItems.add(menuItem);
+        
+        menuItem = new MenuItem("User profile", "userprofile");
+        menuItems.add(menuItem);
+
+        selectedMenuItem = menuItems.get(0);
     }
     
 }

@@ -27,6 +27,7 @@ public class ContentController {
     @RequestMapping("/content")
     public String content(Model model) {
         model.addAttribute("menuitems", menu.getMenuItems());
+        model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
         //TODO redirection to starting pages by role
         return "content";
     }
@@ -45,10 +46,6 @@ public class ContentController {
     
     private void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {
         ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
-    }
-
-    public Menu getMenu() {
-        return menu;
     }
 
     @Autowired

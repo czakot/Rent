@@ -10,18 +10,26 @@ and open the template in the editor.
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layouts/main}">
-    <head>
-        <title>Rent - menu</title>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div th:fragment="menu">
-            <ul style="list-style-type:none;">
-                <li th:each="menuitem : ${menuitems}">
-                    <span th:text="${menuitem}">Menu item</span>
-                </li>
-            </ul>
-        </div>
-    </body>
+<head>
+    <title>Rent - menu</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../../static/css/menu.css" th:href="@{/css/menu.css}"/>
+</head>
+<body>
+    <div th:fragment="menu">
+        <nav id="menu">
+            <div id="menuitem">
+                <a th:each="menuitem : ${menuitems}" href="#" th:text="${menuitem}">
+                    Menu item
+                </a>
+            </div>
+        </nav>
+<!--            <ul style="list-style-type:none;">
+            <li id="menuitem" th:each="menuitem : ${menuitems}">
+                <span th:text="${menuitem}">Menu item</span>
+            </li>
+        </ul>-->
+    </div>
+</body>
 </html>
