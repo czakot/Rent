@@ -9,13 +9,12 @@ and open the template in the editor.
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layouts/main}">
-    <head>
-        <title>Rent - User Profile</title>
-    </head>
-    <body>
+<head>
+    <title>Rent - User Profile</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
     <div id="userprofilefragment" layout:fragment="content">
-        <h2>User Profile</h2>
-        <div>Display</div>
         <ol>
             <li>email</li>
             <li>full name</li>
@@ -23,10 +22,8 @@ and open the template in the editor.
             <li>preferred starting role</li>
             <li>preferred language</li>
         </ol>
-        <a href="/dashboard">To Dashboard</a>
-        <span>  &lt;Return to previous page&gt;</span> 
-        <div></div>
+<!--        <a href="/dashboard">To Dashboard</a>
+        <span>  &lt;Return to previous page&gt;</span> -->
     </div>
-
-    </body>
+</body>
 </html>

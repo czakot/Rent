@@ -24,7 +24,7 @@
                 Menu
             </div><!--
             --><div id="content-container">
-                <h1 sec:authorize="isAuthenticated()" th:text="${selectedMenuItem}">
+                <h1 sec:authorize="isAuthenticated()" th:text="${selectedMenuItem.displayName}">
                     Content header
                 </h1>
                 <div id="content-body" layout:fragment="content">content fragment</div>

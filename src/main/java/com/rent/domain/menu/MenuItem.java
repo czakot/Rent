@@ -16,19 +16,20 @@ public class MenuItem {
     public String getDisplayName() {
         return displayName;
     }
-    private final String contentPage;
+    private final String contentPageUri;
 
-    public String getContentPage() {
-        return contentPage;
+    public String getContentPageUri() {
+        return contentPageUri;
     }
+
 //    boolean switchedOn;
 //    boolean clickable;
 //    String controller;
 //    List<MenuItem> subMenu = new ArrayList<>();
 
-    public MenuItem(String displayName, String contentPage) {
+    public MenuItem(String displayName, String contentPageUri) {
         this.displayName = displayName;
-        this.contentPage = contentPage;
+        this.contentPageUri = contentPageUri;
     }
     
 //    public MenuItem(String displayName, boolean clickable, String controller) {

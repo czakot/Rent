@@ -32,6 +32,7 @@ public class AuthController {
     @RequestMapping({"/", "/index"})
     public String index(Authentication authentication, Model model) {
         if (authentication!=null && authentication.isAuthenticated()) {
+            // redirect to last page
             return "redirect:/content";
         }
         model.addAttribute("adminExists", userService.adminExists());

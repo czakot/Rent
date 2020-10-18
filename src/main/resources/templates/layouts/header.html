@@ -68,8 +68,6 @@
                                 Single role
                             </span>
                         </strong>
-                        <span class="separator">|</span>
-                        <a href="/userprofile">Profile</a>
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
                         <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">

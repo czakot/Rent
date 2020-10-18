@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .portMapper().http(8080).mapsTo(8443)
                 .and()
             .formLogin().loginPage("/login").permitAll()
-                .defaultSuccessUrl("/content")
+                .defaultSuccessUrl("/homebyuserrole")
 //                .defaultSuccessUrl("/dashboard")
 //                .successForwardUrl("/index")
 //                .failureForwardUrl("/authpage?pageMode=login&")

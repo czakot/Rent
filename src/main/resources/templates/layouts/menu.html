@@ -20,16 +20,11 @@ and open the template in the editor.
     <div th:fragment="menu">
         <nav id="menu">
             <div id="menuitem">
-                <a th:each="menuitem : ${menuitems}" href="#" th:text="${menuitem}">
+                <a th:each="menuItem : ${menuItems}" th:href="${menuItem.contentPageUri}" th:text="${menuItem.displayName}">
                     Menu item
                 </a>
             </div>
         </nav>
-<!--            <ul style="list-style-type:none;">
-            <li id="menuitem" th:each="menuitem : ${menuitems}">
-                <span th:text="${menuitem}">Menu item</span>
-            </li>
-        </ul>-->
     </div>
 </body>
 </html>

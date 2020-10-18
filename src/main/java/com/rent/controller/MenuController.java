@@ -5,10 +5,13 @@
  */
 package com.rent.controller;
 
+import com.rent.domain.Role;
 import com.rent.domain.menu.Menu;
 import com.rent.service.UserDetailsImpl;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,28 +23,34 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author czakot
  */
 @Controller
-public class ContentController {
+public class MenuController {
     
     Menu menu;
 
-    @RequestMapping("/content")
-    public String content(Model model) {
-        model.addAttribute("menuitems", menu.getMenuItems());
-        model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        //TODO redirection to starting pages by role
-        return "content";
+    @RequestMapping("/homebyuserrole")
+    public String homeByUserRole(Authentication authentication) {
+        Role role = Role.valueOf(getSelectedRoleOfAuthenticatedUser(authentication));
+        menu.setMenu(role);
+        return "redirect:/" + menu.getSelectedMenuItem().getContentPageUri();
     }
     
-    @RequestMapping("/dashboard")
-    public String dashboard() {
-        //TODO redirection to starting pages by role
-        return "dashboard";
+    @RequestMapping({"/noticeboard", "/userprofile", "/dashboard"})
+    public String content(Model model, HttpServletRequest request) {
+        String target = request.getRequestURI().substring(1);
+        menu.setSelectedMenuItem(target);
+        model.addAttribute("menuItems", menu.getMenuItems());
+        model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
+        return target;
     }
     
     @PostMapping("/roleselection")
     public String roleSelection(@RequestParam ("roleselector") String roleName, Authentication authentication) {
         setSelectedRoleOfAuthenticatedUser(authentication, roleName);
-        return "redirect:/content";
+        return homeByUserRole(authentication);
+    }
+    
+    private String getSelectedRoleOfAuthenticatedUser(Authentication authentication) {
+        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority();
     }
     
     private void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {

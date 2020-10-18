@@ -5,6 +5,7 @@
  */
 package com.rent.domain.menu;
 
+import com.rent.domain.Role;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Menu {
-    
     private final List<MenuItem> menuItems = new ArrayList<>();
     
     public List<MenuItem> getMenuItems() {
@@ -41,7 +41,23 @@ public class Menu {
         menuItem = new MenuItem("User profile", "userprofile");
         menuItems.add(menuItem);
 
+        menuItem = new MenuItem("Dashboard", "dashboard");
+        menuItems.add(menuItem);
+
         selectedMenuItem = menuItems.get(0);
+    }
+    
+    public void setMenu(Role role) {
+        
+    }
+    
+    public void setSelectedMenuItem(String targetUri) {
+        for(MenuItem menuItem : menuItems) {
+            if (menuItem.getContentPageUri().equals(targetUri)) {
+                selectedMenuItem = menuItem;
+                break;
+            }
+        }
     }
     
 }

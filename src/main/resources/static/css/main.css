@@ -11,10 +11,10 @@ body {
     min-width: 1024px;
     margin: 0; /* override default 8px */
 }
-/*
+
 *, ::before, ::after {
     box-sizing: border-box;
-}*/
+}
 
 /*
 body > .wrap {
@@ -26,14 +26,15 @@ body > .wrap, .wrap-footer {
     padding-right: 0.4rem;
 }
 */
-html, body, body > .wrap {
+html, body {
+/*html, body, body > .wrap {*/
     height: 100%;
 }
 
 body > .wrap {
     height: auto;
     min-height: 100%;
-    padding-bottom: 0; /*should (must) be same height as the footer */
+    padding-bottom: 30px; /*should (must) be same height as the footer */
 }
 
 #header-container {
