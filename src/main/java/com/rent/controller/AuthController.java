@@ -1,7 +1,7 @@
 package com.rent.controller;
 
-import com.rent.domain.htmlmessage.HtmlMessages;
-import com.rent.domain.htmlmessage.MessageType;
+import com.rent.domain.authmessage.AuthMessages;
+import com.rent.domain.authmessage.MessageType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,13 +27,13 @@ public class AuthController {
 
     private UserService userService;
     private MessageSource messageSource;
-    private HtmlMessages htmlMessages = null;
+    private AuthMessages authMessages = null;
 
     @RequestMapping({"/", "/index"})
     public String index(Authentication authentication, Model model) {
         if (authentication!=null && authentication.isAuthenticated()) {
             // redirect to last page
-            return "redirect:/content";
+            return "redirect:/noticeboard";
         }
         model.addAttribute("adminExists", userService.adminExists());
         return "/index";
@@ -45,17 +45,17 @@ public class AuthController {
                         Model model) {
         initHtmlMessages();
         if (holdmessages == null || !holdmessages.equals("true")) {
-            htmlMessages.clear();
+            authMessages.clear();
         }
         boolean adminExists = userService.adminExists();
         String targetUri = request.getRequestURI();
         if (!adminExists) {
             targetUri = "/registration";
             String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
-            htmlMessages.add(message, MessageType.WARNING);
+            authMessages.add(message, MessageType.WARNING);
         }
         model.addAttribute("adminExists", adminExists);
-        model.addAttribute("messageList", htmlMessages.getHtmlMessageList());
+        model.addAttribute("messageList", authMessages.getAuthMessageList());
         return "/auth" + targetUri;
     }
 
@@ -84,13 +84,13 @@ public class AuthController {
     }
     
     private String redirectToLoginHoldingMessage(String message, MessageType messageType) {
-        htmlMessages.clearAndAddFirst(message, messageType);
+        authMessages.clearAndAddFirst(message, messageType);
         return "redirect:/login?holdmessages=true";
     }
  
     private void initHtmlMessages() {
-        if(htmlMessages == null) {
-            htmlMessages = new HtmlMessages(messageSource);
+        if(authMessages == null) {
+            authMessages = new AuthMessages(messageSource);
         }
     }
     

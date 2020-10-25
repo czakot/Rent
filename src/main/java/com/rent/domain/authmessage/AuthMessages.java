@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rent.domain.htmlmessage;
+package com.rent.domain.authmessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,39 +13,39 @@ import org.springframework.context.MessageSource;
  *
  * @author czakot
  */
-public final class HtmlMessages {
+public final class AuthMessages {
     
-    private final List<HtmlMessage> htmlMessageList = new ArrayList<>();
+    private final List<AuthMessage> authMessageList = new ArrayList<>();
     
     private final MessageSource messageSource;
     
-    public HtmlMessages(String messageKey, MessageType messageType, MessageSource messageSource) {
+    public AuthMessages(String messageKey, MessageType messageType, MessageSource messageSource) {
         this.messageSource = messageSource;
         add(messageKey, messageType);
     }
     
-    public HtmlMessages(MessageSource messageSource) {
+    public AuthMessages(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
     
     public void add(String messageKey, MessageType messageType) {
-        final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        if (!htmlMessageList.contains(htmlMessage)) {
-            htmlMessageList.add(htmlMessage);
+        final AuthMessage authMessage = new AuthMessage(messageKey, messageType, messageSource);
+        if (!authMessageList.contains(authMessage)) {
+            authMessageList.add(authMessage);
         }
     }
     
     public void clearAndAddFirst(String messageKey, MessageType messageType) {
         clear();
-        final HtmlMessage htmlMessage = new HtmlMessage(messageKey, messageType, messageSource);
-        htmlMessageList.add(htmlMessage);
+        final AuthMessage authMessage = new AuthMessage(messageKey, messageType, messageSource);
+        authMessageList.add(authMessage);
     }
     
     public void clear() {
-        htmlMessageList.clear();
+        authMessageList.clear();
     }
     
-    public List<HtmlMessage> getHtmlMessageList() {
-        return htmlMessageList;
+    public List<AuthMessage> getAuthMessageList() {
+        return authMessageList;
     }
 }

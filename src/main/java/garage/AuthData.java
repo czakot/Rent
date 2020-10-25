@@ -5,7 +5,7 @@
  */
 package garage;
 
-import com.rent.domain.htmlmessage.HtmlMessage;
+import com.rent.domain.authmessage.AuthMessage;
 import java.util.List;
 
 /**
@@ -14,19 +14,19 @@ import java.util.List;
  */
 public class AuthData {
 
-    List<HtmlMessage> htmlMessageList = null;
+    List<AuthMessage> htmlMessageList = null;
     Boolean adminExists = null;
 
-    public AuthData(List<HtmlMessage> htmlMessageList, Boolean adminExists) {
+    public AuthData(List<AuthMessage> htmlMessageList, Boolean adminExists) {
         this.htmlMessageList = htmlMessageList;
         this.adminExists = adminExists;
     }
     
-    public List<HtmlMessage> getHtmlMessageList() {
+    public List<AuthMessage> getHtmlMessageList() {
         return htmlMessageList;
     }
 
-    public void setHtmlMessageseList(List<HtmlMessage> htmlMessagesList) {
+    public void setHtmlMessageseList(List<AuthMessage> htmlMessagesList) {
         this.htmlMessageList = htmlMessagesList;
     }
 

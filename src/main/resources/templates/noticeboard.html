@@ -8,15 +8,16 @@ and open the template in the editor.
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{layouts/main}">
+      layout:decorate="~{layout/main}">
 <head>
     <title>Rent - notice board</title>
     <meta charset="UTF-8"/>
     <!--<link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/noticeboard.css}"/>-->
 </head>
 <body>
-    <div id="content" layout:fragment="content">
+    <iframe id="content" layout:fragment="content" src="noticeboard_1.html"></iframe>
+<!--    <div id="content" layout:fragment="content">
         Notice board
-    </div>
+    </div>-->
 </body>
 </html>

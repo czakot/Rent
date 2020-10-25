@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rent.domain.htmlmessage;
+package com.rent.domain.authmessage;
 
 import java.util.Locale;
 import org.springframework.context.MessageSource;
@@ -13,7 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
  *
  * @author czakot
  */
-public class HtmlMessage {
+public class AuthMessage {
     
     private final String text;
 
@@ -27,7 +27,7 @@ public class HtmlMessage {
         return cssClass;
     }
     
-    public HtmlMessage(String messageKey, MessageType messageType, MessageSource messageSource) {
+    public AuthMessage(String messageKey, MessageType messageType, MessageSource messageSource) {
         Locale currentLocale = LocaleContextHolder.getLocale();
         this.text = messageSource.getMessage(messageKey, null, currentLocale);
         this.cssClass = messageType.cssClass;
@@ -45,7 +45,7 @@ public class HtmlMessage {
             if(getClass() != obj.getClass()) {
                 return false;
             }
-            HtmlMessage r = (HtmlMessage)obj;
+            AuthMessage r = (AuthMessage)obj;
             return this.text.equals(r.getText()) && this.cssClass.equals(r.getCssClass());
     }
 }

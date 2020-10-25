@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main}">
+      layout:decorate="~{layout/main}">
 <head>
     <title>Rent - Registration</title>
     <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>
@@ -25,7 +25,7 @@
             <input type="password" id="regPassword" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
             <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
             <div id="pwdmismatchmsg" style="display: none" th:text="#{pwdMismatch}"></div>
-            <button id="regButton" type="submit" th:text="#{buttonRegistration}" class="btn btn-primary btn-block">Registration</button>
+            <button id="regButton" type="submit" th:text="#{authButtonRegistration}" class="btn btn-primary btn-block">Registration</button>
         </form>
     </div>
 </body>

@@ -35,13 +35,13 @@ public class Menu {
 
     public Menu() {
         MenuItem menuItem;
-        menuItem = new MenuItem("Notice board", "noticeboard");
+        menuItem = new MenuItem("noticeboard");
         menuItems.add(menuItem);
         
-        menuItem = new MenuItem("User profile", "userprofile");
+        menuItem = new MenuItem("userprofile");
         menuItems.add(menuItem);
 
-        menuItem = new MenuItem("Dashboard", "dashboard");
+        menuItem = new MenuItem("dashboard");
         menuItems.add(menuItem);
 
         selectedMenuItem = menuItems.get(0);

@@ -11,10 +11,10 @@ package com.rent.domain.menu;
  */
 public class MenuItem {
     
-    private final String displayName;
+    private final String displayNameKey;
 
-    public String getDisplayName() {
-        return displayName;
+    public String getDisplayNameKey() {
+        return displayNameKey;
     }
     private final String contentPageUri;
 
@@ -27,8 +27,13 @@ public class MenuItem {
 //    String controller;
 //    List<MenuItem> subMenu = new ArrayList<>();
 
+    public MenuItem(String contentPageUri) {
+        this.displayNameKey = contentPageUri;
+        this.contentPageUri = contentPageUri;
+    }
+    
     public MenuItem(String displayName, String contentPageUri) {
-        this.displayName = displayName;
+        this.displayNameKey = displayName;
         this.contentPageUri = contentPageUri;
     }
     

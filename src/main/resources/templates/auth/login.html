@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main}">
+      layout:decorate="~{layout/main}">
 <head>
     <title>Rent - Login</title>
     <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>
@@ -22,7 +22,7 @@
         <form id="loginform" name="login" action="/login" method="post" class="form-border">
             <input type="text" id="username" name="username" class="form-control" th:placeholder="#{usernameOrEmail}" required="" value="czakotamas@freemail.hu"/> 
             <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required="" value="jelszo"/>
-            <button type="submit" th:text="#{buttonLogin}" class="btn btn-primary btn-block">Login</button>
+            <button type="submit" th:text="#{authButtonLogin}" class="btn btn-primary btn-block">Login</button>
         </form>
         
         <a id="loginforgot" href="/forgottenpassword" th:text="#{forgottenPassword}" class="auth-link-right">I forgot my password</a>

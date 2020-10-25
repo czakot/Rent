@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      layout:decorate="~{layouts/main}">
+      layout:decorate="~{layout/main}">
 <head>
     <title>Rent - header</title>
     <meta charset="UTF-8"/>
@@ -41,10 +41,10 @@
                         <span>E-mail: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getUsername()}">E-mail Address</span></strong>
                         <span class="separator">|</span>
-                        <span th:text="#{headerName}">Name: </span>
+                        <span th:text="#{headerNameTitle}">Name: </span>
                         <strong><span th:text="${#authentication.getPrincipal().getFullName()}">Full Name</span></strong>
                         <span class="separator">|</span>
-                        <span th:text="#{role}">Name: </span>
+                        <span th:text="#{headerRoleTitle}">Role: </span>
                         <form id="roleselectorform" action="/roleselection" method="post"
                               th:unless="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1">
                             <strong>
@@ -71,10 +71,10 @@
                     </div> 
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
                         <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">
-                            <span th:text="#{buttonLogin}">login</span>
+                            <span th:text="#{headerButtonLogin}">login</span>
                         </a>
                         <a id="registrationlink" href="/registration?holdmessages=true" class="button">
-                            <span th:text="#{buttonRegistration}">registration</span>
+                            <span th:text="#{headerButtonRegistration}">registration</span>
                         </a>
                     </span>
                     <span sec:authorize="isAuthenticated()">

@@ -10,20 +10,13 @@ and open the template in the editor.
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Rent - User Profile</title>
+    <title>Rent - notice board</title>
     <meta charset="UTF-8"/>
+    <!--<link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/noticeboard.css}"/>-->
 </head>
 <body>
-    <div id="userprofilefragment" layout:fragment="content">
-        <ol>
-            <li>email</li>
-            <li>full name</li>
-            <li>identifier</li>
-            <li>preferred starting role</li>
-            <li>preferred language</li>
-        </ol>
-<!--        <a href="/dashboard">To Dashboard</a>
-        <span>  &lt;Return to previous page&gt;</span> -->
+    <div id="content" layout:fragment="content">
+        Notice board
     </div>
 </body>
 </html>

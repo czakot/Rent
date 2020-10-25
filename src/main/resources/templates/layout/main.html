@@ -16,15 +16,16 @@
 </head>
 <body>
     <div class="wrap">
-        <div  id="header-container" th:insert="layouts/header :: header">
+        <div  id="header-container" th:insert="layout/header :: header">
             header fragment
         </div>
         <div id="main-container">
-            <div id="menu-container" sec:authorize="isAuthenticated()" th:insert="layouts/menu :: menu">
+            <div id="menu-container" sec:authorize="isAuthenticated()" th:insert="layout/menu :: menu">
                 Menu
             </div><!--
             --><div id="content-container">
-                <h1 sec:authorize="isAuthenticated()" th:text="${selectedMenuItem.displayName}">
+                <h1 sec:authorize="isAuthenticated()" th:text="#{__(${selectedMenuItem.displayNameKey})__}">
+                <!--<h1 sec:authorize="isAuthenticated()" th:text="${selectedMenuItem.displayNameKey}">-->
                     Content header
                 </h1>
                 <div id="content-body" layout:fragment="content">content fragment</div>
@@ -32,7 +33,7 @@
         </div>
     </div>
     <div class="wrap-footer">
-        <div th:insert="layouts/footer :: footer">footer fragment</div>
+        <div th:insert="layout/footer :: footer">footer fragment</div>
     </div>
 </body>
 </html>
