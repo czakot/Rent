@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 window.addEventListener("DOMContentLoaded", initAuthPage);
+if (inIframe()) {
+    window.top.location.href = "https://localhost:8443/login";
+}
 
 function initAuthPage() {
     if (window.location.pathname === "/registration") {
@@ -28,5 +31,13 @@ function checkMatchPasswords(e) {
     let showMsg = !(password.length === 0 || confirmPwd.length === 0 || password === confirmPwd);
     msg.style.display = showMsg ? "block" : "none";
     button.disabled = showMsg;
+}
+
+function inIframe() {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
 }
 

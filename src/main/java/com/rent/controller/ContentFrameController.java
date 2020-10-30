@@ -8,12 +8,14 @@ package com.rent.controller;
 import com.rent.domain.Role;
 import com.rent.domain.menu.Menu;
 import com.rent.service.UserDetailsImpl;
+import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,30 +25,48 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author czakot
  */
 @Controller
-public class MenuController {
+public class ContentFrameController {
     
+    UserService userService;
     Menu menu;
 
+    @RequestMapping({"/", "/index"})
+    public String index(Authentication authentication, Model model) {
+        if (authentication!=null && authentication.isAuthenticated()) {
+            return "redirect:/homebyuserrole";
+        }
+        model.addAttribute("adminExists", userService.adminExists());
+        return "/index";
+    }
+
     @RequestMapping("/homebyuserrole")
-    public String homeByUserRole(Authentication authentication) {
+    public String homeByUserRole(Model model, Authentication authentication) {
         Role role = Role.valueOf(getSelectedRoleOfAuthenticatedUser(authentication));
-        menu.setMenu(role);
-        return "redirect:/" + menu.getSelectedMenuItem().getContentPageUri();
+        menu.setMenuByRole(role);
+        return initAuthorizedContentFrame(model);
     }
     
-    @RequestMapping({"/noticeboard", "/userprofile", "/dashboard"})
-    public String content(Model model, HttpServletRequest request) {
-        String target = request.getRequestURI().substring(1);
+    @RequestMapping(path = "/menuselect/{target}")
+    public String menuSelect(@PathVariable String target, Model model) {
         menu.setSelectedMenuItem(target);
-        model.addAttribute("menuItems", menu.getMenuItems());
-        model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        return target;
+        return initAuthorizedContentFrame(model);
+    }
+    
+    @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
+    public String selectedMenu(HttpServletRequest request) {
+        return request.getRequestURI().substring(1);
     }
     
     @PostMapping("/roleselection")
     public String roleSelection(@RequestParam ("roleselector") String roleName, Authentication authentication) {
         setSelectedRoleOfAuthenticatedUser(authentication, roleName);
-        return homeByUserRole(authentication);
+        return "redirect:/homebyuserrole";
+    }
+    
+    private String initAuthorizedContentFrame(Model model) {
+        model.addAttribute("menuItems", menu.getMenuItems());
+        model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
+        return "/contentframe";
     }
     
     private String getSelectedRoleOfAuthenticatedUser(Authentication authentication) {
@@ -55,6 +75,11 @@ public class MenuController {
     
     private void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {
         ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Autowired

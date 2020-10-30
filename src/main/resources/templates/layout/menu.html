@@ -17,15 +17,14 @@ and open the template in the editor.
     <link rel="stylesheet" href="../../static/css/menu.css" th:href="@{/css/menu.css}"/>
 </head>
 <body>
-    <div th:fragment="menu">
-        <nav id="menu">
-            <div id="menuitem">
-                <a th:each="menuItem : ${menuItems}" th:href="${menuItem.contentPageUri}" th:text="#{__(${menuItem.displayNameKey})__}">
-                <!--<a th:each="menuItem : ${menuItems}" th:href="${menuItem.contentPageUri}" th:text="${menuItem.displayNameKey}">-->
-                    Menu item
-                </a>
-            </div>
-        </nav>
-    </div>
+    <nav id="menu" th:fragment="menu">
+        <div id="menuitem">
+            <a th:each="menuItem : ${menuItems}"
+               th:href="'/menuselect/' + ${menuItem.contentPageUri}"
+               th:text="#{__(${menuItem.displayNameKey})__}">
+                Menu item
+            </a>
+        </div>
+    </nav>
 </body>
 </html>

@@ -10,13 +10,20 @@ and open the template in the editor.
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/main}">
 <head>
-    <title>Rent - notice board</title>
+    <title>Rent - Authorized Content Frame</title>
     <meta charset="UTF-8"/>
-    <!--<link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/noticeboard.css}"/>-->
+    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentframe.css}"/>
 </head>
 <body>
     <div id="content" layout:fragment="content">
-        Notice board
+        <h1 id="content-title" th:text="#{__(${selectedMenuItem.displayNameKey})__}">
+            Content title
+        </h1>
+        <iframe  id="content-body"
+                 th:src="'/' + ${selectedMenuItem.contentPageUri}"
+                 title="Rent individual action pages">
+                 <!--frameBorder="0">-->
+        </iframe>
     </div>
 </body>
 </html>

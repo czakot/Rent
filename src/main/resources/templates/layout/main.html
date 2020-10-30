@@ -16,19 +16,14 @@
 </head>
 <body>
     <div class="wrap">
-        <div  id="header-container" th:insert="layout/header :: header">
+        <header  id="header" th:replace="layout/header :: header">
             header fragment
-        </div>
+        </header>
         <div id="main-container">
-            <div id="menu-container" sec:authorize="isAuthenticated()" th:insert="layout/menu :: menu">
+            <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
                 Menu
-            </div><!--
-            --><div id="content-container">
-                <h1 sec:authorize="isAuthenticated()" th:text="#{__(${selectedMenuItem.displayNameKey})__}">
-                <!--<h1 sec:authorize="isAuthenticated()" th:text="${selectedMenuItem.displayNameKey}">-->
-                    Content header
-                </h1>
-                <div id="content-body" layout:fragment="content">content fragment</div>
+            </nav><!--
+            --><div id="content" layout:fragment="content">content fragment>
             </div>
         </div>
     </div>

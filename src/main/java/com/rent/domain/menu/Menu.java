@@ -47,7 +47,7 @@ public class Menu {
         selectedMenuItem = menuItems.get(0);
     }
     
-    public void setMenu(Role role) {
+    public void setMenuByRole(Role role) {
         
     }
     

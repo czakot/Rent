@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}"/>
 </head>
 <body>
-    <header th:fragment="header" class="top-bar">
-        <div class="top-bar-left">
+    <header id="header" th:fragment="header">
+        <div id="header-left">
             <a    th:unless="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}" 
                   th:insert=":: headerlogo" 
                   id="headerlogoanchor" href='/'>
@@ -22,20 +22,20 @@
                   th:insert=":: headerlogo">
             </span>
             <span style="display: none">
-                <span th:fragment="headerlogo" id="headerlogo">
-                    <span  class="logo-head">R</span><span class="logo-tail">ent</span>
+                <span id="headerlogo" th:fragment="headerlogo">
+                    <span  id="logo-head">R</span><span id="logo-tail">ent</span>
                 </span>
             </span>
         </div><!-- eliminating whitespace gap from newline
-     --><div class="top-bar-right">
-            <nav class="tbr-top">
-                <div id="languagelinks">
+     --><div id="header-right">
+            <div id="header-right-top">
+                <nav id="languagelinks">
                     <a href="?lang=hu">HU</a>
                     <span class="separator">|</span>
                     <a href="?lang=en">EN</a>
-                </div>
-            </nav>
-            <nav class="tbr-bottom">
+                </nav>
+            </div>
+            <div id="header-right-bottom">
                 <div id="headermenu">
                     <div sec:authorize="isAuthenticated()" class="user">
                         <span>E-mail: </span>
@@ -81,7 +81,7 @@
                         <a href="/logout" class="button" th:text="#{buttonLogout}">logout</a>
                     </span>
                 </div>
-            </nav>
+            </div>
         </div>
         <script>let rentLocal = "[[#{local}]]";</script>
         <script src="/../../static/js/header.js" th:src="@{/js/header.js}"></script>

@@ -37,34 +37,21 @@ body > .wrap {
     padding-bottom: 30px; /*should (must) be same height as the footer */
 }
 
-#header-container {
-    
-}
-
 #main-container {
     display: flex;
     margin: 40px 20px 20px 20px;
 }
 
-#menu-container {
+#menu {
+    flex: 0 0 auto;
     /*flex-basis: 200px;*/
     font-size: 14px;
     margin-right: 20px;
 }
 
-#content-container {
+#content {
     flex-grow: 1;
     /*vertical-align: top;*/
-}
-
-#content-container h1 {
-    display: block;
-    font-size: 18px;
-    font-weight: normal;
-    color: #1f6991;
-    margin: 0 0 10px 0;;
-    /*padding: 0;*/
-    border-bottom: 1px solid #e95d0f;
 }
 
 #content-body {

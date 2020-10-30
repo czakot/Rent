@@ -7,14 +7,15 @@ and open the template in the editor.
 <html lang="en" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{layout/main}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Rent - User Profile</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentcommon.css}"/>
 </head>
 <body>
-    <div id="userprofilefragment" layout:fragment="content">
+    <div >
+    <!--<div id="userprofilefragment" layout:fragment="content">-->
         <ol>
             <li>email</li>
             <li>full name</li>

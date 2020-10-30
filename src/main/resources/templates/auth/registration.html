@@ -13,20 +13,19 @@
     <script src="/../../static/js/auth.js" th:src="@{/js/auth.js}"></script>
 </head>
 <body>
-    <div layout:fragment="content" class="login-content">
-        
-        <h2 id="registrationtitle" th:text="#{titleRegistration}">Registration</h2>
-        
-        <div th:unless="${messageList.empty}" th:replace="auth/messages">messages fragment</div>
-
-        <form id="registrationform" name="registrationform" action="/registrationprocess" method="post" class="form-border">
-            <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
-            <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
-            <input type="password" id="regPassword" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
-            <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
-            <div id="pwdmismatchmsg" style="display: none" th:text="#{pwdMismatch}"></div>
-            <button id="regButton" type="submit" th:text="#{authButtonRegistration}" class="btn btn-primary btn-block">Registration</button>
-        </form>
+    <div layout:fragment="content">
+        <div class="middle-40-percent">
+            <h2 id="registrationtitle" th:text="#{titleRegistration}">Registration</h2>
+            <div th:unless="${messageList.empty}" th:replace="auth/messages">messages fragment</div>
+            <form id="registrationform" name="registrationform" action="/registrationprocess" method="post" class="form-border">
+                <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
+                <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 
+                <input type="password" id="regPassword" name="regPassword"  placeholder="Password" th:placeholder="#{password}" required="" class="form-control"/>
+                <input type="password" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" th:placeholder="#{confirmPwd}" required="" class="form-control"/>
+                <div id="pwdmismatchmsg" style="display: none" th:text="#{pwdMismatch}"></div>
+                <button id="regButton" type="submit" th:text="#{authButtonRegistration}" class="btn btn-primary btn-block">Registration</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

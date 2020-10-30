@@ -7,16 +7,16 @@ and open the template in the editor.
 <html lang="en" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{layout/main}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Rent - notice board</title>
     <meta charset="UTF-8"/>
-    <!--<link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/noticeboard.css}"/>-->
+    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentcommon.css}"/>
 </head>
 <body>
-    <div id="content" layout:fragment="content">
-        Notice board
+    <div>
+        Notice board Other
     </div>
+    <a href="noticeboard">Link to Noticeboard Main</a>
 </body>
 </html>

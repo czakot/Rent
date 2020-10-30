@@ -16,7 +16,6 @@ import com.rent.exception.MissingActivationCodeInUriException;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,20 +28,14 @@ public class AuthController {
     private MessageSource messageSource;
     private AuthMessages authMessages = null;
 
-    @RequestMapping({"/", "/index"})
-    public String index(Authentication authentication, Model model) {
-        if (authentication!=null && authentication.isAuthenticated()) {
-            // redirect to last page
-            return "redirect:/noticeboard";
-        }
-        model.addAttribute("adminExists", userService.adminExists());
-        return "/index";
-    }
-
     @GetMapping({"/login", "/registration"})
     public String auth(@RequestParam (required = false) String holdmessages,
                         HttpServletRequest request,
-                        Model model) {
+                        Model model,
+                        Authentication authentication) {
+        if (isAuthenticated(authentication, model)) {
+            
+        }
         initHtmlMessages();
         if (holdmessages == null || !holdmessages.equals("true")) {
             authMessages.clear();
@@ -102,6 +95,15 @@ public class AuthController {
     @Autowired
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
+    }
+
+    private boolean isAuthenticated(Authentication authentication, Model model) {
+        if (authentication!=null && authentication.isAuthenticated()) {
+            // prepare HtmlMessages: Already logged in
+            initHtmlMessages();
+            return true;
+        }
+        return false;
     }
     
 }

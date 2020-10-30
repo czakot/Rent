@@ -8,30 +8,25 @@ and open the template in the editor.
     Author     : czakot
 */
 
-.top-bar {
+#header {
     height: 82px;
 }
 
-.top-bar .top-bar-left, .top-bar .top-bar-right {
+#header-left, #header-right {
     display: inline-block;
     border-style: solid;
     box-sizing: border-box;
 }
 
-.top-bar .top-bar-left {
+#header-left {
     width: 30%;
     border-width: 1px 0 1px 0px;
-/*
-    border-width: 1px 0 1px 1px;
-    border-radius: 10px 0 0 10px;
-*/
-    border-color: #dddddd;
-    border-color: #bbbbbb;
+    border-color: #999999;
     background-color: #f8f9fa;
     text-align: center;
 }
 
-.top-bar .top-bar-left #headerlogoanchor {
+#headerlogoanchor {
     text-decoration: none;
 }
 
@@ -41,49 +36,39 @@ and open the template in the editor.
     font-style: italic;
 }
 
-#headerlogo .logo-head {
+#logo-head {
     font-weight: 900;
     color: green;
 }
 
-#headerlogo .logo-tail {
+#logo-tail {
     color: #000;
 }
 
-.top-bar .top-bar-right {
+#header-right {
     width: 70%;
     border-width: 1px 0px 1px 0px;
-/*
-    border-width: 1px 1px 1px 0px;
-    border-radius: 0 10px 10px 0;
-*/
     border-color: #555555;
     vertical-align: top;
 }
 
-.top-bar .top-bar-right .tbr-top, .top-bar .top-bar-right .tbr-bottom {
+#header-right-top, #header-right-bottom {
     text-align: right;
 } 
 
-.top-bar .top-bar-right .tbr-top {
+#header-right-top {
     height: 30px;
     line-height: 30px;
     background-color: #024d6b;
     font-size: 80%;
     padding-right: 30px;
-/*
-    border-radius: 0 9px 0 0;
-*/
 }
 
-.top-bar .top-bar-right .tbr-bottom {
+#header-right-bottom {
     height: 50px;
     line-height: 50px;
     background-color: #1f6991;
     padding-right: 20px;
-/*
-    border-radius: 0 0 9px 0;
-*/
 }
 
 #languagelinks {
@@ -135,7 +120,8 @@ and open the template in the editor.
     font-size: 13px;
 }
 
-.top-bar .separator {
+/*.top-bar .separator {*/
+#header .separator {
     padding: 0 3px;
 }
 

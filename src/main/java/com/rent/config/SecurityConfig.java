@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               // avoiding console warning: "Strict-Transport-Security: The connection to the site is untrustworthy, so the specified header was ignored."
             .headers()
                 .httpStrictTransportSecurity().disable()
-//                .frameOptions().sameOrigin()
+                .frameOptions().sameOrigin()
                 ;
         httpSec
             .authorizeRequests()

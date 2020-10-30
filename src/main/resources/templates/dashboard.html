@@ -7,23 +7,19 @@ and open the template in the editor.
 <html lang="en" 
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{layout/main}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Rent - Dashboard</title>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentcommon.css}"/>
 </head>
 <body>
-
-    <div id="dashboardfragment" layout:fragment="content">
-        <div id="hudashboard"  th:if="#{local} == 'hu'">
-            <div >Vezérlőpult</div>
-        </div>
-        <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "hu" --> 
-        <div id="endashboard"  th:if="#{local} == 'en'">
-            <div >Dashboard</div>
-        </div>
+    <div id="hudashboard"  th:if="#{local} == 'hu'">
+        <div >Vezérlőpult</div>
     </div>
-
+    <!--<div id="enwelcome"  th:if="#{local} != 'hu'">  supposed local = "hu" --> 
+    <div id="endashboard"  th:if="#{local} == 'en'">
+        <div >Dashboard</div>
+    </div>
 </body>
 </html>
