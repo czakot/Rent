@@ -28,14 +28,13 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 @Component
-@ConfigurationProperties(prefix = "spring.datasource")
+//@ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceConfig {
     
-    @Value("$(datasource.profile)")
-    private String selectedDatasourceProfile;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-        
+    
+    @Value("${spring.datasource.username")
+    private String username;
     private long connectionTimeout;
     private String prefix;
     private String[] hosts;
@@ -43,13 +42,15 @@ public class DataSourceConfig {
     private String port;
     private String dbname;
     private String params;
-    private String username;
+//    @Value("${spring.datasource.username")
+//    private String username;
     private String password;
     
 
     @Profile("server_db")
     @Bean
     public DataSource getServerDataSource() {
+        System.err.println("We are in getServerDataSource. Username: " + username);
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setConnectionTimeout(connectionTimeout);
@@ -69,6 +70,8 @@ public class DataSourceConfig {
     @Profile("embedded_db")
     @Bean
     public DataSource getEmbeddedDataSource() {
+        System.err.println("We are in getEmbeddedDataSource. Username: " + username);
+        
         HikariDataSource dataSource = new HikariDataSource();
         return dataSource;
     }
@@ -125,10 +128,6 @@ public class DataSourceConfig {
 
     public void setConnectionTimeout(long connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
-    }
-
-    public void setSelectedDatasourceProfile(String selectedDatasourceProfile) {
-        this.selectedDatasourceProfile = selectedDatasourceProfile;
     }
 
     public void setPrefix(String prefix) {
