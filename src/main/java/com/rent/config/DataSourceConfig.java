@@ -15,9 +15,11 @@ import java.util.Scanner;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,9 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceConfig {
+    
+    @Value("$(datasource.profile)")
+    private String selectedDatasourceProfile;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
         
@@ -42,8 +47,9 @@ public class DataSourceConfig {
     private String password;
     
 
+    @Profile("server_db")
     @Bean
-    public DataSource getDataSource() {
+    public DataSource getServerDataSource() {
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setConnectionTimeout(connectionTimeout);
@@ -60,6 +66,13 @@ public class DataSourceConfig {
         return null;
     }
 
+    @Profile("embedded_db")
+    @Bean
+    public DataSource getEmbeddedDataSource() {
+        HikariDataSource dataSource = new HikariDataSource();
+        return dataSource;
+    }
+    
     private boolean successfulConnectionToPreferredDatabaseHost(HikariDataSource dataSource) {
         boolean success = false;
         try {
@@ -112,6 +125,10 @@ public class DataSourceConfig {
 
     public void setConnectionTimeout(long connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
+    }
+
+    public void setSelectedDatasourceProfile(String selectedDatasourceProfile) {
+        this.selectedDatasourceProfile = selectedDatasourceProfile;
     }
 
     public void setPrefix(String prefix) {
