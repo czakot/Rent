@@ -28,13 +28,11 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 @Component
-//@ConfigurationProperties(prefix = "spring.datasource")
+@ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceConfig {
     
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
-    @Value("${spring.datasource.username")
-    private String username;
     private long connectionTimeout;
     private String prefix;
     private String[] hosts;
@@ -42,20 +40,17 @@ public class DataSourceConfig {
     private String port;
     private String dbname;
     private String params;
-//    @Value("${spring.datasource.username")
-//    private String username;
+    private String username;
     private String password;
-    
+    private String url;
 
     @Profile("server_db")
     @Bean
     public DataSource getServerDataSource() {
-        System.err.println("We are in getServerDataSource. Username: " + username);
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setConnectionTimeout(connectionTimeout);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
+        setCredentials(dataSource);
 
         if (successfulConnectionToPreferredDatabaseHost(dataSource)) {
             return dataSource;
@@ -63,17 +58,54 @@ public class DataSourceConfig {
         if (successfulConnectionToAnyDatabaseHostFromHosts(dataSource)) {
             return dataSource;
         }
-        logger.info("No available any known Database host)");
-        return null;
+        
+        
+        if (replaceParametersForEmbedded()) {
+            setEmbeddedDataSource(dataSource);
+            logger.info("No available Database Servers => using Embedded)");
+        } else {
+            logger.info("No available Database Servers and could not set Embedded.");
+            dataSource = null;
+        }
+        return dataSource;
     }
 
     @Profile("embedded_db")
     @Bean
     public DataSource getEmbeddedDataSource() {
-        System.err.println("We are in getEmbeddedDataSource. Username: " + username);
-        
         HikariDataSource dataSource = new HikariDataSource();
+        setEmbeddedDataSource(dataSource);
+
         return dataSource;
+    }
+    
+    private boolean setEmbeddedDataSource(HikariDataSource dataSource) {
+        boolean success = false;
+        setCredentials(dataSource);
+        dataSource.setJdbcUrl(url);
+        return 
+    }
+    
+    private void setCredentials(HikariDataSource dataSource) {
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+    }
+    
+    private boolean successfulConnectionToEmbeddedDatabase(HikariDataSource dataSource) {
+        return replaceParametersForEmbedded() && ;
+    }
+    
+    private boolean replaceParametersForEmbedded() {
+        boolean success = true;
+        try {
+            Scanner sc = new Scanner(new FileReader("application-embedded_db.properties"));
+            while (!sc.hasNext()) {
+                System.err.println(sc.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            success = false;
+        }
+        return success;
     }
     
     private boolean successfulConnectionToPreferredDatabaseHost(HikariDataSource dataSource) {
@@ -160,6 +192,10 @@ public class DataSourceConfig {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 }
