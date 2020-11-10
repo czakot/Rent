@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSec
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/favicon.ico").permitAll()
+                .antMatchers("/db/**").permitAll() // for H2Console
                 .antMatchers("/").permitAll()
                 .antMatchers("/login", "/registration").permitAll()
                 .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").permitAll()

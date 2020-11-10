@@ -7,11 +7,15 @@ package com.rent.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.Scanner;
+import java.util.logging.Level;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,85 +56,66 @@ public class DataSourceConfig {
         dataSource.setConnectionTimeout(connectionTimeout);
         setCredentials(dataSource);
 
-        if (successfulConnectionToPreferredDatabaseHost(dataSource)) {
-            return dataSource;
-        }
-        if (successfulConnectionToAnyDatabaseHostFromHosts(dataSource)) {
-            return dataSource;
-        }
-        
-        
-        if (replaceParametersForEmbedded()) {
-            setEmbeddedDataSource(dataSource);
-            logger.info("No available Database Servers => using Embedded)");
-        } else {
-            logger.info("No available Database Servers and could not set Embedded.");
+        if (!successfulConnectionToPreferredDatabaseHost(dataSource) ||
+            !successfulConnectionToAnyDatabaseHost(dataSource) || 
+            tryingToUseEmbeddedDatabase(dataSource)) {
             dataSource = null;
-        }
+        } 
+        
         return dataSource;
     }
-
+    
     @Profile("embedded_db")
     @Bean
     public DataSource getEmbeddedDataSource() {
+        
         HikariDataSource dataSource = new HikariDataSource();
-        setEmbeddedDataSource(dataSource);
+        System.err.println("username: " + username + "   password: " + password);
+        setCredentials(dataSource);
+        
+        if (!successfulConnectionToEmbeddedDatabase(dataSource)) {
+            dataSource = null;
+        }
 
         return dataSource;
     }
     
-    private boolean setEmbeddedDataSource(HikariDataSource dataSource) {
-        boolean success = false;
-        setCredentials(dataSource);
-        dataSource.setJdbcUrl(url);
-        return 
-    }
-    
-    private void setCredentials(HikariDataSource dataSource) {
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-    }
-    
-    private boolean successfulConnectionToEmbeddedDatabase(HikariDataSource dataSource) {
-        return replaceParametersForEmbedded() && ;
-    }
-    
-    private boolean replaceParametersForEmbedded() {
-        boolean success = true;
-        try {
-            Scanner sc = new Scanner(new FileReader("application-embedded_db.properties"));
-            while (!sc.hasNext()) {
-                System.err.println(sc.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            success = false;
-        }
-        return success;
-    }
-    
     private boolean successfulConnectionToPreferredDatabaseHost(HikariDataSource dataSource) {
-        boolean success = false;
+        
+        String preferredDatabaseUrl = getPreferredDatabaseUrl();
+        
+        return preferredDatabaseUrl != null && testConnection(preferredDatabaseUrl,dataSource);
+    }
+    
+    private String getPreferredDatabaseUrl() {
+        
+        String preferredUrl = null;
         try {
             Scanner sc = new Scanner(new FileReader(preferredDatabaseUrlFilename));
             if (sc.hasNextLine()) {
-                String preferredDatabaseUrl = sc.nextLine();
-                success = testConnection(preferredDatabaseUrl,dataSource);
+                preferredUrl = sc.nextLine();
             }
         } catch (FileNotFoundException ex) {
             logger.info("Preferred Database URL not reachable.");
         }
-        return success;
+        
+        return preferredUrl ;
     }
 
-    private boolean successfulConnectionToAnyDatabaseHostFromHosts(HikariDataSource dataSource) {
+    private boolean successfulConnectionToAnyDatabaseHost(HikariDataSource dataSource) {
         boolean success = false;
         for (String host : hosts) {
-            String url = prefix + "://" + host + ":" + port + "/" + dbname + params;
-            if (success = testConnection(url, dataSource)) {
+            String hostUrl = buildHostUrl(host);
+            if (success = testConnection(hostUrl, dataSource)) {
+                savePreferredUrl(hostUrl);
                 break;
             }
         }
         return success;
+    }
+    
+    private String buildHostUrl(String host) {
+        return prefix + "://" + host + ":" + port + "/" + dbname + params;
     }
 
     private void savePreferredUrl(String url) {
@@ -143,6 +128,64 @@ public class DataSourceConfig {
         }
     }
 
+    private boolean tryingToUseEmbeddedDatabase(HikariDataSource dataSource) {
+        
+        Boolean success;
+        logger.info("No available Database Servers => trying to use Embedded)");
+        
+        success = succesfulReplacementParametersForEmbedded();
+        if (success) {
+            setCredentials(dataSource);
+            success = successfulConnectionToEmbeddedDatabase(dataSource);
+        }
+        return success;
+    }
+
+    private boolean succesfulReplacementParametersForEmbedded() {
+        
+        Properties embeddedProperties = getEmbeddedProperties("application-embedded_db.properties");
+        embeddedProperties.list(System.err);
+        String keyPrefix = "spring.datasource.";
+        url = embeddedProperties.getProperty(keyPrefix + "url");
+        username = embeddedProperties.getProperty(keyPrefix + "username");
+        password = embeddedProperties.getProperty(keyPrefix + "password");
+
+        return url != null && username != null && password != null;
+    }
+    
+    private Properties getEmbeddedProperties(String filename) {
+        Properties properties = new Properties();
+        FileInputStream in;
+        try {
+            in = new FileInputStream(filename); // file should use ISO 8859-1 character encoding and/or Unicode escapes
+        } catch (FileNotFoundException ex) {
+            logger.info("\"" + filename + "\" not found");
+            return null;
+        }
+        try {
+            properties.load(in);
+        } catch (IOException | IllegalArgumentException ex) {
+            logger.info("\"" + filename + "\" stream reading or Unicode escapes parsing error (should use ISO 8859-1 character encoding)");
+            return null;
+        }
+        try {
+            in.close();
+        } catch (IOException ex) {
+            logger.info("\"" + filename + "\" closing error");
+        }
+        
+        return properties;
+    }
+    
+    private boolean successfulConnectionToEmbeddedDatabase(HikariDataSource dataSource) {
+        return testConnection(url, dataSource);
+    }
+
+    private void setCredentials(HikariDataSource dataSource) {
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+    }
+    
     private boolean testConnection(String url, HikariDataSource dataSource) {
         boolean success = false;
         logger.info("Testing Database connection: " + url);
@@ -151,7 +194,6 @@ public class DataSourceConfig {
             dataSource.getConnection();
             logger.info("Database connected to: " + url);
             success = true;
-            savePreferredUrl(url);
         } catch (SQLException ex) {
             logger.info("Database connection failed: " + url);
         }
