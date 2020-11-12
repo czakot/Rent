@@ -5,6 +5,7 @@
  */
 package com.rent.config;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,16 +16,16 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Level;
+import java.util.Set;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 /**
  *
@@ -56,11 +57,14 @@ public class DataSourceConfig {
         dataSource.setConnectionTimeout(connectionTimeout);
         setCredentials(dataSource);
 
-        if (!successfulConnectionToPreferredDatabaseHost(dataSource) ||
-            !successfulConnectionToAnyDatabaseHost(dataSource) || 
-            tryingToUseEmbeddedDatabase(dataSource)) {
+        if (setbackToEmbeddedDatabase(dataSource)) {
             dataSource = null;
         } 
+//        if (!successfulConnectionToPreferredDatabaseHost(dataSource) ||
+//            !successfulConnectionToAnyDatabaseHost(dataSource) || 
+//            setbackToEmbeddedDatabase(dataSource)) {
+//            dataSource = null;
+//        } 
         
         return dataSource;
     }
@@ -70,7 +74,6 @@ public class DataSourceConfig {
     public DataSource getEmbeddedDataSource() {
         
         HikariDataSource dataSource = new HikariDataSource();
-        System.err.println("username: " + username + "   password: " + password);
         setCredentials(dataSource);
         
         if (!successfulConnectionToEmbeddedDatabase(dataSource)) {
@@ -128,36 +131,52 @@ public class DataSourceConfig {
         }
     }
 
-    private boolean tryingToUseEmbeddedDatabase(HikariDataSource dataSource) {
+    private boolean setbackToEmbeddedDatabase(HikariDataSource dataSource) {
+        boolean success = false;
         
-        Boolean success;
-        logger.info("No available Database Servers => trying to use Embedded)");
+        logger.info("No available Database Servers => setback to Embedded Database)");
         
-        success = succesfulReplacementParametersForEmbedded();
-        if (success) {
-            setCredentials(dataSource);
+        Properties embeddedProperties = getProperties("classpath:application-embedded_db.properties");
+        if (embeddedProperties != null) {
+            loadEmbeddedProperties(embeddedProperties, dataSource);
+            url = dataSource.getJdbcUrl();
             success = successfulConnectionToEmbeddedDatabase(dataSource);
         }
+        
         return success;
     }
 
-    private boolean succesfulReplacementParametersForEmbedded() {
+    private void loadEmbeddedProperties(Properties properties, HikariDataSource dataSource) {
         
-        Properties embeddedProperties = getEmbeddedProperties("application-embedded_db.properties");
-        embeddedProperties.list(System.err);
-        String keyPrefix = "spring.datasource.";
-        url = embeddedProperties.getProperty(keyPrefix + "url");
-        username = embeddedProperties.getProperty(keyPrefix + "username");
-        password = embeddedProperties.getProperty(keyPrefix + "password");
+        properties.list(System.err);
+//        spring.jpa.hibernate.ddl-auto=update
+//        spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+//        spring.h2.console.enabled=true
+//        spring.h2.console.settings.web-allow-others=false
+//        spring.h2.console.settings.trace=false
+//        spring.h2.console.path=/db   
+        
+        dataSource =new HikariDataSource(new HikariConfig(properties));
+/*        
+        Properties dataSourceProperties = filterPropertiesByPrefix(properties, "spring.datasource.");
+        System.err.println("--------------------");
+        dataSourceProperties.list(System.err);
+        dataSource =new HikariDataSource(new HikariConfig(dataSourceProperties));
+        dataSource.setDataSourceProperties(properties);
+*/        
+        System.err.println("Url: " + dataSource.getJdbcUrl());
+        System.err.println("Username: " + dataSource.getUsername());
+        System.err.println("Password: " + dataSource.getPassword());
+        System.err.println("Driver class name: " + dataSource.getDriverClassName());
 
-        return url != null && username != null && password != null;
     }
     
-    private Properties getEmbeddedProperties(String filename) {
+    private Properties getProperties(String filename) {
         Properties properties = new Properties();
         FileInputStream in;
         try {
-            in = new FileInputStream(filename); // file should use ISO 8859-1 character encoding and/or Unicode escapes
+            File file = ResourceUtils.getFile(filename);
+            in = new FileInputStream(file); // file should use ISO 8859-1 character encoding and/or Unicode escapes
         } catch (FileNotFoundException ex) {
             logger.info("\"" + filename + "\" not found");
             return null;
@@ -175,6 +194,20 @@ public class DataSourceConfig {
         }
         
         return properties;
+    }
+    
+    private Properties filterPropertiesByPrefix(Properties properties, String prefix) {
+        
+        Properties filteredProperties = new Properties();
+        
+        Set<String> keys = properties.stringPropertyNames();
+        for (String key : keys) {
+            if (key.startsWith(prefix)) {
+                filteredProperties.put(key.substring(prefix.length()), properties.getProperty(key));
+            }
+        }
+        
+        return filteredProperties;
     }
     
     private boolean successfulConnectionToEmbeddedDatabase(HikariDataSource dataSource) {
