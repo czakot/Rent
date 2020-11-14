@@ -33,23 +33,30 @@ public class AuthController {
                         HttpServletRequest request,
                         Model model,
                         Authentication authentication) {
-        if (isAuthenticated(authentication, model)) {
-            
-        }
-        initHtmlMessages();
-        if (holdmessages == null || !holdmessages.equals("true")) {
-            authMessages.clear();
-        }
+
+        return isAuthenticated(authentication) ? "redirect:/index" : getAuthView(holdmessages, request, model);
+    }
+    
+    private String getAuthView(String holdmessages, HttpServletRequest request, Model model) {
+        
+        String targetUri;
+        
+        initHtmlMessages(); // make it bean
+        authMessages.clearIfHoldNotTrue(holdmessages);
         boolean adminExists = userService.adminExists();
-        String targetUri = request.getRequestURI();
-        if (!adminExists) {
-            targetUri = "/registration";
-            String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
-            authMessages.add(message, MessageType.WARNING);
-        }
+        
+        targetUri = adminExists ? "/auth" + request.getRequestURI() : getRegistrationViewNoAdmin();
         model.addAttribute("adminExists", adminExists);
         model.addAttribute("messageList", authMessages.getAuthMessageList());
-        return "/auth" + targetUri;
+        
+        return targetUri;
+    }
+    
+    private String getRegistrationViewNoAdmin() {
+        String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
+        authMessages.add(message, MessageType.WARNING);
+
+        return "/auth/registration";
     }
 
     @PostMapping(value = "/registrationprocess")
@@ -97,13 +104,17 @@ public class AuthController {
         this.messageSource = messageSource;
     }
 
-    private boolean isAuthenticated(Authentication authentication, Model model) {
-        if (authentication!=null && authentication.isAuthenticated()) {
-            // prepare HtmlMessages: Already logged in
-            initHtmlMessages();
-            return true;
-        }
-        return false;
+    private boolean isAuthenticated(Authentication authentication) {
+        return authentication!=null && authentication.isAuthenticated();
     }
+    
+//    private boolean isAuthenticated(Authentication authentication, Model model) {
+//        if (authentication!=null && authentication.isAuthenticated()) {
+//            // prepare HtmlMessages: Already logged in
+//            initHtmlMessages();
+//            return true;
+//        }
+//        return false;
+//    }
     
 }

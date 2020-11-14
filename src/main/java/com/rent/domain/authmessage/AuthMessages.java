@@ -41,6 +41,12 @@ public final class AuthMessages {
         authMessageList.add(authMessage);
     }
     
+    public void clearIfHoldNotTrue(String hold) {
+        if (hold == null || !hold.equals("true")) {
+            clear();
+        }
+    }
+    
     public void clear() {
         authMessageList.clear();
     }
