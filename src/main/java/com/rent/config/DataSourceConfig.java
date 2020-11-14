@@ -60,8 +60,7 @@ public class DataSourceConfig {
         if (!successfulConnectionToPreferredDatabaseHost(dataSource) &&
             !successfulConnectionToAnyDatabaseHost(dataSource)) {
             dataSource = null;
-            logger.info("No availabele Database Server. Application stopped.");
-            applicationContext.close();
+            logger.info("No availabele Database Server.");
         } 
         
         return dataSource;
