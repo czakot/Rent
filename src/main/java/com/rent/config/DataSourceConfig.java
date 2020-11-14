@@ -5,27 +5,23 @@
  */
 package com.rent.config;
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.Scanner;
-import java.util.Set;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
 /**
  *
@@ -45,37 +41,41 @@ public class DataSourceConfig {
     private String port;
     private String dbname;
     private String params;
+    
     private String username;
     private String password;
+    
     private String url;
-
+    private String driverClassName;
+    
     @Profile("server_db")
-    @Bean
-    public DataSource getServerDataSource() {
+    @Bean(name = "serverDataSource")
+    public DataSource getServerDataSource(ConfigurableApplicationContext applicationContext) {
 
         HikariDataSource dataSource = new HikariDataSource();
+        
         dataSource.setConnectionTimeout(connectionTimeout);
         setCredentials(dataSource);
 
-        if (setbackToEmbeddedDatabase(dataSource)) {
+        if (!successfulConnectionToPreferredDatabaseHost(dataSource) &&
+            !successfulConnectionToAnyDatabaseHost(dataSource)) {
             dataSource = null;
+            logger.info("No availabele Database Server. Application stopped.");
+            applicationContext.close();
         } 
-//        if (!successfulConnectionToPreferredDatabaseHost(dataSource) ||
-//            !successfulConnectionToAnyDatabaseHost(dataSource) || 
-//            setbackToEmbeddedDatabase(dataSource)) {
-//            dataSource = null;
-//        } 
         
         return dataSource;
     }
     
     @Profile("embedded_db")
-    @Bean
+    @Bean(name = "embeddedDataSource")
     public DataSource getEmbeddedDataSource() {
         
         HikariDataSource dataSource = new HikariDataSource();
-        setCredentials(dataSource);
         
+        setCredentials(dataSource);
+        dataSource.setJdbcUrl(url);
+        dataSource.setDriverClassName(driverClassName);
         if (!successfulConnectionToEmbeddedDatabase(dataSource)) {
             dataSource = null;
         }
@@ -85,14 +85,22 @@ public class DataSourceConfig {
     
     private boolean successfulConnectionToPreferredDatabaseHost(HikariDataSource dataSource) {
         
+        boolean successful = false;
+        
         String preferredDatabaseUrl = getPreferredDatabaseUrl();
         
-        return preferredDatabaseUrl != null && testConnection(preferredDatabaseUrl,dataSource);
+        if (preferredDatabaseUrl != null) {
+            dataSource.setJdbcUrl(preferredDatabaseUrl);
+            successful = testConnection(dataSource);
+        }
+        
+        return successful;
     }
     
     private String getPreferredDatabaseUrl() {
         
         String preferredUrl = null;
+        
         try {
             Scanner sc = new Scanner(new FileReader(preferredDatabaseUrlFilename));
             if (sc.hasNextLine()) {
@@ -107,13 +115,17 @@ public class DataSourceConfig {
 
     private boolean successfulConnectionToAnyDatabaseHost(HikariDataSource dataSource) {
         boolean success = false;
+        
         for (String host : hosts) {
             String hostUrl = buildHostUrl(host);
-            if (success = testConnection(hostUrl, dataSource)) {
+            dataSource.setJdbcUrl(hostUrl);
+            success = testConnection(dataSource);
+            if (success) {
                 savePreferredUrl(hostUrl);
                 break;
             }
         }
+        
         return success;
     }
     
@@ -122,6 +134,7 @@ public class DataSourceConfig {
     }
 
     private void savePreferredUrl(String url) {
+        
         try {
             PrintWriter pr = new PrintWriter(new File(preferredDatabaseUrlFilename));
             pr.print(url);
@@ -131,105 +144,38 @@ public class DataSourceConfig {
         }
     }
 
-    private boolean setbackToEmbeddedDatabase(HikariDataSource dataSource) {
-        boolean success = false;
-        
-        logger.info("No available Database Servers => setback to Embedded Database)");
-        
-        Properties embeddedProperties = getProperties("classpath:application-embedded_db.properties");
-        if (embeddedProperties != null) {
-            loadEmbeddedProperties(embeddedProperties, dataSource);
-            url = dataSource.getJdbcUrl();
-            success = successfulConnectionToEmbeddedDatabase(dataSource);
-        }
-        
-        return success;
-    }
-
-    private void loadEmbeddedProperties(Properties properties, HikariDataSource dataSource) {
-        
-        properties.list(System.err);
-//        spring.jpa.hibernate.ddl-auto=update
-//        spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-//        spring.h2.console.enabled=true
-//        spring.h2.console.settings.web-allow-others=false
-//        spring.h2.console.settings.trace=false
-//        spring.h2.console.path=/db   
-        
-        dataSource =new HikariDataSource(new HikariConfig(properties));
-/*        
-        Properties dataSourceProperties = filterPropertiesByPrefix(properties, "spring.datasource.");
-        System.err.println("--------------------");
-        dataSourceProperties.list(System.err);
-        dataSource =new HikariDataSource(new HikariConfig(dataSourceProperties));
-        dataSource.setDataSourceProperties(properties);
-*/        
-        System.err.println("Url: " + dataSource.getJdbcUrl());
-        System.err.println("Username: " + dataSource.getUsername());
-        System.err.println("Password: " + dataSource.getPassword());
-        System.err.println("Driver class name: " + dataSource.getDriverClassName());
-
-    }
-    
-    private Properties getProperties(String filename) {
-        Properties properties = new Properties();
-        FileInputStream in;
-        try {
-            File file = ResourceUtils.getFile(filename);
-            in = new FileInputStream(file); // file should use ISO 8859-1 character encoding and/or Unicode escapes
-        } catch (FileNotFoundException ex) {
-            logger.info("\"" + filename + "\" not found");
-            return null;
-        }
-        try {
-            properties.load(in);
-        } catch (IOException | IllegalArgumentException ex) {
-            logger.info("\"" + filename + "\" stream reading or Unicode escapes parsing error (should use ISO 8859-1 character encoding)");
-            return null;
-        }
-        try {
-            in.close();
-        } catch (IOException ex) {
-            logger.info("\"" + filename + "\" closing error");
-        }
-        
-        return properties;
-    }
-    
-    private Properties filterPropertiesByPrefix(Properties properties, String prefix) {
-        
-        Properties filteredProperties = new Properties();
-        
-        Set<String> keys = properties.stringPropertyNames();
-        for (String key : keys) {
-            if (key.startsWith(prefix)) {
-                filteredProperties.put(key.substring(prefix.length()), properties.getProperty(key));
-            }
-        }
-        
-        return filteredProperties;
-    }
-    
     private boolean successfulConnectionToEmbeddedDatabase(HikariDataSource dataSource) {
-        return testConnection(url, dataSource);
+        return testConnection(dataSource);
     }
-
+    
     private void setCredentials(HikariDataSource dataSource) {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
     }
-    
-    private boolean testConnection(String url, HikariDataSource dataSource) {
+
+    private boolean testConnection(HikariDataSource dataSource) {
         boolean success = false;
-        logger.info("Testing Database connection: " + url);
-        dataSource.setJdbcUrl(url);
+        
+        String testUrl = dataSource.getJdbcUrl();
+        
+        logger.info("Testing Database connection: " + testUrl);
+        Connection connection = null;
         try {
-            dataSource.getConnection();
-            logger.info("Database connected to: " + url);
+            connection = dataSource.getConnection();
+            logger.info("Database connected to: " + testUrl);
             success = true;
         } catch (SQLException ex) {
-            logger.info("Database connection failed: " + url);
+            logger.info("Database connection failed: " + testUrl);
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex1) {
+                logger.info("Database closing failed: " + testUrl);
+            }
         }
+        
         return success;
     }
 
@@ -271,6 +217,10 @@ public class DataSourceConfig {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
     }
 
 }
