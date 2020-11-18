@@ -7,25 +7,26 @@ package com.rent.domain.authmessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author czakot
  */
+@Component
 public final class AuthMessages {
     
     private final List<AuthMessage> authMessageList = new ArrayList<>();
     
-    private final MessageSource messageSource;
-    
-    public AuthMessages(String messageKey, MessageType messageType, MessageSource messageSource) {
-        this.messageSource = messageSource;
-        add(messageKey, messageType);
+    private MessageSource messageSource;
+
+    public AuthMessages() {
     }
     
-    public AuthMessages(MessageSource messageSource) {
-        this.messageSource = messageSource;
+    public AuthMessages(String messageKey, MessageType messageType) {
+        add(messageKey, messageType);
     }
     
     public void add(String messageKey, MessageType messageType) {
@@ -41,17 +42,16 @@ public final class AuthMessages {
         authMessageList.add(authMessage);
     }
     
-    public void clearIfHoldNotTrue(String hold) {
-        if (hold == null || !hold.equals("true")) {
-            clear();
-        }
-    }
-    
     public void clear() {
         authMessageList.clear();
     }
     
     public List<AuthMessage> getAuthMessageList() {
         return authMessageList;
+    }
+
+    @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }

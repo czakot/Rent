@@ -77,6 +77,7 @@ public class DataSourceConfig {
         dataSource.setDriverClassName(driverClassName);
         if (!successfulConnectionToEmbeddedDatabase(dataSource)) {
             dataSource = null;
+            logger.info("Could not reach and could not create Embedded Database.");
         }
 
         return dataSource;

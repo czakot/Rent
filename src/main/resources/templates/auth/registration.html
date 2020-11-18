@@ -16,7 +16,7 @@
     <div layout:fragment="content">
         <div class="middle-40-percent">
             <h2 id="registrationtitle" th:text="#{titleRegistration}">Registration</h2>
-            <div th:unless="${messageList.empty}" th:replace="auth/messages">messages fragment</div>
+            <div th:unless="${messageList.empty}" th:replace="auth/messages :: messages">messages fragment</div>
             <form id="registrationform" name="registrationform" action="/registrationprocess" method="post" class="form-border">
                 <input type="text" id="regFullName" name="regFullName" placeholder="Full name" th:placeholder="#{fullName}" required="" class="form-control"/> 
                 <input type="email" id="regEmail" name="regEmail" placeholder="Email" th:placeholder="#{emailAddr}" required="" class="form-control"/> 

@@ -15,7 +15,6 @@ import com.rent.domain.UserRegistrationDto;
 import com.rent.exception.MissingActivationCodeInUriException;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,24 +24,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     private UserService userService;
-    private MessageSource messageSource;
-    private AuthMessages authMessages = null;
+    private AuthMessages authMessages;
 
     @GetMapping({"/login", "/registration"})
-    public String auth(@RequestParam (required = false) String holdmessages,
+    public String auth(@RequestParam (required = false) String holdMessages,
                         HttpServletRequest request,
                         Model model,
                         Authentication authentication) {
 
-        return isAuthenticated(authentication) ? "redirect:/index" : getAuthView(holdmessages, request, model);
+        boolean clearMessages = !"true".equalsIgnoreCase(holdMessages);
+        return isAuthenticated(authentication) ? "redirect:/index" : getAuthView(clearMessages, request, model);
     }
     
-    private String getAuthView(String holdmessages, HttpServletRequest request, Model model) {
+    private String getAuthView(boolean clearMessages, HttpServletRequest request, Model model) {
         
         String targetUri;
         
-        initHtmlMessages(); // make it bean
-        authMessages.clearIfHoldNotTrue(holdmessages);
+        if (clearMessages) {
+            authMessages.clear();
+        }
         boolean adminExists = userService.adminExists();
         
         targetUri = adminExists ? "/auth" + request.getRequestURI() : getRegistrationViewNoAdmin();
@@ -76,7 +76,6 @@ public class AuthController {
         if (code == null) {
             throw new MissingActivationCodeInUriException("Activation link incomplete, missing activation code.", request.getServletPath());
         }
-        initHtmlMessages();
         User activatedUser = userService.userActivation(code);
         String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
@@ -88,33 +87,18 @@ public class AuthController {
         return "redirect:/login?holdmessages=true";
     }
  
-    private void initHtmlMessages() {
-        if(authMessages == null) {
-            authMessages = new AuthMessages(messageSource);
-        }
-    }
-    
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
     
-    @Autowired
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
     private boolean isAuthenticated(Authentication authentication) {
         return authentication!=null && authentication.isAuthenticated();
     }
     
-//    private boolean isAuthenticated(Authentication authentication, Model model) {
-//        if (authentication!=null && authentication.isAuthenticated()) {
-//            // prepare HtmlMessages: Already logged in
-//            initHtmlMessages();
-//            return true;
-//        }
-//        return false;
-//    }
+    @Autowired
+    public void setAuthMessages(AuthMessages authMessages) {
+        this.authMessages = authMessages;
+    }
     
 }
