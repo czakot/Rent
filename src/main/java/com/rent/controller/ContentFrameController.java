@@ -7,12 +7,10 @@ package com.rent.controller;
 
 import com.rent.domain.Role;
 import com.rent.domain.menu.Menu;
-import com.rent.service.UserDetailsImpl;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +39,7 @@ public class ContentFrameController {
 
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
-        Role role = Role.valueOf(getSelectedRoleOfAuthenticatedUser(authentication));
+        Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
         menu.setMenuByRole(role);
         return initAuthorizedContentFrame(model);
     }
@@ -54,12 +52,12 @@ public class ContentFrameController {
     
     @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
     public String selectedMenu(HttpServletRequest request) {
-        return request.getRequestURI().substring(1);
+        return request.getRequestURI();
     }
     
     @PostMapping("/roleselection")
     public String roleSelection(@RequestParam ("roleselector") String roleName, Authentication authentication) {
-        setSelectedRoleOfAuthenticatedUser(authentication, roleName);
+        userService.setSelectedRoleOfAuthenticatedUser(authentication, roleName);
         return "redirect:/homebyuserrole";
     }
     
@@ -69,14 +67,6 @@ public class ContentFrameController {
         return "/contentframe";
     }
     
-    private String getSelectedRoleOfAuthenticatedUser(Authentication authentication) {
-        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority();
-    }
-    
-    private void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {
-        ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
-    }
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;

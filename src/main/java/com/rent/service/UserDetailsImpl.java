@@ -78,7 +78,7 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
     }
     
     private Role getUserMostWeightedRole() {
-        return Role.getMostWeightedRole(user.getRoles());
+        return Role.getMostWeightedRoleFromSet(user.getRoles());
     }
 
     public void setUserSelectedRoleByName(String roleName) {

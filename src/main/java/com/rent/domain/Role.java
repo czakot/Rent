@@ -1,22 +1,30 @@
 package com.rent.domain;
 
+import java.util.Collections;
 import java.util.Set;
-
 
 public enum Role {
     ADMIN,
     OWNER,
     TENANT,
     TRUSTEE,
-    USER;
+    OBSERVER;
 
-    public static Role getMostWeightedRole(Set<Role> roleSet) {
-        return (Role)roleSet.toArray()[0];
+    public static Role getMostWeightedRoleFromSet(Set<Role> roleSet) {
+        return Collections.min(roleSet);
     }
     
     public static Role getRoleFromSetOfRolesByRoleName(Set<Role> roleSet, String roleName) {
-        Role role = Role.valueOf(roleName);
-        return roleSet.contains(role) ? role : null;
+        Role role;
+        try {
+            role = Role.valueOf(roleName);
+            if (!roleSet.contains(role)) {
+                role = null;
+            }
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            role = null;
+        }
+        return role;
     }
-
+    
 }

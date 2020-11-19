@@ -84,7 +84,7 @@ public class AuthController {
     
     private String redirectToLoginHoldingMessage(String message, MessageType messageType) {
         authMessages.clearAndAddFirst(message, messageType);
-        return "redirect:/login?holdmessages=true";
+        return "redirect:/login?holdMessages=true";
     }
  
     @Autowired

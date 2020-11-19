@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.rent.domain.Role;
 import com.rent.entity.User;
 import com.rent.repo.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean registerUser(User userToRegister) {
         boolean registered;
         if (adminExists()) {
-            registered = register(userToRegister, Role.USER);
+            registered = register(userToRegister, Role.OBSERVER);
         } else {
             userRepository.deleteAll();
             registered = register(userToRegister, Role.ADMIN);
@@ -109,6 +111,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean existsNotActivatedAdmin() {
         return numberOfUsersByRoleAndActivation(Role.ADMIN, !ACTIVATED) > 0;
+    }
+
+    @Override
+    public String getSelectedRoleOfAuthenticatedUser(Authentication authentication) {
+        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority();
+    }
+
+    @Override
+    public void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {
+        ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
     }
 
 }

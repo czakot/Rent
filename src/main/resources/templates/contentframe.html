@@ -16,11 +16,11 @@ and open the template in the editor.
 </head>
 <body>
     <div id="content" layout:fragment="content">
-        <h1 id="content-title" th:text="#{__(${selectedMenuItem.displayNameKey})__}">
+        <h1 id="content-title" th:text="#{__(${selectedMenuItem.contentPageRef})__}">
             Content title
         </h1>
         <iframe  id="content-body"
-                 th:src="'/' + ${selectedMenuItem.contentPageUri}"
+                 th:src="'/' + ${selectedMenuItem.contentPageRef}"
                  title="Rent individual action pages">
                  <!--frameBorder="0">-->
         </iframe>

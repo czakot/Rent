@@ -32,7 +32,8 @@ public class I18nConfig implements WebMvcConfigurer {
       messageSource.setBasenames("messages/messages",
                                 "messages/auth_messages",
                                 "messages/layout_messages",
-                                "messages/menu_messages");
+                                "messages/menu_messages",
+                                "messages/role_messages");
       messageSource.setDefaultEncoding("UTF-8");
       return messageSource;
   }

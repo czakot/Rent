@@ -51,7 +51,7 @@
                                 <select id="roleselector" name="roleselector">
                                     <option th:each="role: ${#authentication.getPrincipal().getAvailableAuthorities()}"
                                             th:value="${role}"
-                                            th:text="${role}"
+                                            th:text="#{__(${role})__}"
                                             th:selected="${role == #authentication.getPrincipal().getAuthorities()[0]}">
                                         Role list
                                     </option>
@@ -64,7 +64,7 @@
                         <strong>
                             <span id="roleselectsingle"
                                   th:if="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1"
-                                  th:text="${#authentication.getPrincipal().getAuthorities()[0]}">
+                                  th:text="#{__(${#authentication.getPrincipal().getAuthorities()[0]})__}">
                                 Single role
                             </span>
                         </strong>

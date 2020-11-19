@@ -11,15 +11,10 @@ package com.rent.domain.menu;
  */
 public class MenuItem {
     
-    private final String displayNameKey;
+    private final String contentPageRef;
 
-    public String getDisplayNameKey() {
-        return displayNameKey;
-    }
-    private final String contentPageUri;
-
-    public String getContentPageUri() {
-        return contentPageUri;
+    public String getContentPageRef() {
+        return contentPageRef;
     }
 
 //    boolean switchedOn;
@@ -27,14 +22,9 @@ public class MenuItem {
 //    String controller;
 //    List<MenuItem> subMenu = new ArrayList<>();
 
-    public MenuItem(String contentPageUri) {
-        this.displayNameKey = contentPageUri;
-        this.contentPageUri = contentPageUri;
-    }
-    
-    public MenuItem(String displayName, String contentPageUri) {
-        this.displayNameKey = displayName;
-        this.contentPageUri = contentPageUri;
+    public MenuItem(String contentPageRef) {
+        // display strings:(key = contentPageRef, def, eng, hu) => resources/messages/menu_messages_...propertirs
+        this.contentPageRef = contentPageRef;
     }
     
 //    public MenuItem(String displayName, boolean clickable, String controller) {

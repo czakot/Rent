@@ -7,7 +7,6 @@ package com.rent.domain.menu;
 
 import com.rent.domain.Role;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -51,9 +50,9 @@ public class Menu {
         
     }
     
-    public void setSelectedMenuItem(String targetUri) {
+    public void setSelectedMenuItem(String targetRef) {
         for(MenuItem menuItem : menuItems) {
-            if (menuItem.getContentPageUri().equals(targetUri)) {
+            if (menuItem.getContentPageRef().equals(targetRef)) {
                 selectedMenuItem = menuItem;
                 break;
             }

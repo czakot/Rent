@@ -1,6 +1,7 @@
 package com.rent.service;
 
 import com.rent.entity.User;
+import org.springframework.security.core.Authentication;
 
 public interface UserService {
     
@@ -13,5 +14,9 @@ public interface UserService {
     public boolean adminExists();
     
     public boolean existsNotActivatedAdmin();
+
+    public String getSelectedRoleOfAuthenticatedUser(Authentication authentication);
+
+    public void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName);
     
 }

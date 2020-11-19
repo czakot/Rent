@@ -20,8 +20,8 @@ and open the template in the editor.
     <nav id="menu" th:fragment="menu">
         <div id="menuitem">
             <a th:each="menuItem : ${menuItems}"
-               th:href="'/menuselect/' + ${menuItem.contentPageUri}"
-               th:text="#{__(${menuItem.displayNameKey})__}">
+               th:href="'/menuselect/' + ${menuItem.contentPageRef}"
+               th:text="#{__(${menuItem.contentPageRef})__}">
                 Menu item
             </a>
         </div>
