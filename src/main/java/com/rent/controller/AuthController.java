@@ -53,7 +53,7 @@ public class AuthController {
     }
     
     private String getRegistrationViewNoAdmin() {
-        String message =  userService.existsNotActivatedAdmin() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
+        String message =  userService.hasAdminNotActivated() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
         authMessages.add(message, MessageType.WARNING);
 
         return "/auth/registration";
@@ -87,13 +87,13 @@ public class AuthController {
         return "redirect:/login?holdMessages=true";
     }
  
+    private boolean isAuthenticated(Authentication authentication) {
+        return authentication!=null && authentication.isAuthenticated();
+    }
+    
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-    
-    private boolean isAuthenticated(Authentication authentication) {
-        return authentication!=null && authentication.isAuthenticated();
     }
     
     @Autowired

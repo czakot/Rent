@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean existsNotActivatedAdmin() {
+    public boolean hasAdminNotActivated() {
         return numberOfUsersByRoleAndActivation(Role.ADMIN, !ACTIVATED) > 0;
     }
 

@@ -13,7 +13,7 @@ public interface UserService {
     
     public boolean adminExists();
     
-    public boolean existsNotActivatedAdmin();
+    public boolean hasAdminNotActivated();
 
     public String getSelectedRoleOfAuthenticatedUser(Authentication authentication);
 
