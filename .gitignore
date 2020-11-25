@@ -34,3 +34,5 @@ build/
 /preferred_database_url.txt
 /h2store/data.mv.db
 /h2store/data.trace.db
+/h2store/
+/nbproject/
