@@ -5,7 +5,12 @@
  */
 package com.rent.utility;
 
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  *
@@ -14,14 +19,15 @@ import java.io.File;
 public class FillableText {
 
     private static final String INSERT_MARKER = "?";
+    private static final Logger logger = LoggerFactory.getLogger(FillableText.class);
     
-    public static String Fill(final String inputText, final String[] inputInserts) {
+    public static String fill(String inputText, final String[] inputInserts) {
         
         if (inputText == null) {
-            throw new IllegalArgumentException("'text' argument is null.");
+            throw new IllegalArgumentException("'inputText' argument is null.");
         }
         if (inputInserts == null) {
-            return inputText;
+            throw new IllegalArgumentException("'inputInserts' argument is null.");
         }
         
         StringBuilder text = new StringBuilder(inputText);
@@ -32,29 +38,39 @@ public class FillableText {
         
         while (!isPointerOutOfText(text, textPointer)) {
             int markerEndPointer = getMarkerEndPointer(text, textPointer);
-            if (textPointer == markerEndPointer + 1) {
+            if (textPointer == markerEndPointer - 1) {
                 textPointer++;
-                break;
+                continue;
             }
             int extractedInsertIndex = extractInsertIndex(text, textPointer, markerEndPointer);
-            if (extractedInsertIndex != expectedInsertIndex) {
+            if (expectedInsertIndex >= inserts.length || expectedInsertIndex != extractedInsertIndex) {
                 throw new VerifyError(String.format("Extracted (%d) insert index does not match to expected (%d).", extractedInsertIndex, expectedInsertIndex));
             }
-            textPointer = insert(text, textPointer - 1, inserts[expectedInsertIndex]);
+            textPointer = insert(text, textPointer, inserts[expectedInsertIndex]);
             expectedInsertIndex++;
             textPointer = getNextMarkerStartPointer(text, textPointer);
+        }
+        if (expectedInsertIndex != inserts.length) {
+                throw new VerifyError(String.format("Number of inserts (%d) does not match to expected (%d).", inserts.length, expectedInsertIndex));
         }
         
         return text.toString();
     }
     
-    public static String FileFill(File file, String[] inserts) {
-        StringBuilder sb = new StringBuilder();
-        
-        String inputText = "read in content of file";
-        Fill(inputText, inserts);
-        
-        return sb.toString();
+    public static String fileFill(String fileAccessString, String[] inserts) {
+
+        if (fileAccessString == null) {
+            throw new IllegalArgumentException("'fileAccessString' argument is null.");
+        }
+
+        String inputText = null;
+        try {
+            inputText = Files.readString(Path.of(fileAccessString));
+        } catch (IOException e) {
+            logger.error(String.format("'%s' file could not be reached or its content read into a string", fileAccessString));
+        }
+
+        return fill(inputText, inserts);
     }
 
     private static boolean isPointerOutOfText(StringBuilder text, int pointer) {
@@ -84,9 +100,9 @@ public class FillableText {
         return insertIndex;
     }
 
-    private static int insert(StringBuilder text, int pointer, String insertion) {
-        text.insert(pointer, insertion);
+    private static int insert(StringBuilder text, int pointer, String insert) {
+        text.insert(pointer, insert);
         
-        return pointer + insertion.length();
+        return pointer + insert.length();
     }
 }
