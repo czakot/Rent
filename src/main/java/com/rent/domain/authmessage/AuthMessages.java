@@ -31,17 +31,20 @@ public final class AuthMessages {
     
     public void add(String messageKey, MessageType messageType) {
         final AuthMessage authMessage = new AuthMessage(messageKey, messageType, messageSource);
+        addToMessageList(authMessage);
+    }
+
+    public void add(String messageKey, String[] inserts, MessageType messageType) {
+        final AuthMessage authMessage = new AuthMessage(messageKey, inserts, messageType, messageSource);
+        addToMessageList(authMessage);
+    }
+
+    private void addToMessageList(AuthMessage authMessage) {
         if (!authMessageList.contains(authMessage)) {
             authMessageList.add(authMessage);
         }
     }
-    
-    public void clearAndAddFirst(String messageKey, MessageType messageType) {
-        clear();
-        final AuthMessage authMessage = new AuthMessage(messageKey, messageType, messageSource);
-        authMessageList.add(authMessage);
-    }
-    
+
     public void clear() {
         authMessageList.clear();
     }

@@ -15,7 +15,7 @@
     <description>Managing estates especially for rent</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.11</java.version>
     </properties>
 
     <dependencies>
@@ -127,12 +127,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-<!--            <version>4.11</version>-->
         </dependency>
+-->
     </dependencies>
 
     <build>

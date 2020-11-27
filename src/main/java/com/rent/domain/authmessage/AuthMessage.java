@@ -6,6 +6,8 @@
 package com.rent.domain.authmessage;
 
 import java.util.Locale;
+
+import com.rent.utility.FillableText;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -15,24 +17,25 @@ import org.springframework.context.i18n.LocaleContextHolder;
  */
 public class AuthMessage {
     
-    private final String text;
+    private String text;
 
-    public String getText() {
-        return text;
-    }
+    private String cssClass;
 
-    private final String cssClass;
-
-    public String getCssClass() {
-        return cssClass;
-    }
-    
     public AuthMessage(String messageKey, MessageType messageType, MessageSource messageSource) {
-        Locale currentLocale = LocaleContextHolder.getLocale();
-        this.text = messageSource.getMessage(messageKey, null, currentLocale);
-        this.cssClass = messageType.cssClass;
+        initAuthMessage(messageKey, messageType, messageSource);
     }
-    
+
+    public AuthMessage(String messageKey, String[] inserts, MessageType messageType, MessageSource messageSource) {
+        initAuthMessage(messageKey, messageType, messageSource);
+        text = FillableText.fill(text, inserts);
+    }
+
+    private void initAuthMessage(String messageKey, MessageType messageType, MessageSource messageSource) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        text = messageSource.getMessage(messageKey, null, currentLocale);
+        cssClass = messageType.cssClass;
+    }
+
     @Override
     public boolean equals(Object obj) {
         // compare by content only
@@ -48,4 +51,13 @@ public class AuthMessage {
             AuthMessage r = (AuthMessage)obj;
             return this.text.equals(r.getText()) && this.cssClass.equals(r.getCssClass());
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
 }

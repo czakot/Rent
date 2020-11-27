@@ -53,8 +53,8 @@ public class AuthController {
     }
     
     private String getRegistrationViewNoAdmin() {
-        String message =  userService.hasAdminNotActivated() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
-        authMessages.add(message, MessageType.WARNING);
+        String messageKey =  userService.hasAdminNotActivated() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
+        authMessages.add(messageKey, MessageType.WARNING);
 
         return "/auth/registration";
     }
@@ -63,9 +63,9 @@ public class AuthController {
     public String processRegistration(UserRegistrationDto registrationDto) {
         User userToRegister = new User(registrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
-        String message = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
+        String messageKey = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
-        return redirectToLoginHoldingMessage(message, messageType);
+        return redirectToLoginHoldingMessage(messageKey, new String[]{userToRegister.getEmail()}, messageType);
     }
     
     @RequestMapping(path = {"/activation/", "/activation/{code}"}, method = RequestMethod.GET)
@@ -74,19 +74,29 @@ public class AuthController {
                              Model model) {
         // Just trying error handling
         if (code == null) {
-            throw new MissingActivationCodeInUriException("Activation link incomplete, missing activation code.", request.getServletPath());
+            throw new MissingActivationCodeInUriException(request.getServletPath());
         }
         User activatedUser = userService.userActivation(code);
-        String message = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
+        String messageKey = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
-        return redirectToLoginHoldingMessage(message, messageType);
+        String[] userEmail = activatedUser == null ? null : new String[]{activatedUser.getEmail()};
+        return redirectToLoginHoldingMessage(messageKey, userEmail, messageType);
     }
     
-    private String redirectToLoginHoldingMessage(String message, MessageType messageType) {
-        authMessages.clearAndAddFirst(message, messageType);
-        return "redirect:/login?holdMessages=true";
+    private String redirectToLoginHoldingMessage(String messageKey, MessageType messageType) {
+        return redirectToLoginHoldingMessage(messageKey, null, messageType);
     }
  
+    private String redirectToLoginHoldingMessage(String messageKey, String[] inserts, MessageType messageType) {
+        authMessages.clear();
+        if (inserts == null) {
+            authMessages.add(messageKey, messageType);
+        } else {
+            authMessages.add(messageKey, inserts, messageType);
+        }
+        return "redirect:/login?holdMessages=true";
+    }
+
     private boolean isAuthenticated(Authentication authentication) {
         return authentication!=null && authentication.isAuthenticated();
     }

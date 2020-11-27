@@ -44,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpStrictTransportSecurity().disable()
                 .frameOptions().sameOrigin()
                 ;
+        httpSec.sessionManagement()
+                .sessionFixation().newSession();
         httpSec
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/favicon.ico").permitAll()

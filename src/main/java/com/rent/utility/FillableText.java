@@ -5,12 +5,12 @@
  */
 package com.rent.utility;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.rent.exception.UnsuccessfulFileToStringConversion;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 
 /**
  *
@@ -19,8 +19,7 @@ import java.nio.file.Path;
 public class FillableText {
 
     private static final String INSERT_MARKER = "?";
-    private static final Logger logger = LoggerFactory.getLogger(FillableText.class);
-    
+
     public static String fill(String inputText, final String[] inputInserts) {
         
         if (inputText == null) {
@@ -63,11 +62,11 @@ public class FillableText {
             throw new IllegalArgumentException("'fileAccessString' argument is null.");
         }
 
-        String inputText = null;
+        String inputText;
         try {
             inputText = Files.readString(Path.of(fileAccessString));
         } catch (IOException e) {
-            logger.error(String.format("'%s' file could not be reached or its content read into a string", fileAccessString));
+            throw new UnsuccessfulFileToStringConversion(fileAccessString);
         }
 
         return fill(inputText, inserts);

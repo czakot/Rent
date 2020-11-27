@@ -1,6 +1,11 @@
 package com.rent.utility;
 
+import com.rent.exception.UnsuccessfulFileToStringConversion;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,6 +79,29 @@ class FillableTextTest {
         String txt = "aa?0bb?";
         String[] inserts = {"zero"};
         assertEquals("aazerobb?", FillableText.fill(txt, inserts));
+    }
+
+    @Test
+    void fileFill_fileNameNull() {
+        String fileName = null;
+        String [] inserts = {"zero"};
+        assertThrows(IllegalArgumentException.class, () -> FillableText.fileFill(fileName, inserts));
+    }
+
+    @Test
+    void fileFill_fileNameNonExistent() {
+        String fileName = "nonexistent.txt";
+        String [] inserts = {"zero"};
+        assertThrows(UnsuccessfulFileToStringConversion.class, () -> FillableText.fileFill(fileName, inserts));
+    }
+
+    @Test
+    void fileFill_testFile() throws IOException {
+        Path testFile = Path.of("fileFillTestFile.txt");
+        Files.writeString(testFile, "aa?0bb ?1 cc");
+        String [] inserts = {"zero", "one"};
+        assertEquals("aazerobb one cc", FillableText.fileFill("fileFillTestFile.txt", inserts));
+        Files.delete(testFile);
     }
 
 }
