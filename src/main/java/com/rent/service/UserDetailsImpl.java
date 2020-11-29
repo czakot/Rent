@@ -2,6 +2,7 @@ package com.rent.service;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -88,4 +89,16 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDetailsImpl)) return false;
+        UserDetailsImpl that = (UserDetailsImpl) o;
+        return user.equals(that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user);
+    }
 }

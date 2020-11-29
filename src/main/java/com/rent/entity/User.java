@@ -4,6 +4,7 @@ import com.rent.domain.Role;
 import com.rent.domain.UserRegistrationDto;
 import java.io.Serializable;
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -125,4 +126,16 @@ public class User implements Serializable {
         return "User [id=" + id + " full name=" + fullName + ", email=" + email + ", password=" + password + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getEmail().equals(user.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmail());
+    }
 }

@@ -6,10 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import java.util.List;
 
 // @EnableGlobalMethodSecurity(securedEnabled = true) // for usage of @Secured("<role>") to secure a method
 @Configuration
@@ -35,6 +41,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
     }
 
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
+/*
+    @Bean
+    public SessionRegistry getSessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+*/
+
     @Override
     protected void configure(final HttpSecurity httpSec) throws Exception {
         httpSec
@@ -43,10 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .headers()
                 .httpStrictTransportSecurity().disable()
                 .frameOptions().sameOrigin()
-                ;
-        httpSec.sessionManagement()
-                .sessionFixation().newSession();
-        httpSec
+                .and()
+
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/favicon.ico").permitAll()
                 .antMatchers("/db/**").permitAll() // for H2Console
@@ -57,21 +73,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
+
             .requiresChannel().anyRequest().requiresSecure() // instead of server.ssl.enabled = true
 //            .portMapper().http(8080).mapsTo(8443)
                 .and()
+
             .formLogin().loginPage("/login").permitAll()
                 .defaultSuccessUrl("/homebyuserrole")
 //                .defaultSuccessUrl("/dashboard")
 //                .successForwardUrl("/index")
 //                .failureForwardUrl("/authpage?pageMode=login&")
                 .and()
+
             .logout()
                 .logoutSuccessUrl("/login?logout=success")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()
+
+            .sessionManagement()
+                .sessionFixation().newSession()
+                .maximumSessions(1)
+                .expiredUrl("/login?expired=true")
+        // for default operation hashCode and equal in User and UserDetailsImpl were needed for "same" user recognition
+//                .sessionRegistry(getSessionRegistry())
                 ;
+
     }
 
 }

@@ -27,22 +27,26 @@ public class AuthController {
     private AuthMessages authMessages;
 
     @GetMapping({"/login", "/registration"})
-    public String auth(@RequestParam (required = false) String holdMessages,
-                        HttpServletRequest request,
-                        Model model,
-                        Authentication authentication) {
+    public String auth(@RequestParam (required = false, defaultValue = "false") Boolean holdMessages,
+                       @RequestParam (required = false, defaultValue = "false") Boolean expired,
+                       HttpServletRequest request,
+                       Model model,
+                       Authentication authentication) {
 
-        boolean clearMessages = !"true".equalsIgnoreCase(holdMessages);
-        return isAuthenticated(authentication) ? "redirect:/index" : getAuthView(clearMessages, request, model);
+        return isAuthenticated(authentication) ? "redirect:/index" : getAuthView(holdMessages, request, model, expired);
     }
-    
-    private String getAuthView(boolean clearMessages, HttpServletRequest request, Model model) {
+
+    private String getAuthView(boolean holdMessages, HttpServletRequest request, Model model, boolean expired) {
         
         String targetUri;
         
-        if (clearMessages) {
+        if (!holdMessages || expired) {
             authMessages.clear();
         }
+        if (expired) {
+            authMessages.add("sessionExpired", MessageType.WARNING);
+        }
+
         boolean adminExists = userService.adminExists();
         
         targetUri = adminExists ? "/auth" + request.getRequestURI() : getRegistrationViewNoAdmin();
@@ -82,11 +86,7 @@ public class AuthController {
         String[] userEmail = activatedUser == null ? null : new String[]{activatedUser.getEmail()};
         return redirectToLoginHoldingMessage(messageKey, userEmail, messageType);
     }
-    
-    private String redirectToLoginHoldingMessage(String messageKey, MessageType messageType) {
-        return redirectToLoginHoldingMessage(messageKey, null, messageType);
-    }
- 
+
     private String redirectToLoginHoldingMessage(String messageKey, String[] inserts, MessageType messageType) {
         authMessages.clear();
         if (inserts == null) {
@@ -94,6 +94,7 @@ public class AuthController {
         } else {
             authMessages.add(messageKey, inserts, messageType);
         }
+
         return "redirect:/login?holdMessages=true";
     }
 
