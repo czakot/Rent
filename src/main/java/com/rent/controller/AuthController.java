@@ -1,24 +1,18 @@
 package com.rent.controller;
 
+import com.rent.domain.UserRegistrationDto;
 import com.rent.domain.authmessage.AuthMessages;
 import com.rent.domain.authmessage.MessageType;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.rent.entity.User;
-import com.rent.domain.UserRegistrationDto;
 import com.rent.exception.MissingActivationCodeInUriException;
 import com.rent.service.UserService;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AuthController {
@@ -75,6 +69,7 @@ public class AuthController {
     @RequestMapping(path = {"/activation/", "/activation/{code}"}, method = RequestMethod.GET)
     public String activation(@PathVariable(name = "code", required = false) String code,
                              HttpServletRequest request,
+                             Authentication authentication,
                              Model model) {
         // Just trying error handling
         if (code == null) {
@@ -84,7 +79,11 @@ public class AuthController {
         String messageKey = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
         String[] userEmail = activatedUser == null ? null : new String[]{activatedUser.getEmail()};
-        return redirectToLoginHoldingMessage(messageKey, userEmail, messageType);
+        if (isAuthenticated(authentication)) {
+            return "/activationloggedin";
+        } else {
+            return redirectToLoginHoldingMessage(messageKey, userEmail, messageType);
+        }
     }
 
     private String redirectToLoginHoldingMessage(String messageKey, String[] inserts, MessageType messageType) {

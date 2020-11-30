@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent - Activation while logged in</title>
+    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentframe.css}"/>
+</head>
+<body>
+    <div id="content" layout:fragment="content">
+<!--    <h1 id="content-title" th:text="#{__(${selectedMenuItem.contentPageRef})__}">-->
+        <h1 id="content-title">
+            Activated registration
+        </h1>
+        Activation answer when a user logged in:<br>
+        <ol>
+            <li>Successful - logout current and go to login or continue</li>
+            <li>Unuccessful - continue</li>
+        </ol>
+    </div>
+</body>
+</html>
