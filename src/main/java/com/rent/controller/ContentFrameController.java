@@ -6,6 +6,7 @@
 package com.rent.controller;
 
 import com.rent.domain.Role;
+import com.rent.domain.authmessage.AuthMessage;
 import com.rent.domain.menu.Menu;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ContentFrameController {
-    
+
     UserService userService;
     Menu menu;
 
@@ -35,6 +36,14 @@ public class ContentFrameController {
         }
         model.addAttribute("adminExists", userService.adminExists());
         return "/index";
+    }
+
+    @RequestMapping("/activationloggedin")
+    public String activationAnswerWhenAUserLoggedIn(Model model) {
+        System.out.println(model.getAttribute("messageList"));
+        System.out.println(model.getAttribute("activatedUserEmail"));
+        model.addAttribute("menuItems", menu.getMenuItems());
+        return "/activationloggedin";
     }
 
     @RequestMapping("/homebyuserrole")

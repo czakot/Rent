@@ -1,6 +1,7 @@
 package com.rent.controller;
 
 import com.rent.domain.UserRegistrationDto;
+import com.rent.domain.authmessage.AuthMessage;
 import com.rent.domain.authmessage.AuthMessages;
 import com.rent.domain.authmessage.MessageType;
 import com.rent.entity.User;
@@ -11,8 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 @Controller
 public class AuthController {
@@ -70,7 +73,7 @@ public class AuthController {
     public String activation(@PathVariable(name = "code", required = false) String code,
                              HttpServletRequest request,
                              Authentication authentication,
-                             Model model) {
+                             RedirectAttributes ra) {
         // Just trying error handling
         if (code == null) {
             throw new MissingActivationCodeInUriException(request.getServletPath());
@@ -80,21 +83,29 @@ public class AuthController {
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
         String[] userEmail = activatedUser == null ? null : new String[]{activatedUser.getEmail()};
         if (isAuthenticated(authentication)) {
-            return "/activationloggedin";
+            return redirectToActivationLoggedIn(ra, messageKey,userEmail, messageType);
         } else {
             return redirectToLoginHoldingMessage(messageKey, userEmail, messageType);
         }
     }
 
+    private String redirectToActivationLoggedIn(RedirectAttributes ra, String messageKey, String[] userEmail, MessageType messageType) {
+        authMessagesClearAndAdd(messageKey, userEmail, messageType);
+        ra.addFlashAttribute("activatedUserEmail", userEmail);
+        ra.addFlashAttribute("messageList", authMessages.getAuthMessageList());
+//        return "forward:/activationloggedin";
+        return "redirect:/activationloggedin";
+    }
+
     private String redirectToLoginHoldingMessage(String messageKey, String[] inserts, MessageType messageType) {
-        authMessages.clear();
-        if (inserts == null) {
-            authMessages.add(messageKey, messageType);
-        } else {
-            authMessages.add(messageKey, inserts, messageType);
-        }
+        authMessagesClearAndAdd(messageKey, inserts, messageType);
 
         return "redirect:/login?holdMessages=true";
+    }
+
+    private void authMessagesClearAndAdd(String messageKey, String[] inserts, MessageType messageType) {
+        authMessages.clear();
+        authMessages.add(messageKey, inserts, messageType);
     }
 
     private boolean isAuthenticated(Authentication authentication) {

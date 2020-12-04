@@ -14,5 +14,5 @@ public class WebConfig implements WebMvcConfigurer {
 //        registry.addViewController("/registration").setViewName("auth/registration");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);		
 	}
-	
+
 }

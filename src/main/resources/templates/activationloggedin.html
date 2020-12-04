@@ -8,18 +8,26 @@
     <meta charset="UTF-8">
     <title>Rent - Activation while logged in</title>
     <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentframe.css}"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
+    <link rel="stylesheet" href="../../static/css/authpages.css" th:href="@{/css/authpages.css}"/>
+    <link rel="stylesheet" href="../../static/css/activationloggedin.css" th:href="@{/css/activationloggedin.css}"/>
 </head>
 <body>
     <div id="content" layout:fragment="content">
-<!--    <h1 id="content-title" th:text="#{__(${selectedMenuItem.contentPageRef})__}">-->
-        <h1 id="content-title">
-            Activated registration
+        <h1 id="content-title" th:text="#{contentTitleActivationResult}">
+            Activating registration result
         </h1>
-        Activation answer when a user logged in:<br>
-        <ol>
-            <li>Successful - logout current and go to login or continue</li>
-            <li>Unuccessful - continue</li>
-        </ol>
+        <div class="contentinnernarrow">
+        <div th:unless="${#list.isEmpty(messageList)}" th:replace="auth/messages :: messages">messages fragment</div>
+<!--        <div th:unless="${messageList.empty}" th:replace="auth/messages :: messages">messages fragment</div>-->
+        <div th:unless="${activatedUserEmail == 'null'}">
+        </div>
+        <div th:if="${activatedUserEmail == 'null'}">
+            <button type="button" th:text="#{forwardToLogin}" class="btn btn-primary btn-block">Close Tab</button>
+        </div>
+            <button type="button" th:text="#{buttonCloseTab}" class="btn btn-primary btn-block">Close Tab</button>
+        </div>
     </div>
 </body>
 </html>
