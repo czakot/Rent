@@ -12,6 +12,7 @@
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="../../static/css/authpages.css" th:href="@{/css/authpages.css}"/>
     <link rel="stylesheet" href="../../static/css/activationloggedin.css" th:href="@{/css/activationloggedin.css}"/>
+    <script src="/../../static/js/activationloggedin.js" th:src="@{/js/activationloggedin.js}"></script>
 </head>
 <body>
     <div id="content" layout:fragment="content">
@@ -19,14 +20,15 @@
             Activating registration result
         </h1>
         <div class="contentinnernarrow">
-        <div th:unless="${#list.isEmpty(messageList)}" th:replace="auth/messages :: messages">messages fragment</div>
-<!--        <div th:unless="${messageList.empty}" th:replace="auth/messages :: messages">messages fragment</div>-->
-        <div th:unless="${activatedUserEmail == 'null'}">
-        </div>
-        <div th:if="${activatedUserEmail == 'null'}">
-            <button type="button" th:text="#{forwardToLogin}" class="btn btn-primary btn-block">Close Tab</button>
-        </div>
-            <button type="button" th:text="#{buttonCloseTab}" class="btn btn-primary btn-block">Close Tab</button>
+            <div th:unless="${#list.isEmpty(messageList)}" th:replace="auth/messages :: messages">messages fragment</div>
+            <div th:if="${activatedUserEmail == ''}">
+                <p th:text="#{continueYourWork}">You can continue your activity choosing a menu item from the left.</p>
+            </div>
+            <div th:unless="${activatedUserEmail == ''}">
+                <p th:text="${activatedUserEmail}">activatedUserEmail</p>
+                <button id="forwardButton" type="button" th:text="#{forwardToLogin}" class="btn btn-primary btn-block">Logout and forward to Login</button>
+                <p th:text="#{orContinueYourWork}">You can continue your activity choosing a menu item from the left.</p>
+            </div>
         </div>
     </div>
 </body>

@@ -66,14 +66,15 @@ public class AuthController {
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String messageKey = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
-        return redirectToLoginHoldingMessage(messageKey, new String[]{userToRegister.getEmail()}, messageType);
+        return redirectToLoginHoldingMessage(messageKey, userToRegister.getEmail(), messageType);
     }
     
     @RequestMapping(path = {"/activation/", "/activation/{code}"}, method = RequestMethod.GET)
     public String activation(@PathVariable(name = "code", required = false) String code,
                              HttpServletRequest request,
                              Authentication authentication,
-                             RedirectAttributes ra) {
+                             RedirectAttributes ra,
+                             Model model) {
         // Just trying error handling
         if (code == null) {
             throw new MissingActivationCodeInUriException(request.getServletPath());
@@ -81,31 +82,34 @@ public class AuthController {
         User activatedUser = userService.userActivation(code);
         String messageKey = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
-        String[] userEmail = activatedUser == null ? null : new String[]{activatedUser.getEmail()};
+        String userEmail = activatedUser == null ? null : activatedUser.getEmail();
         if (isAuthenticated(authentication)) {
-            return redirectToActivationLoggedIn(ra, messageKey,userEmail, messageType);
+            return forwardToActivationLoggedIn(model, messageKey, userEmail, messageType);
         } else {
             return redirectToLoginHoldingMessage(messageKey, userEmail, messageType);
         }
     }
 
-    private String redirectToActivationLoggedIn(RedirectAttributes ra, String messageKey, String[] userEmail, MessageType messageType) {
+    private String forwardToActivationLoggedIn(Model model, String messageKey, String userEmail, MessageType messageType) {
         authMessagesClearAndAdd(messageKey, userEmail, messageType);
-        ra.addFlashAttribute("activatedUserEmail", userEmail);
-        ra.addFlashAttribute("messageList", authMessages.getAuthMessageList());
-//        return "forward:/activationloggedin";
-        return "redirect:/activationloggedin";
+        model.addAttribute("activatedUserEmail", userEmail);
+        model.addAttribute("messageList", authMessages.getAuthMessageList());
+        return "forward:/activationloggedin";
     }
 
-    private String redirectToLoginHoldingMessage(String messageKey, String[] inserts, MessageType messageType) {
-        authMessagesClearAndAdd(messageKey, inserts, messageType);
+    private String redirectToLoginHoldingMessage(String messageKey, String insert, MessageType messageType) {
+        authMessagesClearAndAdd(messageKey, insert, messageType);
 
         return "redirect:/login?holdMessages=true";
     }
 
-    private void authMessagesClearAndAdd(String messageKey, String[] inserts, MessageType messageType) {
+    private void authMessagesClearAndAdd(String messageKey, String insert, MessageType messageType) {
         authMessages.clear();
-        authMessages.add(messageKey, inserts, messageType);
+        if (insert == null) {
+            authMessages.add(messageKey, messageType);
+        } else {
+            authMessages.add(messageKey, insert, messageType);
+        }
     }
 
     private boolean isAuthenticated(Authentication authentication) {

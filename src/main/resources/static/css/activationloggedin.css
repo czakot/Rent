@@ -1,4 +1,8 @@
 .contentinnernarrow {
-    width: 50%;
-    margin: auto;
+    width: 70%;
+    margin: 50px auto auto auto;
+}
+
+#forwardButton {
+    margin-bottom: 10px;
 }

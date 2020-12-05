@@ -40,8 +40,6 @@ public class ContentFrameController {
 
     @RequestMapping("/activationloggedin")
     public String activationAnswerWhenAUserLoggedIn(Model model) {
-        System.out.println(model.getAttribute("messageList"));
-        System.out.println(model.getAttribute("activatedUserEmail"));
         model.addAttribute("menuItems", menu.getMenuItems());
         return "/activationloggedin";
     }

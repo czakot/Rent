@@ -34,6 +34,10 @@ public final class AuthMessages {
         addToMessageList(authMessage);
     }
 
+    public void add(String messageKey, String insert, MessageType messageType) {
+        add(messageKey, new String[]{insert}, messageType);
+    }
+
     public void add(String messageKey, String[] inserts, MessageType messageType) {
         if (inserts != null) {
             final AuthMessage authMessage = new AuthMessage(messageKey, inserts, messageType, messageSource);
