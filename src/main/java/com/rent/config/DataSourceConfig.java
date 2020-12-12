@@ -6,14 +6,6 @@
 package com.rent.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Scanner;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,6 +14,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  *
@@ -50,7 +50,7 @@ public class DataSourceConfig {
     
     @Profile("server_db")
     @Bean(name = "serverDataSource")
-    public DataSource getServerDataSource(ConfigurableApplicationContext applicationContext) {
+    public DataSource getServerDataSource() {
 
         HikariDataSource dataSource = new HikariDataSource();
         
@@ -60,7 +60,7 @@ public class DataSourceConfig {
         if (!successfulConnectionToPreferredDatabaseHost(dataSource) &&
             !successfulConnectionToAnyDatabaseHost(dataSource)) {
             dataSource = null;
-            logger.info("No availabele Database Server.");
+            logger.info("No available Database Server.");
         } 
         
         return dataSource;
@@ -136,7 +136,7 @@ public class DataSourceConfig {
     private void savePreferredUrl(String url) {
         
         try {
-            PrintWriter pr = new PrintWriter(new File(preferredDatabaseUrlFilename));
+            PrintWriter pr = new PrintWriter(preferredDatabaseUrlFilename);
             pr.print(url);
             pr.flush();
         } catch (FileNotFoundException ex) {
