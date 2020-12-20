@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -30,38 +31,41 @@ public class AuthController {
                        Model model,
                        Authentication authentication) {
 
-        return isAuthenticated(authentication) ? "redirect:/index" : getAuthView(holdMessages, request, model, expired);
+        String viewTarget = "redirect:/index";
+
+        if (!isAuthenticated(authentication)) {
+            viewTarget = getAuthView(holdMessages, request, model, expired);
+        }
+
+        return viewTarget;
     }
 
     private String getAuthView(boolean holdMessages, HttpServletRequest request, Model model, boolean expired) {
         
-        String targetUri;
+        String targetUri = request.getRequestURI();
         
-        if (!holdMessages || expired) {
+        if (!holdMessages) {
             authMessages.clear();
         }
         if (expired) {
-            authMessages.add("sessionExpired", MessageType.WARNING);
+            authMessagesClearAndAdd("sessionExpired", null, MessageType.WARNING);
         }
 
         boolean adminExists = userService.adminExists();
-        
-        targetUri = adminExists ? "/auth" + request.getRequestURI() : getRegistrationViewNoAdmin();
+        if (!adminExists) {
+            targetUri = "/registration";
+            String messageKey =  userService.hasAdminNotActivated() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
+            authMessages.add(messageKey, MessageType.WARNING);
+        }
         model.addAttribute("adminExists", adminExists);
         model.addAttribute("messageList", authMessages.getAuthMessageList());
-        
-        return targetUri;
-    }
-    
-    private String getRegistrationViewNoAdmin() {
-        String messageKey =  userService.hasAdminNotActivated() ? "activateOrRegisterFirstAdmin" : "firstUserAsAdmin";
-        authMessages.add(messageKey, MessageType.WARNING);
 
-        return "/auth/registration";
+        return targetUri;
     }
 
     @PostMapping(value = "/registrationprocess")
     public String processRegistration(UserRegistrationDto registrationDto) {
+
         User userToRegister = new User(registrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String messageKey = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";

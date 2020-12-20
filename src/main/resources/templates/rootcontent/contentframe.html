@@ -6,22 +6,24 @@ and open the template in the editor.
 -->
 <html lang="en" 
       xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://thymeleaf.org"
       layout:decorate="~{layout/main}">
 <head>
     <title>Rent - Authorized Content Frame</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/css/contentframe.css}"/>
+    <link rel="stylesheet" href="../static/css/rootcontent/contentframe.css" th:href="@{/css/rootcontent/contentframe.css}"/>
 </head>
 <body>
     <div id="content" layout:fragment="content">
-        <h1 id="content-title" th:text="#{__(${selectedMenuItem.contentPageRef})__}">
+        <h1 id="content-title" >
+<!--        <h1 id="content-title" th:text="#{__(${selectedMenuItem.contentPageRef})__}">-->
             Content title
         </h1>
         <iframe  id="content-body"
-                 th:src="'/' + ${selectedMenuItem.contentPageRef}"
+                 src="/rootcontent/userprofile"
                  title="Rent individual action pages">
+<!--                 th:src="'/rootcontent/' + ${selectedMenuItem.contentPageRef}"-->
                  <!--frameBorder="0">-->
         </iframe>
     </div>

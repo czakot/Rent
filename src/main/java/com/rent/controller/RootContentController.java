@@ -6,7 +6,6 @@
 package com.rent.controller;
 
 import com.rent.domain.Role;
-import com.rent.domain.authmessage.AuthMessage;
 import com.rent.domain.menu.Menu;
 import com.rent.service.UserService;
 import javax.servlet.http.HttpServletRequest;
@@ -16,50 +15,50 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author czakot
  */
 @Controller
-public class ContentFrameController {
+public class RootContentController {
 
     UserService userService;
     Menu menu;
 
-    @RequestMapping({"/", "/index"})
-    public String index(Authentication authentication, Model model) {
-        if (authentication!=null && authentication.isAuthenticated()) {
-            return "redirect:/homebyuserrole";
-        }
-        model.addAttribute("adminExists", userService.adminExists());
-        return "/index";
-    }
-
     @RequestMapping("/activationloggedin")
     public String activationAnswerWhenAUserLoggedIn(Model model) {
         model.addAttribute("menuItems", menu.getMenuItems());
-        return "/activationloggedin";
+        return "activationloggedin.html";
     }
 
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
+        System.out.println("/homebyuserrole controller");
         Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
         menu.setMenuByRole(role);
-        return initAuthorizedContentFrame(model);
+
+        String retString = initAuthorizedContentFrame(model);
+        System.out.println("rString = " + retString);
+        return retString;
+
+//        return initAuthorizedContentFrame(model);
     }
-    
+
     @RequestMapping(path = "/menuselect/{target}")
     public String menuSelect(@PathVariable String target, Model model) {
         menu.setSelectedMenuItem(target);
         return initAuthorizedContentFrame(model);
     }
-    
+
     @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
     public String selectedMenu(HttpServletRequest request) {
-        return request.getRequestURI();
+        System.out.println("/noticeboard*, /userprofile, /dashboard controller");
+
+        String retString = request.getRequestURI();
+        System.out.println("rString = " + retString);
+        return retString;
+
+//        return request.getRequestURI();
     }
     
     @PostMapping("/roleselection")
@@ -72,6 +71,7 @@ public class ContentFrameController {
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
         return "/contentframe";
+//        return "/rootcontent/contentframe";
     }
     
     @Autowired
