@@ -34,9 +34,13 @@ public class Menu {
 
     public Menu() {
         MenuItem menuItem;
-        menuItem = new MenuItem("noticeboard");
+
+        menuItem = new MenuItem("realestates");
         menuItems.add(menuItem);
         
+        menuItem = new MenuItem("noticeboard");
+        menuItems.add(menuItem);
+
         menuItem = new MenuItem("userprofile");
         menuItems.add(menuItem);
 

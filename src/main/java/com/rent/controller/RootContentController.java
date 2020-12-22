@@ -28,20 +28,15 @@ public class RootContentController {
     @RequestMapping("/activationloggedin")
     public String activationAnswerWhenAUserLoggedIn(Model model) {
         model.addAttribute("menuItems", menu.getMenuItems());
-        return "activationloggedin.html";
+        return "rootcontent/activationloggedin";
     }
 
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
-        System.out.println("/homebyuserrole controller");
         Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
         menu.setMenuByRole(role);
 
-        String retString = initAuthorizedContentFrame(model);
-        System.out.println("rString = " + retString);
-        return retString;
-
-//        return initAuthorizedContentFrame(model);
+        return initAuthorizedContentFrame(model);
     }
 
     @RequestMapping(path = "/menuselect/{target}")
@@ -50,15 +45,9 @@ public class RootContentController {
         return initAuthorizedContentFrame(model);
     }
 
-    @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
+    @RequestMapping({"/realestates", "/noticeboard*", "/userprofile", "/dashboard"})
     public String selectedMenu(HttpServletRequest request) {
-        System.out.println("/noticeboard*, /userprofile, /dashboard controller");
-
-        String retString = request.getRequestURI();
-        System.out.println("rString = " + retString);
-        return retString;
-
-//        return request.getRequestURI();
+        return "rootcontent" + request.getRequestURI();
     }
     
     @PostMapping("/roleselection")
@@ -70,8 +59,7 @@ public class RootContentController {
     private String initAuthorizedContentFrame(Model model) {
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        return "/contentframe";
-//        return "/rootcontent/contentframe";
+        return "rootcontent/contentframe";
     }
     
     @Autowired

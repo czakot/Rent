@@ -60,7 +60,7 @@ public class AuthController {
         model.addAttribute("adminExists", adminExists);
         model.addAttribute("messageList", authMessages.getAuthMessageList());
 
-        return targetUri;
+        return "auth" + targetUri;
     }
 
     @PostMapping(value = "/registrationprocess")

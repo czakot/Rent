@@ -9,12 +9,13 @@ and open the template in the editor.
 */
 #content-title {
     display: block;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: normal;
     color: #1f6991;
-    margin: 0 0 10px 0;;
-    /*padding: 0;*/
+    margin: 5px 3px 20px;
+    padding: 2px 0 0 1px;
     border-bottom: 1px solid #e95d0f;
+    line-height: 150%;
 }
 
 iframe {
