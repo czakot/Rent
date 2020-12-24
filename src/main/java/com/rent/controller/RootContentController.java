@@ -34,7 +34,7 @@ public class RootContentController {
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
         Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
-        menu.setMenuByRole(role);
+        menu.setForRole(role);
 
         return initAuthorizedContentFrame(model);
     }

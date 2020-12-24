@@ -5,33 +5,41 @@
  */
 package com.rent.domain.menu;
 
+import com.rent.domain.Role;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author czakot
  */
-public class MenuItem {
+public class MenuItem extends MenuBaseElement{
     
-    private final String contentPageRef;
+    // reference = contentPageRef;
 
-    public String getContentPageRef() {
-        return contentPageRef;
-    }
+    List<Tab> tabs = new ArrayList<>();
 
-//    boolean switchedOn;
-//    boolean clickable;
-//    String controller;
-//    List<MenuItem> subMenu = new ArrayList<>();
-
-    public MenuItem(String contentPageRef) {
-        // display strings:(key = contentPageRef, def, eng, hu) => resources/messages/menu_messages_...propertirs
-        this.contentPageRef = contentPageRef;
+    public MenuItem(String reference, List<Role> availableFor) {
+        super('/' + reference, reference,  availableFor);
+        // display strings:(key = reference, def, eng, hu) => resources/messages/menu_messages_...properties
     }
     
-//    public MenuItem(String displayName, boolean clickable, String controller) {
-//        this.displayName = displayName;
-//        this.clickable = clickable;
-//        this.controller = controller;
-//    }
-    
+    public MenuItem(String uri, String displayReference, List<Role> availableFor) {
+        super(uri, displayReference, availableFor);
+        // display strings:(key = reference, def, eng, hu) => resources/messages/menu_messages_...properties
+    }
+
+    @Override
+    public void setAvailableByRole(Role role) {
+        super.setAvailableByRole(role);
+        for (Tab tab : tabs) {
+            if (available) {
+                tab.setAvailableByRole(role);
+            } else {
+                tab.setAvailable(false);
+            }
+        }
+    }
     
 }

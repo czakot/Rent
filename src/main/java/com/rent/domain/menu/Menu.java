@@ -7,7 +7,9 @@ package com.rent.domain.menu;
 
 import com.rent.domain.Role;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,13 +18,36 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Menu {
-    private final List<MenuItem> menuItems = new ArrayList<>();
-    
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
-    }
 
+    public static final List<Role> allRole = Arrays.asList(Role.values());
+
+    private final List<MenuItem> menuItems = new ArrayList<>();
     private MenuItem selectedMenuItem;
+
+    public Menu() {
+        MenuItem menuItem;
+
+        menuItems.add(new MenuItem("realestates", allRole));
+        menuItems.add(new MenuItem("noticeboard", allRole));
+        menuItems.add(new MenuItem("userprofile", allRole));
+        menuItems.add(new MenuItem("dashboard", allRole));
+        selectedMenuItem = menuItems.get(0);
+    }
+    
+    public void setForRole(Role role) {
+        for (MenuItem menuItem : menuItems) {
+            menuItem.setAvailableByRole(role);
+        }
+    }
+    
+    public void setSelectedMenuItem(String displayReference) {
+        for (MenuItem menuItem : menuItems) {
+            if (menuItem.getReference().equals(displayReference)) {
+                selectedMenuItem = menuItem;
+                break;
+            }
+        }
+    }
 
     public MenuItem getSelectedMenuItem() {
         return selectedMenuItem;
@@ -32,35 +57,8 @@ public class Menu {
         this.selectedMenuItem = selectedMenuItem;
     }
 
-    public Menu() {
-        MenuItem menuItem;
-
-        menuItem = new MenuItem("realestates");
-        menuItems.add(menuItem);
-        
-        menuItem = new MenuItem("noticeboard");
-        menuItems.add(menuItem);
-
-        menuItem = new MenuItem("userprofile");
-        menuItems.add(menuItem);
-
-        menuItem = new MenuItem("dashboard");
-        menuItems.add(menuItem);
-
-        selectedMenuItem = menuItems.get(0);
+    public List<MenuItem> getMenuItems() {
+        return menuItems;
     }
-    
-    public void setMenuByRole(Role role) {
-        
-    }
-    
-    public void setSelectedMenuItem(String targetRef) {
-        for(MenuItem menuItem : menuItems) {
-            if (menuItem.getContentPageRef().equals(targetRef)) {
-                selectedMenuItem = menuItem;
-                break;
-            }
-        }
-    }
-    
+
 }
