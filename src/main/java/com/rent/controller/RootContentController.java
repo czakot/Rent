@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class RootContentController {
 
-    UserService userService;
-    Menu menu;
+    private UserService userService;
+    private Menu menu;
 
     @RequestMapping("/activationloggedin")
     public String activationAnswerWhenAUserLoggedIn(Model model) {
@@ -35,7 +35,6 @@ public class RootContentController {
     public String homeByUserRole(Model model, Authentication authentication) {
         Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
         menu.setForRole(role);
-
         return initAuthorizedContentFrame(model);
     }
 
@@ -45,7 +44,7 @@ public class RootContentController {
         return initAuthorizedContentFrame(model);
     }
 
-    @RequestMapping({"/realestates", "/noticeboard*", "/userprofile", "/dashboard"})
+    @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
     public String selectedMenu(HttpServletRequest request) {
         return "rootcontent" + request.getRequestURI();
     }
@@ -59,7 +58,7 @@ public class RootContentController {
     private String initAuthorizedContentFrame(Model model) {
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        return "rootcontent/contentframe";
+        return "layout/contentframe";
     }
     
     @Autowired

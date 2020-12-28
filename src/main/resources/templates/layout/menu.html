@@ -19,11 +19,14 @@ and open the template in the editor.
 <body>
     <nav id="menu" th:fragment="menu">
         <div id="menuitem">
-            <a th:each="menuItem : ${menuItems}"
-               th:href="'/menuselect/' + ${menuItem.contentPageRef}"
-               th:text="#{__(${menuItem.contentPageRef})__}">
-                Menu item
-            </a>
+            <!--/*@thymesVar id="menuItems" type="java.util.List<MenuItem>"*/-->
+            <span th:each="menuItem : ${menuItems}">
+                <a th:if="${menuItem.available}"
+                   th:href="'/menuselect' + ${menuItem.controllerUri}"
+                   th:text="#{__${menuItem.reference}__}">
+                    Menu item
+                </a>
+            </span>
         </div>
     </nav>
 </body>

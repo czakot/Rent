@@ -1,26 +1,36 @@
 package com.rent.config;
 
+import com.rent.domain.Role;
+import com.rent.entity.MenuNode;
+import com.rent.repo.MenuNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // @EnableGlobalMethodSecurity(securedEnabled = true) // for usage of @Secured("<role>") to secure a method
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true/*, securedEnabled = true, jsr250Enabled = false*/)
+/*
+public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+}
+*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private MenuNodeRepository menuNodeRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,7 +80,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/registration").permitAll()
                 .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").permitAll()
                 .antMatchers("/forgottenpassword").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                ;
+
+        antMatchersFromControllerUriDatabase(httpSec, true); // true for printing Matchers
+
+        httpSec
+            .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
 
@@ -95,10 +110,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionFixation().newSession()
                 .maximumSessions(1)
                 .expiredUrl("/login?expired=true")
-        // for default operation hashCode and equal in User and UserDetailsImpl were needed for "same" user recognition
+        // for default operation hashCode and equals in User and UserDetailsImpl were needed for "same" user recognition
 //                .sessionRegistry(getSessionRegistry())
                 ;
 
+    }
+
+    private void antMatchersFromControllerUriDatabase(HttpSecurity httpSec, boolean doPrint) throws Exception {
+
+        for (MenuNode menuNode : menuNodeRepository.findAll()) {
+            String uri = menuNode.getControllerUri();
+            if (uri == null) {
+                continue;
+            }
+            if (doPrint) {
+                List<Role> roles = new ArrayList<>(menuNode.getRoles());
+                System.out.printf("%s%s\n",uri, roles);
+            }
+            String[] roleArray = menuNode.getRoles().stream().map(role -> role.name()).toArray(String[]::new);
+            httpSec.authorizeRequests().antMatchers(uri).hasAnyRole(roleArray);
+        }
     }
 
 }

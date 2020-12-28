@@ -12,13 +12,15 @@
     <link rel="stylesheet" href="../../static/css/layout/header.css" th:href="@{/css/layout/header.css}"/>
 </head>
 <body>
+    <!--/*@thymesVar id="role" type="com.rent.domain.Role"*/-->
+    <!--/*@thymesVar id="adminExists" type="java.lang.Boolean"*/-->
     <header id="header" th:fragment="header">
         <div id="header-left">
-            <a    th:unless="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}" 
-                  th:insert=":: headerlogo" 
+            <a    th:unless="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}"
+                  th:insert=":: headerlogo"
                   id="headerlogoanchor" href='/'>
             </a>
-            <span th:if="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}" 
+            <span th:if="${#httpServletRequest.getRequestURI() == '/'} or ${#authorization.expression('isAuthenticated()')}"
                   th:insert=":: headerlogo">
             </span>
             <span style="display: none">
@@ -51,7 +53,7 @@
                                 <select id="roleselector" name="roleselector">
                                     <option th:each="role: ${#authentication.getPrincipal().getAvailableAuthorities()}"
                                             th:value="${role}"
-                                            th:text="#{__(${role})__}"
+                                            th:text="#{__${role}__}"
                                             th:selected="${role == #authentication.getPrincipal().getAuthorities()[0]}">
                                         Role list
                                     </option>
@@ -64,11 +66,11 @@
                         <strong>
                             <span id="roleselectsingle"
                                   th:if="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1"
-                                  th:text="#{__(${#authentication.getPrincipal().getAuthorities()[0]})__}">
+                                  th:text="#{__${#authentication.getPrincipal().getAuthorities()[0]}__}">
                                 Single role
                             </span>
                         </strong>
-                    </div> 
+                    </div>
                     <span  sec:authorize="!isAuthenticated()" id="authlinks">
                         <a th:if="${adminExists}" id="loginlink" href="/login?holdmessages=true" class="button">
                             <span th:text="#{headerButtonLogin}">login</span>

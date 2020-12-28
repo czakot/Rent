@@ -1,0 +1,50 @@
+#tabs, #tabs nav, #tabs ul {
+    margin: 0;
+    padding: 0;
+}
+
+#tabs {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 100%;
+    line-height: 100%;
+}
+
+#tabs ul {
+    /*    for eliminating extra gap between <il> (or included <a>) tags */
+    font-size: 0;
+    list-style-type: none;
+}
+
+#tabs li {
+    display: inline-block;
+    font-size: 14px;
+}
+
+#tabs a {
+    color: #000;
+    text-decoration: none;
+    padding: 4px 5px;
+    /*height: 32px;*/
+    /*line-height: 32px;*/
+    /*font-size: 14px;*/
+    margin-right: 2px;
+}
+
+a.tabplain {
+    background: #EEEEEE;
+    border: solid 1px #B0B0B0;
+}
+
+a.tabcurrent {
+    background: #93a543;
+    border: solid 1px #93a543;
+}
+
+.framed_panel {
+    display: block;
+    padding: 20px;
+    background: #fff;
+    border: solid 1px #93a543;
+}

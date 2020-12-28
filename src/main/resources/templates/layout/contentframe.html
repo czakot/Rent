@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Rent - Authorized Content Frame</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../static/css/layout/contentframe.css" th:href="@{/css/layout/contentframe.css}"/>
+</head>
+<body>
+    <!--/*@thymesVar id="selectedMenuItem" type="MenuItem"*/-->
+    <div id="content" layout:fragment="content">
+        <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
+        <h1 id="content-title" th:text="#{__${selectedMenuItem.reference}__}">
+            Content title
+        </h1>
+<!--
+        <div th:text="${#lists.isEmpty(selectedMenuItem.tabs)}">isEmpty</div>
+        <div th:text="${selectedMenuItem.controllerUri}">menuItemControllerUri</div>
+-->
+        <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
+                                    ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
+            IFrameForContent
+        </iframe>
+<!--
+        <div th:unless="${#lists.isEmpty(selectedMenuItem.tabs)}" id="tabs">
+            <nav>
+                <ul>
+                    <span  th:each="tab : ${selectedMenuItem.tabs}">
+                        &lt;!&ndash;/*@thymesVar id="tab" type="com.rent.domain.menu.Tab"*/&ndash;&gt;
+                        <li th:if="${tab.available}">
+                            <a th:href="${tab.controllerUri}" target="tabiframe"
+                               th:class="(${selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'"
+                               th:text="#{__${tab.reference}__}">
+                                TabLink
+                            </a>
+                        </li>
+                    </span>
+                </ul>
+            </nav>
+            <div class="framed_panel">
+                <iframe  name="tabiframe" th:src="${selectedMenuItem.selectedTab.controllerUri}">TabIFrame</iframe>
+            </div>
+        </div>
+-->
+    </div>
+</body>
+</html>

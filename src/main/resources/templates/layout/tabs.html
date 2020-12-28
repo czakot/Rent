@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<!--
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layout/main}">
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>Rent - Tabs</title>
+</head>
+<body>
+    <div id="tabs" th:fragment="tabs">
+    <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
+    <!--/*@thymesVar id="tab" type="com.rent.domain.menu.Tab"*/-->
+        <nav>
+            <ul>
+                <span  th:each="tab : ${selectedMenuItem.tabs}">
+                    <li th:if="${tab.available}">
+                        <a th:href="${tab.controllerUri}"
+                           th:class="(${selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'"
+                           th:text="#{__${tab.reference}__}">
+                            TabLink
+                        </a>
+                    </li>
+                </span>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

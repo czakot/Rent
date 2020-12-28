@@ -6,11 +6,12 @@ import java.util.List;
 
 public class Tab extends MenuBaseElement{
 
-    Tab(String uri, String reference, List<Role> availableFor) {
-        super(uri, reference, availableFor);
+    Tab(String reference, String controllerUri, List<Role> availableFor) {
+        super(reference, controllerUri, availableFor);
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    Tab(String reference, List<Role> availableFor) {
+        super(reference, availableFor);
     }
+
 }

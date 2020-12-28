@@ -16,30 +16,54 @@ import java.util.List;
  */
 public class MenuItem extends MenuBaseElement{
     
-    // reference = contentPageRef;
+    private final List<Tab> tabs = new ArrayList<>();
+    private Tab selectedTab = null;
 
-    List<Tab> tabs = new ArrayList<>();
+    // display strings: (key = reference, def, eng, hu) => resources/messages/menu_messages_...properties
 
-    public MenuItem(String reference, List<Role> availableFor) {
-        super('/' + reference, reference,  availableFor);
-        // display strings:(key = reference, def, eng, hu) => resources/messages/menu_messages_...properties
+    public MenuItem(String reference, List<Role> availableForRoles) {
+        super(reference, '/' + reference,  availableForRoles);
     }
     
-    public MenuItem(String uri, String displayReference, List<Role> availableFor) {
-        super(uri, displayReference, availableFor);
-        // display strings:(key = reference, def, eng, hu) => resources/messages/menu_messages_...properties
+    public MenuItem(String reference, String controllerUri, List<Role> availableForRoles) {
+        super(reference, controllerUri, availableForRoles);
+    }
+
+    public void addTab(Tab tab) {
+        tabs.add(tab);
+    }
+
+    public void addTabForSameRoles(Tab tab) {
+        Tab tabSameRolesInserted = new Tab(tab.getReference(), tab.getControllerUri(), new ArrayList<>(availableForRoles));
+        addTab(tabSameRolesInserted);
     }
 
     @Override
     public void setAvailableByRole(Role role) {
         super.setAvailableByRole(role);
         for (Tab tab : tabs) {
-            if (available) {
+            if (isAvailable()) {
                 tab.setAvailableByRole(role);
             } else {
                 tab.setAvailable(false);
             }
         }
+        selectedTab = getInitialSelectedTab();
     }
-    
+
+    private Tab getInitialSelectedTab() {
+        return tabs.stream().filter(tab -> tab.isAvailable()).findFirst().orElse(null);
+    }
+
+    public List<Tab> getTabs() {
+        return tabs;
+    }
+
+    public Tab getSelectedTab() {
+        return selectedTab;
+    }
+
+    public void setSelectedTabByControllerUri(String controllerUri) {
+        selectedTab = tabs.stream().filter(tab -> tab.getControllerUri().equals(controllerUri)).findFirst().orElse(null);
+    }
 }
