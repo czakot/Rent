@@ -1,39 +1,40 @@
 package com.rent.entity;
 
-import com.rent.domain.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Embeddable
 @Table(name = "menunodes")
 public class MenuNode implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
     private String reference;
 
     @Column(unique = true) // default: nullable = true
     private String controllerUri;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @JoinTable(name = "matchers",
-            joinColumns = @JoinColumn(referencedColumnName = "reference", unique = false))
-    @Column(name = "id", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private final Set<Role> roles = EnumSet.noneOf(Role.class);
+    @ManyToOne
+    private MenuNode parent;
+
+    @OneToMany(mappedBy = "menuNode")
+    private Set<Matcher> matchers = new HashSet<>();
 
     public MenuNode() {}
 
-    public MenuNode(String reference, String controllerUri) {
+    @Autowired
+    public MenuNode(String reference, String controllerUri, MenuNode parent) {
         this.reference = reference;
         this.controllerUri = controllerUri;
+        this.parent = parent;
+    }
+
+    public boolean hasMatcherAnyRole() {
+        return !(matchers.size() == 1 && matchers.stream().map(Matcher::getRole).anyMatch(Objects::isNull));
     }
 
     public String getReference() {
@@ -44,7 +45,9 @@ public class MenuNode implements Serializable {
         return controllerUri;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public MenuNode getParent() {return parent; }
+
+    public Set<Matcher> getMatchers() {
+        return matchers;
     }
 }

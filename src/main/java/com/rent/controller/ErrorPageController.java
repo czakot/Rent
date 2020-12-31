@@ -29,7 +29,7 @@ public class ErrorPageController implements ErrorController {
     final String ERROR_PATH = "/error/detailedError";
 //    final String ERROR_PATH = "/error";
     
-    ErrorAttributes errorAttributes;
+    private ErrorAttributes errorAttributes;
 
     @RequestMapping("/error")
     public String error(Model model, HttpServletRequest request) {

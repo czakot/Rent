@@ -7,39 +7,32 @@ package com.rent.domain.menu;
 
 import com.rent.domain.Role;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
  * @author czakot
  */
-public class MenuItem extends MenuBaseElement{
+class MenuItem extends MenuBaseElement{
     
     private final List<Tab> tabs = new ArrayList<>();
     private Tab selectedTab = null;
+    private final Map<String, Tab> tabCache;
 
     // display strings: (key = reference, def, eng, hu) => resources/messages/menu_messages_...properties
 
-    public MenuItem(String reference, List<Role> availableForRoles) {
-        super(reference, '/' + reference,  availableForRoles);
-    }
-    
-    public MenuItem(String reference, String controllerUri, List<Role> availableForRoles) {
-        super(reference, controllerUri, availableForRoles);
+    MenuItem(String reference, String controllerUri, Set<Role> availableForRoles) {
+        super(reference, controllerUri != null ? controllerUri : '/' + reference, availableForRoles);
+        tabCache = new HashMap<>();
     }
 
-    public void addTab(Tab tab) {
+    void addTab(Tab tab) {
         tabs.add(tab);
-    }
-
-    public void addTabForSameRoles(Tab tab) {
-        Tab tabSameRolesInserted = new Tab(tab.getReference(), tab.getControllerUri(), new ArrayList<>(availableForRoles));
-        addTab(tabSameRolesInserted);
+        tabCache.put(tab.getControllerUri(), tab);
     }
 
     @Override
-    public void setAvailableByRole(Role role) {
+    protected void setAvailableByRole(Role role) {
         super.setAvailableByRole(role);
         for (Tab tab : tabs) {
             if (isAvailable()) {
@@ -48,11 +41,7 @@ public class MenuItem extends MenuBaseElement{
                 tab.setAvailable(false);
             }
         }
-        selectedTab = getInitialSelectedTab();
-    }
-
-    private Tab getInitialSelectedTab() {
-        return tabs.stream().filter(tab -> tab.isAvailable()).findFirst().orElse(null);
+        selectedTab = getFirstAvailableTab();
     }
 
     public List<Tab> getTabs() {
@@ -63,7 +52,27 @@ public class MenuItem extends MenuBaseElement{
         return selectedTab;
     }
 
-    public void setSelectedTabByControllerUri(String controllerUri) {
-        selectedTab = tabs.stream().filter(tab -> tab.getControllerUri().equals(controllerUri)).findFirst().orElse(null);
+    void setSelectedTabByControllerUri(String controllerUri) {
+        selectedTab = tabCache.get(controllerUri);
+        assert selectedTab != null;
+    }
+
+    private Tab getFirstAvailableTab() {
+        return tabs.stream().filter(MenuBaseElement::isAvailable).findFirst().orElse(null);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("MenuItem{" + super.toString());
+        if (tabs.isEmpty()) {
+            sb.append(", selectedTab=").append(selectedTab).append(", tab={").append(tabs).append("}}");
+        } else {
+            sb.append(", selectedTab=").append(selectedTab == null ? selectedTab : selectedTab.getReference()).append(", tabs={");
+            for (Tab tab : tabs) {
+                sb.append("\n          ").append(tab);
+            }
+            sb.append("}}");
+        }
+        return sb.toString();
     }
 }

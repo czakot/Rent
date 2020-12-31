@@ -2,16 +2,16 @@ package com.rent.domain.menu;
 
 import com.rent.domain.Role;
 
-import java.util.List;
+import java.util.Set;
 
-public class Tab extends MenuBaseElement{
+class Tab extends MenuBaseElement{
 
-    Tab(String reference, String controllerUri, List<Role> availableFor) {
-        super(reference, controllerUri, availableFor);
+    Tab(String reference, String controllerUri, Set<Role> availableForRoles) {
+        super(reference, controllerUri, availableForRoles);
     }
 
-    Tab(String reference, List<Role> availableFor) {
-        super(reference, availableFor);
+    @Override
+    public String toString() {
+        return "Tab{" + super.toString() + "}";
     }
-
 }

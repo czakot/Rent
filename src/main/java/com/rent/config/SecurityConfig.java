@@ -1,6 +1,7 @@
 package com.rent.config;
 
 import com.rent.domain.Role;
+import com.rent.entity.Matcher;
 import com.rent.entity.MenuNode;
 import com.rent.repo.MenuNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 // @EnableGlobalMethodSecurity(securedEnabled = true) // for usage of @Secured("<role>") to secure a method
-@Configuration
+@Configuration()
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true/*, securedEnabled = true, jsr250Enabled = false*/)
 /*
@@ -31,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MenuNodeRepository menuNodeRepository;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -43,8 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.userDetailsService();
     }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     public void configureAuth(AuthenticationManagerBuilder auth) throws Exception {
@@ -124,10 +128,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 continue;
             }
             if (doPrint) {
-                List<Role> roles = new ArrayList<>(menuNode.getRoles());
+                List<Role> roles = menuNode.getMatchers().stream()
+                        .map(Matcher::getRole)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
                 System.out.printf("%s%s\n",uri, roles);
             }
-            String[] roleArray = menuNode.getRoles().stream().map(role -> role.name()).toArray(String[]::new);
+            String[] roleArray = menuNode.getMatchers().stream().map(Matcher::getRole).filter(Objects::nonNull).toArray(String[]::new);
             httpSec.authorizeRequests().antMatchers(uri).hasAnyRole(roleArray);
         }
     }

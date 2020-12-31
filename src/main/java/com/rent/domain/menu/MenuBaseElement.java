@@ -2,31 +2,29 @@ package com.rent.domain.menu;
 
 import com.rent.domain.Role;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-public class MenuBaseElement {
+class MenuBaseElement {
 
     private boolean available;
     protected final String reference;
     protected final String controllerUri;
-    protected final List<Role> availableForRoles;
+    protected final Set<Role> availableForRoles;
 
-    MenuBaseElement(String reference, String controllerUri, List<Role> availableForRoles) {
+    protected MenuBaseElement(String reference, String controllerUri, Set<Role> availableForRoles) {
         available = false;
         this.reference = reference;
-        this.controllerUri = controllerUri;
-        this.availableForRoles = new ArrayList<>();
-        if (availableForRoles != null) {
-            this.availableForRoles.addAll(availableForRoles);
-        }
+        this.controllerUri = controllerUri != null ? controllerUri : '/' + reference;
+        assert availableForRoles != null;
+        this.availableForRoles = new HashSet<>(availableForRoles);
     }
 
-    MenuBaseElement(String reference, List<Role> availableForRoles) {
-        this(reference, '/' + reference, availableForRoles);
+    protected void setAvailable(boolean available) {
+        this.available = available;
     }
 
-    public void setAvailableByRole(Role role) {
+    protected void setAvailableByRole(Role role) {
         available = availableForRoles.contains(role);
     }
 
@@ -42,7 +40,12 @@ public class MenuBaseElement {
         return controllerUri;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    @Override
+    public String toString() {
+        return "reference='" + reference + '\'' +
+                ", available=" + available +
+                ", controllerUri='" + controllerUri + '\'' +
+                ", availableForRoles=" + availableForRoles +
+                '}';
     }
 }

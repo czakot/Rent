@@ -8,12 +8,16 @@ package com.rent.controller;
 import com.rent.domain.Role;
 import com.rent.domain.menu.Menu;
 import com.rent.service.UserService;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -34,13 +38,13 @@ public class RootContentController {
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
         Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
-        menu.setForRole(role);
+        menu.changeRoleTo(role);
         return initAuthorizedContentFrame(model);
     }
 
     @RequestMapping(path = "/menuselect/{target}")
     public String menuSelect(@PathVariable String target, Model model) {
-        menu.setSelectedMenuItem(target);
+        menu.setSelectedMenuItemByControllerUri('/' + target);
         return initAuthorizedContentFrame(model);
     }
 
