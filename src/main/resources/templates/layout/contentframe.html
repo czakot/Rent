@@ -22,34 +22,12 @@ and open the template in the editor.
             Content title
         </h1>
 <!--
-        <div th:text="${#lists.isEmpty(selectedMenuItem.tabs)}">isEmpty</div>
-        <div th:text="${selectedMenuItem.controllerUri}">menuItemControllerUri</div>
+        <iframe src="https://localhost:8443/realestatelist">
 -->
         <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
                                     ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
             IFrameForContent
         </iframe>
-<!--
-        <div th:unless="${#lists.isEmpty(selectedMenuItem.tabs)}" id="tabs">
-            <nav>
-                <ul>
-                    <span  th:each="tab : ${selectedMenuItem.tabs}">
-                        &lt;!&ndash;/*@thymesVar id="tab" type="com.rent.domain.menu.Tab"*/&ndash;&gt;
-                        <li th:if="${tab.available}">
-                            <a th:href="${tab.controllerUri}" target="tabiframe"
-                               th:class="(${selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'"
-                               th:text="#{__${tab.reference}__}">
-                                TabLink
-                            </a>
-                        </li>
-                    </span>
-                </ul>
-            </nav>
-            <div class="framed_panel">
-                <iframe  name="tabiframe" th:src="${selectedMenuItem.selectedTab.controllerUri}">TabIFrame</iframe>
-            </div>
-        </div>
--->
     </div>
 </body>
 </html>

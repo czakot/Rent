@@ -114,8 +114,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String getSelectedRoleOfAuthenticatedUser(Authentication authentication) {
-        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority();
+    public String getSelectedRoleNameOfAuthenticatedUser(Authentication authentication) {
+        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority().substring(5); // substring => clipping "ROLE_" from beginning
+//        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority();
     }
 
     @Override

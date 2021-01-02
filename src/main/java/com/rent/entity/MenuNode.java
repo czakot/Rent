@@ -1,5 +1,6 @@
 package com.rent.entity;
 
+import com.rent.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -7,10 +8,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "menunodes")
 public class MenuNode implements Serializable {
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long creationOrder;
 
     @Id
     private String reference;
@@ -21,7 +26,8 @@ public class MenuNode implements Serializable {
     @ManyToOne
     private MenuNode parent;
 
-    @OneToMany(mappedBy = "menuNode")
+//    @OneToMany(mappedBy = "menuNode", cascade = CascadeType.ALL) // default: fetch = FetchType.LAZY
+    @OneToMany(mappedBy = "menuNode", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Matcher> matchers = new HashSet<>();
 
     public MenuNode() {}
@@ -31,6 +37,10 @@ public class MenuNode implements Serializable {
         this.reference = reference;
         this.controllerUri = controllerUri;
         this.parent = parent;
+    }
+
+    public Set<Role> getRoles() {
+        return matchers.stream().map(Matcher::getRole).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     public boolean hasMatcherAnyRole() {

@@ -13,5 +13,11 @@ import org.springframework.security.core.GrantedAuthority;
  * @author czakot
  */
 public interface UserAuthorityDetails {
-    public Collection<? extends GrantedAuthority> getAvailableAuthorities();
+
+//    public Collection<? extends GrantedAuthority> getAvailableAuthorities();
+
+    public String getRoleNameOfSelectedRole();
+    public String[] getRoleNamesAvailable();
+    public int getNumberOfAvailableRoles();
+
 }

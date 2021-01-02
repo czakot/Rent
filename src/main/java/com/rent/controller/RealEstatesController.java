@@ -14,10 +14,13 @@ public class RealEstatesController {
 
     private static final String VIEW_PKG = getViewAutoPackageNameOfController(RealEstatesController.class);
 
-    private MenuImpl menu;
+    private Menu menu;
 
     @RequestMapping({ "/realestatelist","/realestateimport", "/realestatemanualadd"})
     public String selectedMenu(HttpServletRequest request, Model model) {
+
+        System.out.println("RealEstateController - /realestatelist");
+
         String requestUri = request.getRequestURI();
         menu.setSelectedTabByControllerUri(requestUri);
         model.addAttribute("menuItems", menu.getMenuItems());
@@ -32,7 +35,7 @@ public class RealEstatesController {
     }
 
     @Autowired
-    public void setMenu(MenuImpl menu) {
+    public void setMenu(Menu menu) {
         this.menu = menu;
     }
 }

@@ -8,6 +8,9 @@ and open the template in the editor.
     Author     : czakot
 */
 
+#scrollframe {
+    overflow-y: auto;
+}
 
 .middle-40-percent {
     width: 40%;

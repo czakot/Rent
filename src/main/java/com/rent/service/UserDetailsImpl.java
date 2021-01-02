@@ -30,20 +30,37 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
             if (!user.getRoles().contains(selectedRole)) {
                 selectedRole = getUserMostWeightedRole();
             }
-            authorities.add(new SimpleGrantedAuthority(selectedRole.name()));
-        return authorities;
-    }
-    
-    @Override
-    public Collection<? extends GrantedAuthority> getAvailableAuthorities() {
-            Collection<GrantedAuthority> authorities = new HashSet<>();
-            Set<Role> roles = user.getRoles();
-            roles.forEach((role) -> {
-                authorities.add(new SimpleGrantedAuthority(role.name()));
-        });
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + selectedRole.name()));
         return authorities;
     }
 
+    @Override
+    public String getRoleNameOfSelectedRole() {
+        return selectedRole.name();
+    }
+
+    @Override
+    public String[] getRoleNamesAvailable() {
+        return user.getRoles().stream().map(Enum::name).toArray(String[]::new);
+    }
+
+    @Override
+    public int getNumberOfAvailableRoles() {
+        return user.getRoles().size();
+    }
+
+    /*
+            @Override
+            public Collection<? extends GrantedAuthority> getAvailableAuthorities() {
+                    Collection<GrantedAuthority> authorities = new HashSet<>();
+                    Set<Role> roles = user.getRoles();
+                    roles.forEach((role) -> {
+                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+                });
+                return authorities;
+            }
+
+        */
     @Override
     public String getPassword() {
         return user.getPassword();

@@ -15,7 +15,7 @@ public interface UserService {
     
     public boolean hasAdminNotActivated();
 
-    public String getSelectedRoleOfAuthenticatedUser(Authentication authentication);
+    public String getSelectedRoleNameOfAuthenticatedUser(Authentication authentication);
 
     public void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName);
     

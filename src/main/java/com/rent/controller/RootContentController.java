@@ -10,6 +10,7 @@ import com.rent.domain.menu.Menu;
 import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class RootContentController {
 
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
-        Role role = Role.valueOf(userService.getSelectedRoleOfAuthenticatedUser(authentication));
+        Role role = Role.valueOf(userService.getSelectedRoleNameOfAuthenticatedUser(authentication));
         menu.changeRoleTo(role);
         return initAuthorizedContentFrame(model);
     }

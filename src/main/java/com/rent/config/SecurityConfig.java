@@ -1,6 +1,8 @@
 package com.rent.config;
 
 import com.rent.domain.Role;
+import com.rent.domain.menu.MenuInitTree;
+import com.rent.domain.menu.MenuInitValueNode;
 import com.rent.entity.Matcher;
 import com.rent.entity.MenuNode;
 import com.rent.repo.MenuNodeRepository;
@@ -20,6 +22,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // @EnableGlobalMethodSecurity(securedEnabled = true) // for usage of @Secured("<role>") to secure a method
@@ -33,7 +36,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private MenuNodeRepository menuNodeRepository;
+    private MenuInitTree menuInitTree;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -84,9 +87,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/registration").permitAll()
                 .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").permitAll()
                 .antMatchers("/forgottenpassword").permitAll()
+
+                .antMatchers("/realestatelist").permitAll()
+//                .antMatchers("/realestatelist").hasRole("OWNER")
+
+//                .antMatchers("/homebyuserrole", "/menuselect/*", "/roleselection").authenticated()
                 ;
 
-        antMatchersFromControllerUriDatabase(httpSec, true); // true for printing Matchers
+        antMatchersFromControllerUriDatabase(httpSec, false); // true for printing Matchers
 
         httpSec
             .authorizeRequests()
@@ -122,20 +130,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void antMatchersFromControllerUriDatabase(HttpSecurity httpSec, boolean doPrint) throws Exception {
 
-        for (MenuNode menuNode : menuNodeRepository.findAll()) {
-            String uri = menuNode.getControllerUri();
-            if (uri == null) {
-                continue;
+        for (MenuInitValueNode menuInitValueNode : menuInitTree) {
+            System.out.println(menuInitValueNode);
+            String uri = menuInitValueNode.getControllerUri();
+            if (uri != null) {
+                Set<Role> roles = menuInitValueNode.getAvailableForRoles();
+                if (doPrint) {
+                    System.out.printf("%s => %s\n",uri, roles);
+                }
+                String[] rolesArray = roles.stream().map(Enum::name).toArray(String[]::new);
+                System.out.printf("[%s]", uri);
+                for (String s : rolesArray) {
+                    System.out.printf("[%s]", s);
+                    httpSec.authorizeRequests()
+                            .antMatchers(uri).hasRole(s);
+                }
+                System.out.println();
+/*
+                httpSec.authorizeRequests()
+                        .antMatchers(uri).hasAnyRole(rolesArray);
+*/
+//                        .antMatchers(uri).hasAnyRole(roles.stream().map(Enum::name).toArray(String[]::new));
             }
-            if (doPrint) {
-                List<Role> roles = menuNode.getMatchers().stream()
-                        .map(Matcher::getRole)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-                System.out.printf("%s%s\n",uri, roles);
-            }
-            String[] roleArray = menuNode.getMatchers().stream().map(Matcher::getRole).filter(Objects::nonNull).toArray(String[]::new);
-            httpSec.authorizeRequests().antMatchers(uri).hasAnyRole(roleArray);
         }
     }
 
