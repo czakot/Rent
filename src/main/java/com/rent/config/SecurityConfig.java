@@ -1,16 +1,13 @@
 package com.rent.config;
 
-import com.rent.domain.Role;
 import com.rent.domain.menu.MenuInitTree;
 import com.rent.domain.menu.MenuInitValueNode;
-import com.rent.entity.Matcher;
-import com.rent.entity.MenuNode;
-import com.rent.repo.MenuNodeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,21 +16,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Arrays;
 
 // @EnableGlobalMethodSecurity(securedEnabled = true) // for usage of @Secured("<role>") to secure a method
 @Configuration()
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true/*, securedEnabled = true, jsr250Enabled = false*/)
+//@EnableGlobalMethodSecurity(prePostEnabled = true/*, securedEnabled = true, jsr250Enabled = false*/)
 /*
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 }
 */
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MenuInitTree menuInitTree;
@@ -83,22 +78,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/favicon.ico").permitAll()
                 .antMatchers("/db/**").permitAll() // for H2Console
-                .antMatchers("/", "/index").permitAll()
-                .antMatchers("/login", "/registration").permitAll()
-                .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").permitAll()
-                .antMatchers("/forgottenpassword").permitAll()
-
-                .antMatchers("/realestatelist").permitAll()
-//                .antMatchers("/realestatelist").hasRole("OWNER")
-
-//                .antMatchers("/homebyuserrole", "/menuselect/*", "/roleselection").authenticated()
+//                .antMatchers("/db/**").hasRole("ADMIN") // for H2Console
+                .antMatchers("/", "/index").anonymous()
+                .antMatchers("/login", "/registration").anonymous()
+                .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").anonymous()
+                .antMatchers("/forgottenpassword").anonymous()
+                .antMatchers("/homebyuserrole", "/roleselection").authenticated()
                 ;
 
-        antMatchersFromControllerUriDatabase(httpSec, false); // true for printing Matchers
+        generateAntMatchersFromMenuInitTree(httpSec);
 
         httpSec
-            .authorizeRequests()
-                .anyRequest().authenticated()
+                .authorizeRequests()
+                .anyRequest().denyAll()
+//                .anyRequest().authenticated()
                 .and()
 
             .requiresChannel().anyRequest().requiresSecure() // instead of server.ssl.enabled = true
@@ -106,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
             .formLogin().loginPage("/login").permitAll()
-                .defaultSuccessUrl("/homebyuserrole")
+                .defaultSuccessUrl("/homebyuserrole", true)
 //                .defaultSuccessUrl("/dashboard")
 //                .successForwardUrl("/index")
 //                .failureForwardUrl("/authpage?pageMode=login&")
@@ -128,30 +121,52 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    private void antMatchersFromControllerUriDatabase(HttpSecurity httpSec, boolean doPrint) throws Exception {
-
+    private void generateAntMatchersFromMenuInitTree(HttpSecurity httpSec) throws Exception {
         for (MenuInitValueNode menuInitValueNode : menuInitTree) {
-            System.out.println(menuInitValueNode);
-            String uri = menuInitValueNode.getControllerUri();
-            if (uri != null) {
-                Set<Role> roles = menuInitValueNode.getAvailableForRoles();
-                if (doPrint) {
-                    System.out.printf("%s => %s\n",uri, roles);
-                }
-                String[] rolesArray = roles.stream().map(Enum::name).toArray(String[]::new);
-                System.out.printf("[%s]", uri);
-                for (String s : rolesArray) {
-                    System.out.printf("[%s]", s);
-                    httpSec.authorizeRequests()
-                            .antMatchers(uri).hasRole(s);
-                }
-                System.out.println();
-/*
-                httpSec.authorizeRequests()
-                        .antMatchers(uri).hasAnyRole(rolesArray);
-*/
-//                        .antMatchers(uri).hasAnyRole(roles.stream().map(Enum::name).toArray(String[]::new));
+            generateAntMatchersFromMenuInitValueNode(httpSec, menuInitValueNode);
+        }
+    }
+
+    private void generateAntMatchersFromMenuInitValueNode(HttpSecurity httpSec,  MenuInitValueNode menuInitValueNode) {
+
+        String controllerUri = menuInitValueNode.getControllerUri();
+        String menuselectUri = getMenuselectUriFromMenuInitValueNode(menuInitValueNode);
+
+        if (controllerUri != null || menuselectUri != null) {
+            String[] roleNames = getRoleNamesFromMenuInitValueNode(menuInitValueNode);
+
+            generateAntMatchers(httpSec, controllerUri, roleNames);
+            generateAntMatchers(httpSec, menuselectUri, roleNames);
+        }
+    }
+
+    private String getMenuselectUriFromMenuInitValueNode(MenuInitValueNode node) {
+        String menuselectUri = null;
+        if (node.getParent() == null) {
+            String controllerUri = node.getControllerUri();
+            menuselectUri = "/menuselect" +
+                    (controllerUri != null ? controllerUri : '/' + node.getReference());
+        }
+        return menuselectUri;
+    }
+
+    private String[] getRoleNamesFromMenuInitValueNode(MenuInitValueNode node) {
+        return node.getAvailableForRoles().stream().map(Enum::name).toArray(String[]::new);
+    }
+
+    private void generateAntMatchers(HttpSecurity httpSec, String uri, String[] roles) {
+        if (uri != null) {
+            boolean created = true;
+            try {
+                httpSec.authorizeRequests().antMatchers(uri).hasAnyRole(roles);
+            } catch (Exception e) {
+                created = false;
+                logger.error(String.format("Could not create antMatchers() (uri: '%s' , roles: %s)\n", uri, Arrays.asList(roles)));
             }
+//            if(logger.isDebugEnabled() && created) {
+                logger.debug(String.format("generated antMatchers: \"%s\" => %s", uri, Arrays.asList(roles)));
+//            }
+
         }
     }
 

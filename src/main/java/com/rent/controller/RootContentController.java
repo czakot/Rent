@@ -7,10 +7,11 @@ package com.rent.controller;
 
 import com.rent.domain.Role;
 import com.rent.domain.menu.Menu;
+import com.rent.entity.UserProfile;
+import com.rent.service.UserDetailsImpl;
 import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class RootContentController {
 
-    private UserService userService;
     private Menu menu;
 
+    // todo clean up /activationloggedin (only anonymous access)
     @RequestMapping("/activationloggedin")
     public String activationAnswerWhenAUserLoggedIn(Model model) {
         model.addAttribute("menuItems", menu.getMenuItems());
@@ -38,15 +39,15 @@ public class RootContentController {
 
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
-        Role role = Role.valueOf(userService.getSelectedRoleNameOfAuthenticatedUser(authentication));
+        Role role = getPreferredInitialRoleOfAuthenticatedUser(authentication);
         menu.changeRoleTo(role);
-        return initAuthorizedContentFrame(model);
+        return initViewAuthorizedContentFrame(model);
     }
 
     @RequestMapping(path = "/menuselect/{target}")
     public String menuSelect(@PathVariable String target, Model model) {
         menu.setSelectedMenuItemByControllerUri('/' + target);
-        return initAuthorizedContentFrame(model);
+        return initViewAuthorizedContentFrame(model);
     }
 
     @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
@@ -55,20 +56,24 @@ public class RootContentController {
     }
     
     @PostMapping("/roleselection")
-    public String roleSelection(@RequestParam ("roleselector") String roleName, Authentication authentication) {
-        userService.setSelectedRoleOfAuthenticatedUser(authentication, roleName);
-        return "redirect:/homebyuserrole";
+    public String roleSelection(@RequestParam ("roleselector") String roleName, Model model) {
+        menu.changeRoleTo(Role.valueOf(roleName));
+        return initViewAuthorizedContentFrame(model);
     }
     
-    private String initAuthorizedContentFrame(Model model) {
+    private String initViewAuthorizedContentFrame(Model model) {
+        model.addAttribute("currentRole", menu.getCurrentRole());
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
         return "layout/contentframe";
     }
-    
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+
+    private Role getPreferredInitialRoleOfAuthenticatedUser(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UserProfile userProfile = userDetails.getUserProfile();
+
+        Role role = userProfile==null ? null : userProfile.getPreferredInitialRole();
+        return role != null ? role : Role.getMostWeightedRoleFromSet(userDetails.getRoles());
     }
 
     @Autowired

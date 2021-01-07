@@ -12,7 +12,7 @@ public class Matcher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long key;
 
-    @ManyToOne()
+    @ManyToOne
     private MenuNode menuNode;
 
     @Enumerated(EnumType.STRING)

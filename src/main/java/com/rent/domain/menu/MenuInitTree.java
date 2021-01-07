@@ -13,8 +13,6 @@ import java.util.function.Consumer;
 @Component
 public class MenuInitTree implements Iterable<MenuInitValueNode> {
 
-    private static final Set<Role> allRole = new HashSet<>(Arrays.asList(Role.values()));
-
     private final List<MenuInitValueNode> rootLevelNodes;
 
     @Autowired
@@ -24,19 +22,20 @@ public class MenuInitTree implements Iterable<MenuInitValueNode> {
 
         buildUpMenuInitTree(menuNodeRepository, cache);
         setControllerUrisDefaultsIfAbsentForAllTreeNode(cache);
-        System.out.println("MenuInitTree constructor call finished");
     }
 
     private void buildUpMenuInitTree(MenuNodeRepository menuNodeRepository, Map<String, MenuInitValueNode> cache) {
         for (MenuNode menuNode : menuNodeRepository.findAllByOrderByCreationOrder()) {
-//        for (MenuNode menuNode : menuNodeRepository.findAll()) {
             MenuInitValueNode initNode = new MenuInitValueNode(menuNode.getReference(),menuNode.getControllerUri());
             cache.put(initNode.getReference(), initNode);
             addToMenuInitTree(cache, menuNode, initNode);
             if (menuNode.hasMatcherAnyRole()) {
                 initNode.setAvailableForRoles(menuNode.getRoles());
             } else {
-                initNode.setAvailableForRoles(initNode.hasParent() ? initNode.getParent().getAvailableForRoles() : allRole);
+                initNode.setAvailableForRoles(
+                        initNode.hasParent() ?
+                                initNode.getParent().getAvailableForRoles() :
+                                Role.getAllRoleSet());
             }
         }
     }

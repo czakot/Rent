@@ -1,3 +1,4 @@
+
 set schema PUBLIC;
 drop table if exists MATCHERS;
 drop table if exists MENUNODES;

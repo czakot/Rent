@@ -1,7 +1,6 @@
 package com.rent.controller;
 
 import com.rent.domain.menu.Menu;
-import com.rent.domain.menu.MenuImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +17,6 @@ public class RealEstatesController {
 
     @RequestMapping({ "/realestatelist","/realestateimport", "/realestatemanualadd"})
     public String selectedMenu(HttpServletRequest request, Model model) {
-
-        System.out.println("RealEstateController - /realestatelist");
-
         String requestUri = request.getRequestURI();
         menu.setSelectedTabByControllerUri(requestUri);
         model.addAttribute("menuItems", menu.getMenuItems());

@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html lang="en" 
+<html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -21,13 +16,12 @@ and open the template in the editor.
         <h1 id="content-title" th:text="#{__${selectedMenuItem.reference}__}">
             Content title
         </h1>
-<!--
-        <iframe src="https://localhost:8443/realestatelist">
--->
-        <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
-                                    ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
-            IFrameForContent
-        </iframe>
+        <div id="iframewrapper">
+            <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
+                                        ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
+                IFrameForContent
+            </iframe>
+        </div>
     </div>
 </body>
 </html>

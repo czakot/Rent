@@ -7,17 +7,7 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -39,12 +29,17 @@ public class User implements Serializable {
 
     private Boolean enabled;
 
+    // todo whether naming should be usersroles or usersxroles (in other taybles too)
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
                joinColumns = @JoinColumn(name = "user_id", unique = false))
     @Column(name = "id", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = EnumSet.noneOf(Role.class);
+
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private UserProfile userProfile;
     
     public User() {}
     
@@ -116,7 +111,10 @@ public class User implements Serializable {
         this.activation = activation;
     }
 
-    
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
     public void addRole(Role role) {
         this.roles.add(role);
     }

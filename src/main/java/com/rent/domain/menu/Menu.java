@@ -11,5 +11,6 @@ public interface Menu {
     void setSelectedTabByControllerUri(String tabControllerUri);
     MenuItem getSelectedMenuItem();
     List<MenuItem> getMenuItems();
+    Role getCurrentRole();
 
 }

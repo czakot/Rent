@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.rent.entity.UserProfile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,55 +13,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.rent.domain.Role;
 import com.rent.entity.User;
 
-public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 3185970362329652822L;
 
     private final User user;
-    private Role selectedRole;
 
     public UserDetailsImpl(User user) {
         this.user = user;
-        selectedRole = getUserMostWeightedRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
             Collection<GrantedAuthority> authorities = new HashSet<>();
-            if (!user.getRoles().contains(selectedRole)) {
-                selectedRole = getUserMostWeightedRole();
-            }
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + selectedRole.name()));
+            user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name())));
         return authorities;
     }
 
-    @Override
-    public String getRoleNameOfSelectedRole() {
-        return selectedRole.name();
-    }
-
-    @Override
-    public String[] getRoleNamesAvailable() {
-        return user.getRoles().stream().map(Enum::name).toArray(String[]::new);
-    }
-
-    @Override
-    public int getNumberOfAvailableRoles() {
-        return user.getRoles().size();
-    }
-
-    /*
-            @Override
-            public Collection<? extends GrantedAuthority> getAvailableAuthorities() {
-                    Collection<GrantedAuthority> authorities = new HashSet<>();
-                    Set<Role> roles = user.getRoles();
-                    roles.forEach((role) -> {
-                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
-                });
-                return authorities;
-            }
-
-        */
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -94,16 +63,13 @@ public class UserDetailsImpl implements UserDetails, UserAuthorityDetails {
     public String getFullName() {
         return user.getFullName();
     }
-    
-    private Role getUserMostWeightedRole() {
-        return Role.getMostWeightedRoleFromSet(user.getRoles());
+
+    public Set<Role> getRoles() {
+        return user.getRoles();
     }
 
-    public void setUserSelectedRoleByName(String roleName) {
-        selectedRole = Role.getRoleFromSetOfRolesByRoleName(user.getRoles(), roleName);
-        if (selectedRole == null) {
-            selectedRole = getUserMostWeightedRole();
-        }
+    public UserProfile getUserProfile() {
+        return user.getUserProfile();
     }
 
     @Override

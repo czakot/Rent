@@ -1,6 +1,8 @@
 package com.rent.domain;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public enum Role {
@@ -26,5 +28,13 @@ public enum Role {
         }
         return role;
     }
-    
+
+    public static Set<Role> getAllRoleSet() {
+        return new HashSet<>(Arrays.asList(values()));
+    }
+
+    public static String[] getAllRoleNameArray() {
+        return Arrays.stream(values()).map(Enum::name).toArray(String[]::new);
+    }
+
 }

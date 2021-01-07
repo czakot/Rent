@@ -1,19 +1,16 @@
 package com.rent.service;
 
-import java.util.Random;
-
+import com.rent.domain.Role;
+import com.rent.entity.User;
+import com.rent.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.rent.domain.Role;
-import com.rent.entity.User;
-import com.rent.repo.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -85,7 +82,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public String generateKey() {
-        String key = "";
         Random random = new Random();
         char[] word = new char[16];
         for (int j = 0; j < word.length; j++) {
@@ -111,17 +107,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean hasAdminNotActivated() {
         return numberOfUsersByRoleAndActivation(Role.ADMIN, !ACTIVATED) > 0;
-    }
-
-    @Override
-    public String getSelectedRoleNameOfAuthenticatedUser(Authentication authentication) {
-        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority().substring(5); // substring => clipping "ROLE_" from beginning
-//        return ((GrantedAuthority)((UserDetailsImpl)authentication.getPrincipal()).getAuthorities().toArray()[0]).getAuthority();
-    }
-
-    @Override
-    public void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName) {
-        ((UserDetailsImpl)authentication.getPrincipal()).setUserSelectedRoleByName(roleName);
     }
 
 }

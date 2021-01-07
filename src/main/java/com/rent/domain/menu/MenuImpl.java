@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class MenuImpl implements Menu {
 
     private static final boolean doPrint = false;
-    private static final Set<Role> allRole = new HashSet<>(Arrays.asList(Role.values()));
 
     private final List<MenuItem> menuItems;
     private MenuItem selectedMenuItem;
@@ -33,32 +32,27 @@ public class MenuImpl implements Menu {
     private final Map<String, MenuItem> menuItemCache;
 
     @Autowired
-    public MenuImpl(MenuNodeRepository menuNodeRepository) {
+    public MenuImpl(MenuInitTree menuInitTree) {
 
         menuItems = new ArrayList<>();
         selectedMenuItem = null;
         currentRole = null;
         menuItemCache = new HashMap<>();
 
-        for (MenuNode menuNode : menuNodeRepository.findAll()) {
+        for (MenuInitValueNode menuNode : menuInitTree) {
             if (menuNode.getParent() == null) {
                 addMenuItem(new MenuItem(
                         menuNode.getReference(),
                         menuNode.getControllerUri(),
-                        menuNode.hasMatcherAnyRole() ?
-                                menuNode.getMatchers().stream().map(Matcher::getRole).collect(Collectors.toSet()) :
-                                allRole));
-            }
-        }
-        for (MenuNode menuNode : menuNodeRepository.findAll()) {
-            if (menuNode.getParent() != null) {
-                Tab tab = new Tab(
-                        menuNode.getReference(),
-                        menuNode.getControllerUri(),
-                        menuNode.hasMatcherAnyRole() ?
-                                menuNode.getMatchers().stream().map(Matcher::getRole).collect(Collectors.toSet()) :
-                                menuNode.getParent().getMatchers().stream().map(Matcher::getRole).collect(Collectors.toSet()));
+                        menuNode.getAvailableForRoles()));
+            } else {
+                if (menuNode.getParent() != null) {
+                    Tab tab = new Tab(
+                            menuNode.getReference(),
+                            menuNode.getControllerUri(),
+                            menuNode.getAvailableForRoles());
                     addTabToMenuItem(menuNode.getParent().getReference(), tab);
+                }
             }
         }
     }
@@ -88,14 +82,16 @@ public class MenuImpl implements Menu {
 
     @Override
     public MenuItem getSelectedMenuItem() {
-        //todo should return a deep copy
         return selectedMenuItem;
     }
 
     @Override
     public List<MenuItem> getMenuItems() {
-        //todo should return a deep copy
         return menuItems;
+    }
+
+    public Role getCurrentRole() {
+        return currentRole;
     }
 
     private MenuItem getInitialSelectedMenuItem() {

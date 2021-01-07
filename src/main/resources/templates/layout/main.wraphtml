@@ -15,25 +15,21 @@
     <link rel="stylesheet" href="../../static/css/layout/menu.css" th:href="@{/css/layout/menu.css}"/>
 </head>
 <body>
-    <div id="lev0-grid-container">
+    <div class="wrap">
         <header  id="header" th:replace="layout/header :: header">
             header fragment
         </header>
-        <div id="main">
-<!--
-            <div id="menuempty" sec:authorize="!isAuthenticated()"></div>&lt;!&ndash;
-            &ndash;&gt;<nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
--->
-            <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
+        <div id="main-container">
+            <div id="menuempty" sec:authorize="!isAuthenticated()"></div><!--
+            --><nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
                 Menu
             </nav><!--
-            --><div id="content" layout:fragment="content">
-                content fragment
+            --><div id="content" layout:fragment="content">content fragment>
             </div>
         </div>
-        <footer id="footer"  th:replace="layout/footer :: footer">
-            footer fragment
-        </footer>
+    </div>
+    <div class="wrap-footer">
+        <div th:insert="layout/footer :: footer">footer fragment</div>
     </div>
 </body>
 </html>

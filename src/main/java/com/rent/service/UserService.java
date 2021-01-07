@@ -1,22 +1,17 @@
 package com.rent.service;
 
 import com.rent.entity.User;
-import org.springframework.security.core.Authentication;
 
 public interface UserService {
     
-    public User findByEmail(String email);
+    User findByEmail(String email);
     
-    public boolean registerUser(User user);
+    boolean registerUser(User user);
     
-    public User userActivation(String code);
+    User userActivation(String code);
     
-    public boolean adminExists();
+    boolean adminExists();
     
-    public boolean hasAdminNotActivated();
+    boolean hasAdminNotActivated();
 
-    public String getSelectedRoleNameOfAuthenticatedUser(Authentication authentication);
-
-    public void setSelectedRoleOfAuthenticatedUser(Authentication authentication, String roleName);
-    
 }

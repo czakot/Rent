@@ -30,7 +30,7 @@ public class ErrorPageController implements ErrorController {
 //    final String ERROR_PATH = "/error";
     
     private ErrorAttributes errorAttributes;
-
+// todo userfriendly 403 - Access Forbidden error page filtered for auth pages
     @RequestMapping("/error")
     public String error(Model model, HttpServletRequest request) {
         
