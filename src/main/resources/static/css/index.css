@@ -10,6 +10,6 @@ and open the template in the editor.
 
 #welcomefragment {
     text-align: center;
-    margin: auto;
-    /*margin: 0 auto 0 auto;*/
+    /*margin: auto;*/
+    margin: 0 auto auto auto;
 }

@@ -156,17 +156,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void generateAntMatchers(HttpSecurity httpSec, String uri, String[] roles) {
         if (uri != null) {
-            boolean created = true;
             try {
                 httpSec.authorizeRequests().antMatchers(uri).hasAnyRole(roles);
+                logger.debug(String.format("Generated antMatchers: \"%s\" => %s", uri, Arrays.asList(roles)));
             } catch (Exception e) {
-                created = false;
                 logger.error(String.format("Could not create antMatchers() (uri: '%s' , roles: %s)\n", uri, Arrays.asList(roles)));
             }
-//            if(logger.isDebugEnabled() && created) {
-                logger.debug(String.format("generated antMatchers: \"%s\" => %s", uri, Arrays.asList(roles)));
-//            }
-
         }
     }
 

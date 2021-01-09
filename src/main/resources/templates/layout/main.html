@@ -20,11 +20,12 @@
             header fragment
         </header>
         <div id="main">
+            <!-- todo anonymous() and without comment connect -->
+            <div id="menuempty" sec:authorize="!isAuthenticated()"></div><!--
+            --><nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
 <!--
-            <div id="menuempty" sec:authorize="!isAuthenticated()"></div>&lt;!&ndash;
-            &ndash;&gt;<nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
--->
             <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
+-->
                 Menu
             </nav><!--
             --><div id="content" layout:fragment="content">
