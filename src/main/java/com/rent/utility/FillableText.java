@@ -16,6 +16,8 @@ import java.nio.file.Path;
  *
  * @author czakot
  */
+
+// todo accepet parameters more tolerant way, natural exceptions catch: NullPointer, OutOfBounds
 public class FillableText {
 
     private static final String INSERT_MARKER = "?";

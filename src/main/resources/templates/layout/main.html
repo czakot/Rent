@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Rent</title>
@@ -15,26 +15,22 @@
     <link rel="stylesheet" href="../../static/css/layout/menu.css" th:href="@{/css/layout/menu.css}"/>
 </head>
 <body>
-    <div id="lev0-grid-container">
-        <header  id="header" th:replace="layout/header :: header">
-            header fragment
-        </header>
-        <div id="main">
-            <!-- todo anonymous() and without comment connect -->
-            <div id="menuempty" sec:authorize="!isAuthenticated()"></div><!--
-            --><nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
-<!--
-            <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
--->
-                Menu
-            </nav><!--
-            --><div id="content" layout:fragment="content">
-                content fragment
-            </div>
+    <header  id="header" th:replace="layout/header :: header">
+        header fragment
+    </header>
+    <div id="main">
+        <!-- todo anonymous() and without comment connect -->
+        <div id="menuempty" sec:authorize="!isAuthenticated()">
         </div>
-        <footer id="footer"  th:replace="layout/footer :: footer">
-            footer fragment
-        </footer>
+        <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
+            Menu
+        </nav>
+        <div id="content" layout:fragment="content">
+            content fragment
+        </div>
     </div>
+    <footer id="footer"  th:replace="layout/footer :: footer">
+        footer fragment
+    </footer>
 </body>
 </html>

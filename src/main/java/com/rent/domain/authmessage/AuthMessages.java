@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
  *
  * @author czakot
  */
+// todo session scope
 @Component
 public final class AuthMessages {
     

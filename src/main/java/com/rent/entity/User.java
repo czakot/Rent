@@ -17,12 +17,14 @@ public class User implements Serializable {
     @GeneratedValue
     private Long id;
 
+// todo optional/default generated identifier
     @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+// todo first and last name separation (in registration too)
     private String fullName;
 
     private String activation;
@@ -32,7 +34,7 @@ public class User implements Serializable {
     // todo whether naming should be usersroles or usersxroles (in other taybles too)
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
-               joinColumns = @JoinColumn(name = "user_id", unique = false))
+               joinColumns = @JoinColumn(name = "user_id")) // unique = false (default)
     @Column(name = "id", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = EnumSet.noneOf(Role.class);

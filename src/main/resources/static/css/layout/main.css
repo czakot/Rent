@@ -1,68 +1,48 @@
 body {
     min-width: 1024px;
+    margin: 0; /* among others override default 8px around body*/
+    overflow-y: hidden;
+    height: 100vh;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 82px minmax(0, auto) 30px;
+    grid-row-gap: 20px;
 }
 
 *, ::before, ::after {
     box-sizing: border-box;
 }
 
-html, body, #lev0-grid-container {
-    height: 100%;
-
-    margin: 0; /* among others override default 8px around body*/
-    padding: 0;
-
-    overflow-y: hidden;
-}
-
-#lev0-grid-container {
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 82px auto 30px;
-    grid-row-gap: 20px;
-}
-
-header {
-    /*in lev0-grid-container*/
-    grid-area: 1 / 1 / 2 / 2;
-}
-
 #main {
-    grid-area: 2 / 1 / 3 / 2;
     display: grid;
-    grid-template-columns: max-content auto ;
-    grid-template-rows: auto;
+    grid-template-columns: max-content minmax(0, auto);
+    grid-template-rows: minmax(0, auto);
     overflow: auto;
 }
 
-.menucommon {
-    grid-area: 1 / 1 / 2 / 2;
-}
-
 #menuempty {
-    /* empty content inherently 0px wide, but for emphesize it: */
-    width: 0px;
+    /* width: 0px; but it is inherently 0px wide, due to empty content */
 }
 
 #menu {
-    /* contented menuitem already has width: 200px */
+    /* contained menuitem already has width: 200px */
     font-size: 14px;
     margin-left: 20px;
     margin-right: 20px;
 }
 
 #content {
-    grid-area: 1 / 2 / 2 / 3;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: max-content auto;
+    grid-template-rows: max-content minmax(0, auto);
     grid-row-gap: 20px;
     margin-right: 20px;
 }
 
 footer {
-    grid-area: 3 / 1 / 4 / 2;
     margin-left: 20px;
+    margin-right: 20px;
 }
 
 :root {

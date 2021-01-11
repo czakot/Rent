@@ -1,3 +1,10 @@
+.tabbed-grid {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: max-content minmax(auto, max-content);
+}
+
 #tabs, #tabs nav, #tabs ul {
     margin: 0;
     padding: 0;
@@ -43,7 +50,6 @@ a.tabcurrent {
 }
 
 .framed_panel {
-    display: block;
     padding: 20px;
     background: #fff;
     border: solid 1px #93a543;

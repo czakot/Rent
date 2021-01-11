@@ -1,24 +1,16 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 2020.10.26., 20:13:49
-    Author     : czakot
-*/
 body {
-    margin: 0; /* override default 8px */
-    padding: 0;
-    height: min-content;
-    /*height: 100%;*/
-    /*min-height: 100%;*/
+    margin: 0;
     overflow-y: hidden;
+    height: 100vh;
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
 }
 
 #contentinner {
-    height: min-content;
-    overflow: auto;
+    height: auto;
+    overflow-y: auto;
 }
 
 :root {

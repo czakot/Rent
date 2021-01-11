@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    overflow-y: hidden;
+    height: 100vh;
+    border: yellow solid 10px;
+
+    min-height: 0;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: max-content minmax(0px, auto);
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+h1 {
+}
+
+#bottomscrollable {
+    height: 100%;
+    overflow: auto;
+    border: blue solid 10px;
+}

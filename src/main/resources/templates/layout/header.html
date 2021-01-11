@@ -3,7 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/main}">
 <head>
     <title>Rent - header</title>
@@ -49,11 +49,8 @@
                         <span th:text="#{headerRoleTitle}">Role: </span>
                         <form id="roleselectorform" action="/roleselection" method="post"
                               th:unless="${#authentication.getPrincipal().getAuthorities().size()} == 1">
-<!--
-                        <form id="roleselectorform" action="/roleselection" method="post"
-                              th:unless="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1">
--->
                             <strong>
+                                <label for="roleselector"></label>
                                 <select id="roleselector" name="roleselector">
                                     <!--/*@thymesVar id="authority" type="org.springframework.security.core.authority.SimpleGrantedAuthority"*/-->
                                     <!--/*@thymesVar id="currentRole" type="com.rent.domain.Role"*/-->
@@ -61,12 +58,6 @@
                                             th:value="${authority.getAuthority().substring(5)}"
                                             th:text="#{__${authority.getAuthority().substring(5)}__}"
                                             th:selected="${authority.getAuthority().substring(5)} == ${currentRole.name()}">
-<!--
-                                    <option th:each="role: ${#authentication.getPrincipal().getAvailableAuthorities()}"
-                                            th:value="${role}"
-                                            th:text="#{__${role}__}"
-                                            th:selected="${role == #authentication.getPrincipal().getAuthorities()[0]}">
--->
                                         Role list
                                     </option>
                                 </select>
@@ -79,11 +70,6 @@
                             <span id="roleselectsingle"
                                   th:if="${#authentication.getPrincipal().getAuthorities().size()} == 1"
                                   th:text="#{__${#authentication.getPrincipal().getAuthorities()[0].getAuthority().substring(5)}__}">
-<!--
-                            <span id="roleselectsingle"
-                                  th:if="${#authentication.getPrincipal().getAvailableAuthorities().size()} == 1"
-                                  th:text="#{__${#authentication.getPrincipal().getAuthorities()[0]}__}">
--->
                                 Single role
                             </span>
                         </strong>

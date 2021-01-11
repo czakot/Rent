@@ -10,18 +10,16 @@
     <link rel="stylesheet" href="../../static/css/layout/contentframe.css" th:href="@{/css/layout/contentframe.css}"/>
 </head>
 <body>
-    <!--/*@thymesVar id="selectedMenuItem" type="MenuItem"*/-->
+    <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
     <div id="content" layout:fragment="content">
         <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
         <h1 id="content-title" th:text="#{__${selectedMenuItem.reference}__}">
             Content title
         </h1>
-        <div id="iframewrapper">
-            <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
-                                        ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
-                IFrameForContent
-            </iframe>
-        </div>
+        <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
+                                    ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
+            IFrameForContent
+        </iframe>
     </div>
 </body>
 </html>
