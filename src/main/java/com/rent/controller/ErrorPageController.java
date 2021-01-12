@@ -7,6 +7,8 @@ package com.rent.controller;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
+import com.rent.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -19,10 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-/**
- *
- * @author czakot
- */
 @Controller
 public class ErrorPageController implements ErrorController {
 
@@ -37,8 +35,16 @@ public class ErrorPageController implements ErrorController {
         WebRequest wr = new ServletWebRequest(request);
         Map<String, Object> errors = this.errorAttributes.getErrorAttributes(wr, ErrorAttributeOptions.of(Include.STACK_TRACE));
         model.addAttribute("errors", errors);
-        
-        return ERROR_PATH;
+
+        String errorView;
+        switch ((Integer)errors.get("status")) {
+            case 403:
+                errorView = "/error/forbidden403";
+                break;
+            default:
+            errorView = ERROR_PATH;
+        }
+        return errorView;
     }
     
     // getErrorPath() deprecated in ErrorController class in favour of server.error.path in application.properties
@@ -52,5 +58,5 @@ public class ErrorPageController implements ErrorController {
     public void setErrorAttributes(ErrorAttributes errorAttributes) {
         this.errorAttributes = errorAttributes; 
     }
-    
+
 }
