@@ -13,9 +13,9 @@
 <!-- todo tabs border-top disappear -->
         <nav>
             <ul>
-                <li th:each="tab : ${selectedMenuItem.tabs}" th:if="${tab.available}">
+                <li th:each="tab : ${selectedMenuItem.tabs}" th:if="${tab.available}"
+                    th:class="(${selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'">
                     <a th:href="${tab.controllerUri}"
-                       th:class="(${selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'"
                        th:text="#{__${tab.reference}__}">
                         TabLink
                     </a>

@@ -5,7 +5,7 @@
     grid-template-rows: max-content minmax(auto, max-content);
 }
 
-#tabs, #tabs nav, #tabs ul {
+#tabs, #tabs nav, #tabs ul, #tab {
     margin: 0;
     padding: 0;
 }
@@ -15,11 +15,11 @@
     outline: none;
     background: transparent;
     font-size: 100%;
-    line-height: 100%;
+    /*line-height: 100%;*/
 }
 
 #tabs ul {
-    /*    for eliminating extra gap between <il> (or included <a>) tags */
+    /*    for eliminating extra gap between <il> (or included <a>) tags, but creating gap under*/
     font-size: 0;
     list-style-type: none;
 }
@@ -27,26 +27,32 @@
 #tabs li {
     display: inline-block;
     font-size: 14px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #93a543;
+    /*margin-right: 2px;*/
+}
+
+.li-bottom-border-none {
+    border-bottom: none;
 }
 
 #tabs a {
     color: #000;
     text-decoration: none;
-    padding: 4px 5px;
-    /*height: 32px;*/
-    /*line-height: 32px;*/
-    /*font-size: 14px;*/
-    margin-right: 2px;
+    text-align: center;
+    /*vertical-align: middle;*/
+    padding: 5px;
+    /*padding: 4px 5px 1px 5px;*/
 }
 
-a.tabplain {
+li.tabplain {
     background: #EEEEEE;
-    border: solid 1px #B0B0B0;
+    /*border-color: #B0B0B0;*/
 }
 
-a.tabcurrent {
+li.tabcurrent {
     background: #93a543;
-    border: solid 1px #93a543;
 }
 
 .framed_panel {
