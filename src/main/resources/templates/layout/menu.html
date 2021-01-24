@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
-<!--      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"-->
 <head>
     <title>Rent - menu</title>
     <meta charset="UTF-8"/>
@@ -20,13 +14,12 @@ and open the template in the editor.
     <nav id="menu" th:fragment="menu">
         <div id="menuitem">
             <!--/*@thymesVar id="menuItems" type="java.util.List<MenuItem>"*/-->
-            <span th:each="menuItem : ${menuItems}">
-                <a th:if="${menuItem.available}"
-                   th:href="'/menuselect' + ${menuItem.controllerUri}"
-                   th:text="#{__${menuItem.reference}__}">
-                    Menu item
-                </a>
-            </span>
+            <a th:each="menuItem : ${menuItems}"
+               th:if="${menuItem.available}"
+               th:href="'/menuselect' + ${menuItem.controllerUri}"
+               th:text="#{__${menuItem.reference}__}">
+                Menu item
+            </a>
         </div>
     </nav>
 </body>

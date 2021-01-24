@@ -1,15 +1,17 @@
 #content-title {
     font-size: 20px;
     font-weight: normal;
-    color: #1f6991;
-    /*margin: 5px 3px 20px;*/
+    color: var(--rent-blue);
+    margin: 5px 3px 5px 3px;
     padding-left: 5px;
-    border-bottom: 1px solid #e95d0f;
-    line-height: 150%;
+    border-bottom: 1px solid var(--rent-orange);
+    /*line-height: 150%;*/
 }
 
 iframe {
     width: 100%;
-    height: 100%;
     border: none;
+    overflow: hidden;
 }
+
+

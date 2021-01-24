@@ -1,0 +1,43 @@
+body {
+    margin: 0; /* among others override default 8px around body*/
+    overflow: hidden;
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+:root {
+    /* FONTS */
+    font-family: -apple-system,BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji",
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+
+    /* COLORS */
+    --rent-white: #ffffff;
+    --rent-black: #000000;
+    --rent-green: #008000;
+    --rent-gray-light: #F5F5F5;
+    --rent-gray-border: #DCDCDC;
+    --rent-gray-hover: #dddddd;
+    --rent-gray-deep: #999999;
+    --rent-blue-deep: #024d6b;
+    --rent-blue: #1f6991;
+    --rent-orange: #e95d0f;
+    --rent-spinach: #93a543;
+}
+

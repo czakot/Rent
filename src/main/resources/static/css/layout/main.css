@@ -1,24 +1,28 @@
+@import "/css/bodycommon.css";
+
 body {
     min-width: 1024px;
-    margin: 0; /* among others override default 8px around body*/
-    overflow-y: hidden;
-    height: 100vh;
+    overflow: auto;
+    min-height: 100vh;
+
 
     display: grid;
     grid-template-columns: 100%;
+    grid-template-rows: 82px auto 30px;
+    /*
+    for sizing to fill display height completely instead of simple auto
+    (need a numeric size (here 0) for correctly working,
+     use in further embedded grids as well)
     grid-template-rows: 82px minmax(0, auto) 30px;
+    */
     grid-row-gap: 20px;
-}
-
-*, ::before, ::after {
-    box-sizing: border-box;
 }
 
 #main {
     display: grid;
     grid-template-columns: max-content minmax(0, auto);
-    grid-template-rows: minmax(0, auto);
-    overflow: auto;
+    grid-template-rows: auto;
+    overflow: hidden;
 }
 
 #menuempty {
@@ -35,8 +39,8 @@ body {
 #content {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: max-content minmax(0, auto);
-    grid-row-gap: 20px;
+    grid-template-rows: max-content auto;
+    grid-row-gap: 10px;
     margin-right: 20px;
 }
 
@@ -44,23 +48,53 @@ footer {
     margin-left: 20px;
     margin-right: 20px;
 }
+/*
+<div class="parent">
+<div class="div1"> </div>
+<div class="div2"> </div>
+<div class="div3"> </div>
+<div class="div4"> </div>
+<div class="div5"> </div>
+</div> */
 
-:root {
-    font-family: -apple-system,BlinkMacSystemFont,
-                 "Segoe UI",
-                 Roboto,
-                 "Helvetica Neue",
-                 Arial,
-                 "Noto Sans",
-                 sans-serif,
-                 "Apple Color Emoji",
-                 "Segoe UI Emoji", "Segoe UI Symbol",
-                 "Noto Color Emoji",
-                 SFMono-Regular,
-                 Menlo,
-                 Monaco,
-                 Consolas,
-                 "Liberation Mono",
-                 "Courier New",
-                 monospace;    
+/*
+.parent {
+display: grid;
+grid-template-columns: max-content auto;
+grid-template-rows: 82px max-content auto 30px;
+grid-column-gap: 0px;
+grid-row-gap: 0px;
 }
+
+.div1 { grid-area: 1 / 1 / 2 / 3; }
+.div2 { grid-area: 2 / 1 / 4 / 2; }
+.div3 { grid-area: 2 / 2 / 3 / 3; }
+.div4 { grid-area: 3 / 2 / 4 / 3; }
+.div5 { grid-area: 4 / 1 / 5 / 3; } */
+
+/*********************************************************/
+
+/*
+<div class="parent">
+<div class="div1"> </div>
+<div class="div2"> </div>
+<div class="div3"> </div>
+<div class="div4"> </div>
+<div class="div5"> </div>
+</div> */
+
+/*
+.parent {
+display: grid;
+grid-template-columns: 200px auto;
+grid-template-rows: 82px 20px 1fr 30px;
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.div1 { grid-area: 1 / 1 / 2 / 3; }
+.div2 { grid-area: 2 / 1 / 4 / 2; }
+.div3 { grid-area: 2 / 2 / 3 / 3; }
+.div4 { grid-area: 3 / 2 / 4 / 3; }
+.div5 { grid-area: 4 / 1 / 5 / 3; }
+*/

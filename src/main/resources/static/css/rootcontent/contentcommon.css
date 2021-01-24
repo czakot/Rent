@@ -1,35 +1,7 @@
-body {
-    margin: 0;
-    overflow-y: hidden;
-    height: 100vh;
-}
-
-*, ::before, ::after {
-    box-sizing: border-box;
-}
+@import "/css/bodycommon.css";
 
 #contentinner {
-    height: auto;
-    overflow-y: auto;
+    /* over arrange scroll */
+    /*height: auto;*/
+    overflow: hidden;
 }
-
-:root {
-    font-family: -apple-system,BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    "Noto Sans",
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji",
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    "Courier New",
-    monospace;
-}
-

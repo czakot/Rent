@@ -1,13 +1,3 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Jun 14, 2020, 2:37:16 PM
-    Author     : czakot
-*/
-
 #header {
     height: 82px;
 }
@@ -20,9 +10,9 @@ and open the template in the editor.
 
 #header-left {
     width: 30%;
-    border-width: 1px 0 1px 0px;
-    border-color: #999999;
-    background-color: #f8f9fa;
+    border-width: 1px 0 1px 0;
+    border-color: var(--rent-gray-deep);
+    background-color: var(--rent-gray-light);
     text-align: center;
 }
 
@@ -38,17 +28,17 @@ and open the template in the editor.
 
 #logo-head {
     font-weight: 900;
-    color: green;
+    color: var(--rent-green);
 }
 
 #logo-tail {
-    color: #000;
+    color: var(--rent-black);
 }
 
 #header-right {
     width: 70%;
-    border-width: 1px 0px 1px 0px;
-    border-color: #555555;
+    border-width: 1px 0 1px 0;
+    border-color: var(--rent-gray-deep);
     vertical-align: top;
 }
 
@@ -59,7 +49,7 @@ and open the template in the editor.
 #header-right-top {
     height: 30px;
     line-height: 30px;
-    background-color: #024d6b;
+    background-color: var(--rent-blue-deep);
     font-size: 80%;
     padding-right: 30px;
 }
@@ -67,21 +57,21 @@ and open the template in the editor.
 #header-right-bottom {
     height: 50px;
     line-height: 50px;
-    background-color: #1f6991;
+    background-color: var(--rent-blue);
     padding-right: 20px;
 }
 
 #languagelinks {
     font-weight: 900;
-    color: #fff;
+    color: var(--rent-white);
 }
 
-#languagelinks span {
+#languagelinks span, #languagelinks a {
     opacity: 0.42;
 }
+
 #languagelinks a {
-    color: #fff;
-    opacity: 0.42;
+    color: var(--rent-white);
     text-decoration: none;
 }
 
@@ -89,15 +79,14 @@ and open the template in the editor.
     opacity: 1;
     cursor: default;
     pointer-events: none;
-    text-decoration: none;
 }
 
 #roleselectorform {
     display: inline-block;
 }
 
-#headermenu .user, #headermenu .button, #headermenu a {
-    color: #fff;
+#headermenu .user, #headermenu a {
+    color: var(--rent-white);
 }
 
 #headermenu .user {
@@ -108,7 +97,8 @@ and open the template in the editor.
 
 #headermenu .button {
     display: inline-block;
-    background-color: #e95d0f;
+    color: var(--rent-white);
+    background-color: var(--rent-orange);
     height: 30px;
     line-height: 30px;
     border-width: 0;
@@ -120,7 +110,6 @@ and open the template in the editor.
     font-size: 13px;
 }
 
-/*.top-bar .separator {*/
 #header .separator {
     padding: 0 3px;
 }

@@ -2,7 +2,8 @@
     min-height: 0;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: max-content minmax(auto, max-content);
+    grid-template-rows: max-content auto;
+    /*grid-template-rows: max-content minmax(auto, max-content);*/
 }
 
 #tabs, #tabs nav, #tabs ul, #tab {
@@ -15,11 +16,10 @@
     outline: none;
     background: transparent;
     font-size: 100%;
-    /*line-height: 100%;*/
 }
 
 #tabs ul {
-    /*    for eliminating extra gap between <il> (or included <a>) tags, but creating gap under*/
+    /*    for eliminating extra gap between <il> tags,*/
     font-size: 0;
     list-style-type: none;
 }
@@ -29,34 +29,31 @@
     font-size: 14px;
     border-style: solid;
     border-width: 1px;
-    border-color: #93a543;
-    /*margin-right: 2px;*/
-}
-
-.li-bottom-border-none {
-    border-bottom: none;
+    margin-right: 2px;
+    padding: 8px;
 }
 
 #tabs a {
-    color: #000;
+    color: var(--rent-black);
     text-decoration: none;
     text-align: center;
-    /*vertical-align: middle;*/
-    padding: 5px;
-    /*padding: 4px 5px 1px 5px;*/
 }
 
 li.tabplain {
-    background: #EEEEEE;
-    /*border-color: #B0B0B0;*/
+    background: var(--rent-gray-light);
+    border-color: var(--rent-gray-border);
+}
+
+li.tabplain:hover {
+    background-color: var(--rent-gray-hover);
 }
 
 li.tabcurrent {
-    background: #93a543;
+    background: var(--rent-spinach);
+    border-color: var(--rent-spinach);
 }
 
 .framed_panel {
     padding: 20px;
-    background: #fff;
-    border: solid 1px #93a543;
+    border: solid 1px var(--rent-spinach);
 }

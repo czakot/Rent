@@ -1,27 +1,23 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Oct 11, 2020, 11:56:44 AM
-    Author     : czakot
-*/
-
 #menuitem a {
     width: 200px;
     display: block;
     text-decoration: none;
-    color: #fff;
-    background-color: #1f6991;
+    color: var(--rent-white);
+    background-color: var(--rent-blue);
     padding: 12px;
-    border-bottom: 1px solid #175576;
+    border-bottom: 1px solid var(--rent-blue-deep);
+
+    /* strip too long text or replace overflow part with ellipsis ('...') */
     /*white-space: nowrap;*/
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+#menuitem a:last-child {
+    border-bottom: none;
+}
+
 #menuitem a:hover {
-    background-color: #e95d0f;
+    background-color: var(--rent-orange);
 }
 
