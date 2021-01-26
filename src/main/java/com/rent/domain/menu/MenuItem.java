@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.rent.domain.menu;
 
 import com.rent.domain.Role;
 
 import java.util.*;
 
-/**
- *
- * @author czakot
- */
 class MenuItem extends MenuBaseElement{
     
     private final List<Tab> tabs = new ArrayList<>();

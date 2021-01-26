@@ -38,9 +38,11 @@ public class ErrorPageController implements ErrorController {
 
         String errorView;
         switch ((Integer)errors.get("status")) {
+/*
             case 403:
                 errorView = "/error/forbidden403";
                 break;
+*/
             default:
             errorView = ERROR_PATH;
         }

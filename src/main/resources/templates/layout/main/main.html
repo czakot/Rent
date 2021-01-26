@@ -10,26 +10,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!--<link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>-->
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
-    <link rel="stylesheet" href="../../static/css/layout/main.css" th:href="@{/css/layout/main.css}"/>
-    <link rel="stylesheet" href="../../static/css/layout/header.css" th:href="@{/css/layout/header.css}"/>
-    <link rel="stylesheet" href="../../static/css/layout/menu.css" th:href="@{/css/layout/menu.css}"/>
+    <link rel="stylesheet" href="../../../static/css/layout/main.css" th:href="@{/css/layout/main.css}"/>
+    <link rel="stylesheet" href="../../../static/css/layout/header.css" th:href="@{/css/layout/header.css}"/>
+    <link rel="stylesheet" href="../../../static/css/layout/menu.css" th:href="@{/css/layout/menu.css}"/>
 </head>
 <body>
-    <header  id="header" th:replace="layout/header :: header">
+    <header  id="header" th:replace="layout/main/header :: header">
         header fragment
     </header>
     <div id="main">
         <!-- todo anonymous() and without comment connect -->
         <div id="menuempty" sec:authorize="!isAuthenticated()">
         </div>
-        <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/menu :: menu">
+        <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/main/menu :: menu">
             Menu
         </nav>
-        <div id="content" layout:fragment="content">
+        <div id="main-content" layout:fragment="main-content">
             content fragment
         </div>
     </div>
-    <footer id="footer"  th:replace="layout/footer :: footer">
+    <footer id="footer"  th:replace="layout/main/footer :: footer">
         footer fragment
     </footer>
 </body>

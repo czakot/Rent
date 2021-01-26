@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Rent - Activation while logged in</title>
-    <link rel="stylesheet" href="../static/css/content.css" th:href="@{/static/css/layout/contentframe.css}"/>
+    <link rel="stylesheet" href="../static/css/maincontentframe.css" th:href="@{/static/css/layout/maincontentframe.css}"/>
     <link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/static/css/bootstrap-4.5.2/bootstrap.min.css}"/>
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="../../static/css/auth/authpages.css" th:href="@{/static/css/auth/authpages.css}"/>
@@ -16,8 +16,8 @@
     <script src="/../../static/js/activationloggedin.js" th:src="@{/static/js/rootcontent/activationloggedin.js}"></script>
 </head>
 <body>
-    <div id="content" layout:fragment="content">
-        <h1 id="content-title" th:text="#{contentTitleActivationResult}">
+    <div id="main-content" layout:fragment="content">
+        <h1 id="main-content-title" th:text="#{contentTitleActivationResult}">
             Activating registration result
         </h1>
         <div class="contentinnernarrow">

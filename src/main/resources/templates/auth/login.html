@@ -3,7 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+      layout:decorate="~{layout/main/main}">
 <!--      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"-->
 <head>
     <title>Rent - Login</title>
@@ -13,7 +13,7 @@
     <script src="/../../static/js/auth/auth.js" th:src="@{/js/auth/auth.js}"></script>
 </head>
 <body>
-    <div layout:fragment="content">
+    <div layout:fragment="main-content">
         <div id="scrollframe">
             <div class="middle-40-percent">
                 <h2 id="logintitle" th:text="#{titleLogin}">Login</h2>

@@ -3,11 +3,11 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+      layout:decorate="~{layout/main/main}">
 <head>
     <title>Rent - Authorized Content Frame</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../static/css/layout/contentframe.css" th:href="@{/css/layout/contentframe.css}"/>
+    <link rel="stylesheet" href="../../../static/css/layout/maincontentframe.css" th:href="@{/css/layout/maincontentframe.css}"/>
     <script>
         function resizeIframe(obj) {
             obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
@@ -16,10 +16,10 @@
 </head>
 <body>
     <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
-    <div id="content" layout:fragment="content">
+    <div id="main-content" layout:fragment="main-content">
         <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
-        <h1 id="content-title" th:text="#{__${selectedMenuItem.reference}__}">
-            Content title
+        <h1 id="main-content-title" th:text="#{__${selectedMenuItem.reference}__}">
+            Main-content title
         </h1>
         <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
                                     ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}"

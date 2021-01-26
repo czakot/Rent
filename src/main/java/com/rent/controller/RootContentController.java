@@ -9,7 +9,6 @@ import com.rent.domain.Role;
 import com.rent.domain.menu.Menu;
 import com.rent.entity.UserProfile;
 import com.rent.service.UserDetailsImpl;
-import com.rent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -41,13 +40,14 @@ public class RootContentController {
     public String homeByUserRole(Model model, Authentication authentication) {
         Role role = getPreferredInitialRoleOfAuthenticatedUser(authentication);
         menu.changeRoleTo(role);
-        return initViewAuthorizedContentFrame(model);
+        String view = initViewAuthorizedMainContentFrame(model);
+        return initViewAuthorizedMainContentFrame(model);
     }
 
     @RequestMapping(path = "/menuselect/{target}")
     public String menuSelect(@PathVariable String target, Model model) {
         menu.setSelectedMenuItemByControllerUri('/' + target);
-        return initViewAuthorizedContentFrame(model);
+        return initViewAuthorizedMainContentFrame(model);
     }
 
     @RequestMapping({"/noticeboard*", "/userprofile", "/dashboard"})
@@ -58,14 +58,14 @@ public class RootContentController {
     @PostMapping("/roleselection")
     public String roleSelection(@RequestParam ("roleselector") String roleName, Model model) {
         menu.changeRoleTo(Role.valueOf(roleName));
-        return initViewAuthorizedContentFrame(model);
+        return initViewAuthorizedMainContentFrame(model);
     }
     
-    private String initViewAuthorizedContentFrame(Model model) {
+    private String initViewAuthorizedMainContentFrame(Model model) {
         model.addAttribute("currentRole", menu.getCurrentRole());
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        return "layout/contentframe";
+        return "layout/main/maincontentframe";
     }
 
     private Role getPreferredInitialRoleOfAuthenticatedUser(Authentication authentication) {

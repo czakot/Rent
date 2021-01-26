@@ -8,14 +8,14 @@ and open the template in the editor.
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layout/main}">
+    layout:decorate="~{layout/main/main}">
 <head>
     <meta charset="UTF-8"/>
     <title>Rent</title>
     <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}"/>
 </head>
 <body>
-    <div id="welcomefragment" layout:fragment="content">
+    <div id="welcomefragment" layout:fragment="main-content">
         <div id="huwelcome"  th:if="#{local} == 'hu'">
             <div >Üdvözlet a RENT oldalán!</div>
         </div>
