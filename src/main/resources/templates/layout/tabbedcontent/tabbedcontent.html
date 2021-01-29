@@ -2,7 +2,6 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>Rent</title>
@@ -15,22 +14,25 @@
     <link rel="stylesheet" href="../../../static/css/layout/main/menu.css" th:href="@{/css/layout/main/menu.css}"/>
 </head>
 <body>
-    <header  id="header" th:replace="layout/main/header :: header">
-        header fragment
-    </header>
-    <div id="main">
-        <!-- todo anonymous() and without comment connect -->
-        <div id="menuempty" sec:authorize="!isAuthenticated()">
-        </div>
-        <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/main/menu :: menu">
-            Menu
-        </nav>
-        <div id="main-content" layout:fragment="main-content">
+<!--
+    optional tabs fregment: tabs or empty
+    optional frame: frame + content or only content
+
+    <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
+                            ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}"
+        onload="resizeIframe(this)">
+        IFrameForContent
+    </iframe>
+
+-->
+    <div  id="tabs" th:replace="layout/tabbedcontent/tabs :: tabs">
+        Tabs
+    </div>
+    <div id="frame-for-tabbed-content" class="framed_panel">
+        <div id="content" layout:fragment="content">
             content fragment
         </div>
+
     </div>
-    <footer id="footer"  th:replace="layout/main/footer :: footer">
-        footer fragment
-    </footer>
 </body>
 </html>

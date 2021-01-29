@@ -16,11 +16,15 @@ import java.util.Random;
 public class UserServiceImpl implements UserService, UserDetailsService {
     
     private static final boolean ACTIVATED = true;
+    private static final Random random = new Random();
+
     private int numberOfActiveAdmins;
 
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
@@ -31,7 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
@@ -82,7 +86,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public String generateKey() {
-        Random random = new Random();
         char[] word = new char[16];
         for (int j = 0; j < word.length; j++) {
             word[j] = (char) ('a' + random.nextInt(26));
