@@ -100,8 +100,7 @@ public class DataSourceConfig {
         
         String preferredUrl = null;
         
-        try {
-            Scanner sc = new Scanner(new FileReader(preferredDatabaseUrlFilename));
+        try (Scanner sc = new Scanner(new FileReader(preferredDatabaseUrlFilename))) {
             if (sc.hasNextLine()) {
                 preferredUrl = sc.nextLine();
             }
@@ -134,12 +133,11 @@ public class DataSourceConfig {
 
     private void savePreferredUrl(String url) {
         
-        try {
-            PrintWriter pr = new PrintWriter(preferredDatabaseUrlFilename);
+        try (PrintWriter pr = new PrintWriter(preferredDatabaseUrlFilename)) {
             pr.print(url);
             pr.flush();
         } catch (FileNotFoundException ex) {
-            logger.info("Creating preferred Database URL file failed. (Filename: " + preferredDatabaseUrlFilename);
+            logger.info(String.format("Creating preferred Database URL file failed. (Filename: %s)", preferredDatabaseUrlFilename));
         }
     }
 
@@ -153,11 +151,21 @@ public class DataSourceConfig {
     }
 
     private boolean testConnection(HikariDataSource dataSource) {
-        boolean success = false;
+        boolean success;
         
         String testUrl = dataSource.getJdbcUrl();
         
-        logger.info("Testing Database connection: " + testUrl);
+        logger.info(String.format("Testing Database connection: %s", testUrl));
+
+        try (Connection connection = dataSource.getConnection()) {
+            success = true;
+        } catch (SQLException ex) {
+            success = false;
+        }
+
+        logger.info(String.format("Database connection %s to '%s'", success ? "successful" : "failed", testUrl));
+
+/*
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -174,7 +182,8 @@ public class DataSourceConfig {
                 logger.info("Database closing failed: " + testUrl);
             }
         }
-        
+
+*/
         return success;
     }
 

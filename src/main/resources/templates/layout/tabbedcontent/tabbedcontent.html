@@ -7,24 +7,10 @@
     <title>Rent</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <!--<link rel="stylesheet" href="../../static/css/bootstrap-4.5.2/bootstrap.min.css" th:href="@{/css/bootstrap-4.5.2/bootstrap.min.css}"/>-->
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>-->
-    <link rel="stylesheet" href="../../../static/css/layout/main/main.css" th:href="@{/css/layout/main/main.css}"/>
-    <link rel="stylesheet" href="../../../static/css/layout/main/header.css" th:href="@{/css/layout/main/header.css}"/>
-    <link rel="stylesheet" href="../../../static/css/layout/main/menu.css" th:href="@{/css/layout/main/menu.css}"/>
+    <link rel="stylesheet" href="../../../static/css/bodycommon.css" th:href="@{/css/bodycommon.css}"/>
+    <link rel="stylesheet" href="../../../static/css/layout/tabbedcontent/tabs.css" th:href="@{/css/layout/tabbedcontent/tabs.css}"/>
 </head>
 <body>
-<!--
-    optional tabs fregment: tabs or empty
-    optional frame: frame + content or only content
-
-    <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
-                            ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}"
-        onload="resizeIframe(this)">
-        IFrameForContent
-    </iframe>
-
--->
     <div  id="tabs" th:replace="layout/tabbedcontent/tabs :: tabs">
         Tabs
     </div>

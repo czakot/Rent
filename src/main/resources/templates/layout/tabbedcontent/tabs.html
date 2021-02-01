@@ -10,7 +10,6 @@
     <div id="tabs" th:fragment="tabs">
     <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
     <!--/*@thymesVar id="tab" type="com.rent.domain.menu.Tab"*/-->
-<!-- todo tabs border-top disappear -->
         <nav>
             <ul>
                 <li th:each="tab : ${selectedMenuItem.tabs}" th:if="${tab.available}"

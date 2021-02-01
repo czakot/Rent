@@ -7,12 +7,8 @@
 <head>
     <title>Rent - Authorized Content Frame</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../../static/css/layout/main/maincontentframe.css" th:href="@{/css/layout/main/maincontentframe.css}"/>
-    <script>
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-        }
-    </script>
+    <link rel="stylesheet" href="../../../../static/css/layout/main/contentframe.css" th:href="@{/css/layout/main/contentframe.css}"/>
+    <script src="../../../../static/js/layout/main/iframeheight.js" th:src="@{/js/layout/main/iframeheight.js}"></script>
 </head>
 <body>
     <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
@@ -21,10 +17,11 @@
         <h1 id="main-content-title" th:text="#{__${selectedMenuItem.reference}__}">
             Main-content title
         </h1>
-        <iframe th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
-                                    ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}"
-                onload="resizeIframe(this)">
-            IFrameForContent
+        <iframe id="ifrm"
+                title="content"
+                th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
+                        ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
+            IFrame for optional tabs and content (height need to be set in js onload)
         </iframe>
     </div>
 </body>

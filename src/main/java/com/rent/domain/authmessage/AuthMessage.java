@@ -6,6 +6,7 @@
 package com.rent.domain.authmessage;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import com.rent.utility.FillableText;
 import org.springframework.context.MessageSource;
@@ -50,6 +51,11 @@ public class AuthMessage {
             }
             AuthMessage r = (AuthMessage)obj;
             return this.text.equals(r.getText()) && this.cssClass.equals(r.getCssClass());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(text);
     }
 
     public String getText() {

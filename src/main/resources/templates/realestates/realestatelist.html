@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/tabbedcontent/tabbedcontent}">
 <head>
     <meta charset="UTF-8">
     <title>Rent - Real estate list</title>
-    <link rel="stylesheet" href="../../static/css/layout/tabs.css" th:href="@{/css/layout/tabs.css}"/>
-    <link rel="stylesheet" href="../../static/css/rootcontent/contentcommon.css" th:href="@{/css/rootcontent/contentcommon.css}"/>
 </head>
-<body>
-    <div th:replace="layout/tabs :: tabs"></div>
-
-    Real estate list
+<body class="tabbed-grid">
+    <div id="content" layout:fragment="content">
+        Real estate list
+    </div>
 </body>
 </html>

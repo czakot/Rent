@@ -4,6 +4,7 @@
     grid-template-columns: auto;
     grid-template-rows: max-content auto;
     /*grid-template-rows: max-content minmax(auto, max-content);*/
+    grid-row-gap: 0;
 }
 
 #tabs, #tabs nav, #tabs ul, #tab {

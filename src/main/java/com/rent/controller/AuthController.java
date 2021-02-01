@@ -1,7 +1,6 @@
 package com.rent.controller;
 
 import com.rent.domain.UserRegistrationDto;
-import com.rent.domain.authmessage.AuthMessage;
 import com.rent.domain.authmessage.AuthMessages;
 import com.rent.domain.authmessage.MessageType;
 import com.rent.entity.User;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AuthController {
@@ -66,14 +63,15 @@ public class AuthController {
     @PostMapping(value = "/registrationprocess")
     public String processRegistration(UserRegistrationDto registrationDto) {
 
+        // todo extract email already registered into an exception
         User userToRegister = new User(registrationDto);
         boolean registrationSuccessful = userService.registerUser(userToRegister);
         String messageKey = registrationSuccessful ? "successfulRegistration" : "emailAlreadyRegistered";
         MessageType messageType = registrationSuccessful ? MessageType.SUCCESS : MessageType.DANGER;
         return redirectToLoginHoldingMessage(messageKey, userToRegister.getEmail(), messageType);
     }
-    
-    @RequestMapping(path = {"/activation/", "/activation/{code}"}, method = RequestMethod.GET)
+
+    @GetMapping(path = {"/activation/", "/activation/{code}"})
     public String activation(@PathVariable(name = "code", required = false) String code,
                              HttpServletRequest request,
                              Authentication authentication,
@@ -83,10 +81,12 @@ public class AuthController {
         if (code == null) {
             throw new MissingActivationCodeInUriException(request.getServletPath());
         }
+        // todo extract unsuccessful activation into an exception
         User activatedUser = userService.userActivation(code);
         String messageKey = activatedUser != null ? "successfulActivation" : "unsuccessfulActivation";
         MessageType messageType = activatedUser != null ? MessageType.SUCCESS : MessageType.DANGER;
         String userEmail = activatedUser == null ? null : activatedUser.getEmail();
+        // todo simplify due to single session existence (no activation when logged in)
         if (isAuthenticated(authentication)) {
             return forwardToActivationLoggedIn(model, messageKey, userEmail, messageType);
         } else {

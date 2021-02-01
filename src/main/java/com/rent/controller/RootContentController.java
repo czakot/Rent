@@ -29,18 +29,10 @@ public class RootContentController {
 
     private Menu menu;
 
-    // todo clean up /activationloggedin (only anonymous access)
-    @RequestMapping("/activationloggedin")
-    public String activationAnswerWhenAUserLoggedIn(Model model) {
-        model.addAttribute("menuItems", menu.getMenuItems());
-        return "rootcontent/activationloggedin";
-    }
-
     @RequestMapping("/homebyuserrole")
     public String homeByUserRole(Model model, Authentication authentication) {
         Role role = getPreferredInitialRoleOfAuthenticatedUser(authentication);
         menu.changeRoleTo(role);
-        String view = initViewAuthorizedMainContentFrame(model);
         return initViewAuthorizedMainContentFrame(model);
     }
 
@@ -65,7 +57,7 @@ public class RootContentController {
         model.addAttribute("currentRole", menu.getCurrentRole());
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        return "layout/main/maincontentframe";
+        return "layout/main/contentframe";
     }
 
     private Role getPreferredInitialRoleOfAuthenticatedUser(Authentication authentication) {

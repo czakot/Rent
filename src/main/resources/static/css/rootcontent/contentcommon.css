@@ -1,7 +1,0 @@
-@import "/css/bodycommon.css";
-
-#contentinner {
-    /* over arrange scroll */
-    /*height: auto;*/
-    overflow: hidden;
-}

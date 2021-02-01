@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package garage;
+//package garage;
 
 import com.rent.domain.authmessage.AuthMessage;
 import java.util.List;
 
-/**
- *
- * @author czakot
- */
 public class AuthData {
 
     List<AuthMessage> htmlMessageList = null;

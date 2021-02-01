@@ -19,8 +19,7 @@
         header fragment
     </header>
     <div id="main">
-        <!-- todo anonymous() and without comment connect -->
-        <div id="menuempty" sec:authorize="!isAuthenticated()">
+        <div id="menuempty" sec:authorize="isAnonymous()">
         </div>
         <nav id="menu" sec:authorize="isAuthenticated()" th:replace="layout/main/menu :: menu">
             Menu
