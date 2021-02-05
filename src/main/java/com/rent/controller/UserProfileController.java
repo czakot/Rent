@@ -9,25 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class RealEstatesController {
-
-    private static final String VIEW_PKG = getViewAutoPackageNameOfController(RealEstatesController.class);
+@RequestMapping("/userprofile")
+public class UserProfileController {
 
     private Menu menu;
 
-    @RequestMapping({ "/realestatelist","/realestateimport", "/realestatemanualadd"})
+    @RequestMapping({ "/basics","/preferences"})
     public String selectedMenu(HttpServletRequest request, Model model) {
         String requestUri = request.getRequestURI();
         menu.setSelectedTabByControllerUri(requestUri);
         model.addAttribute("menuItems", menu.getMenuItems());
         model.addAttribute("selectedMenuItem", menu.getSelectedMenuItem());
-        return VIEW_PKG + requestUri;
-    }
-
-    private static String getViewAutoPackageNameOfController(Class<?> aClass) {
-        String className = aClass.getSimpleName();
-        int indexOfWordController = className.lastIndexOf("Controller");
-        return className.substring(0, indexOfWordController).toLowerCase();
+        return requestUri;
     }
 
     @Autowired
@@ -35,3 +28,4 @@ public class RealEstatesController {
         this.menu = menu;
     }
 }
+

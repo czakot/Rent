@@ -26,18 +26,21 @@ insert into MENUNODES VALUES ('noticeboard', null, null);
 insert into MENUNODES VALUES ('dashboard', null, null);
     insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('dashboard', 'ADMIN');
 
-insert into MENUNODES VALUES ('realestates', null, null);
-    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestates', 'OWNER');
-insert into MENUNODES VALUES ('realestatelist', null, 'realestates');
-    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestatelist', null);
-insert into MENUNODES VALUES ('realestateimport', null, 'realestates');
-    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestateimport', null);
-insert into MENUNODES VALUES ('realestatemanualadd', null, 'realestates');
-    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestatemanualadd', null);
+-- todo make realestates singular
+insert into MENUNODES VALUES ('realestate', null, null);
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestate', 'OWNER');
+insert into MENUNODES VALUES ('realestate/list', null, 'realestate');
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestate/list', null);
+insert into MENUNODES VALUES ('realestate/import', null, 'realestate');
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestate/import', null);
+insert into MENUNODES VALUES ('realestate/manualadd', null, 'realestate');
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('realestate/manualadd', null);
 
 insert into MENUNODES VALUES ('userprofile', null, null);
-    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('userprofile', 'ADMIN');
-    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('userprofile', 'OWNER');
-
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('userprofile', null);
+insert into MENUNODES VALUES ('userprofile/basics', null, 'userprofile');
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('userprofile/basics', null);
+insert into MENUNODES VALUES ('userprofile/preferences', null, 'userprofile');
+    insert into MATCHERS (MENU_NODE_REFERENCE, ROLE) VALUES ('userprofile/preferences', null);
 
 -- ADMIN, OWNER, TENANT, TRUSTEE, OBSERVER;

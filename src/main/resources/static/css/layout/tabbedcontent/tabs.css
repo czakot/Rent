@@ -1,4 +1,5 @@
-.tabbed-grid {
+body {
+/*.tabbed-grid {*/
     min-height: 0;
     display: grid;
     grid-template-columns: auto;

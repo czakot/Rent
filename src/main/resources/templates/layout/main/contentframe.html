@@ -17,6 +17,10 @@
         <h1 id="main-content-title" th:text="#{__${selectedMenuItem.reference}__}">
             Main-content title
         </h1>
+        <!--
+            todo in case iframe (if connection or server down) "unable to connect ..." height incorrect =>
+            todo iframe height should be corrected (google search: "unable to load iframe") from some js
+        -->
         <iframe id="ifrm"
                 title="content"
                 th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
