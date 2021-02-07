@@ -1,0 +1,28 @@
+table.striped {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 1px;
+    /*border-collapse: collapse;*/
+
+}
+
+table.striped td {
+    /*border: 1px solid var(--rent-gray-hover);*/
+    text-align: left;
+    padding: 8px;
+}
+
+table.striped tr:nth-child(even) {
+    background-color: var(--rent-table-row-even);
+}
+
+table.striped tr:nth-child(odd) {
+    background-color: var(--rent-table-row-odd);
+}
+
+div.horizontal-separator {
+    border-bottom: solid 1px var(--rent-horizontal-separator);
+    display: block;
+    height: 1px;
+    margin: 2px 0;
+}

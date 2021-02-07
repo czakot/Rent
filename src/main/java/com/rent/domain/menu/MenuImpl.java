@@ -6,15 +6,14 @@
 package com.rent.domain.menu;
 
 import com.rent.domain.Role;
-import com.rent.entity.Matcher;
-import com.rent.entity.MenuNode;
-import com.rent.repo.MenuNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -23,8 +22,6 @@ import java.util.stream.Collectors;
 @Component
 @SessionScope
 public class MenuImpl implements Menu {
-
-    private static final boolean doPrint = false;
 
     private final List<MenuItem> menuItems;
     private MenuItem selectedMenuItem;
@@ -58,15 +55,11 @@ public class MenuImpl implements Menu {
     }
 
     @Override
-    public void changeRoleTo(Role role) {
+    public void setRole(Role role) {
         if (this.currentRole != role) {
             this.currentRole = role;
             menuItems.forEach(menuItem -> menuItem.setAvailableByRole(role));
             selectedMenuItem = getInitialSelectedMenuItem();
-        }
-
-        if (doPrint) {
-            System.out.println(this);
         }
     }
 
@@ -95,12 +88,12 @@ public class MenuImpl implements Menu {
     }
 
     private MenuItem getInitialSelectedMenuItem() {
-        MenuItem selectedMenuItem = getPreferredSelectedMenuItem();
-        if (selectedMenuItem == null) {
-            selectedMenuItem = getFirstAvailableMenuItem();
+        MenuItem selected = getPreferredSelectedMenuItem();
+        if (selected == null) {
+            selected = getFirstAvailableMenuItem();
         }
-        assert selectedMenuItem != null;
-        return selectedMenuItem;
+        assert selected != null;
+        return selected;
     }
 
     private MenuItem getFirstAvailableMenuItem() {

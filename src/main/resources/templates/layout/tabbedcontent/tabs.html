@@ -10,10 +10,12 @@
     <div id="tabs" th:fragment="tabs">
     <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
     <!--/*@thymesVar id="tab" type="com.rent.domain.menu.Tab"*/-->
+    <!--/*@thymesVar id="menu" type="com.rent.domain.menu.Menu"*/-->
         <nav>
             <ul>
-                <li th:each="tab : ${selectedMenuItem.tabs}" th:if="${tab.available}"
-                    th:class="(${selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'">
+                <!--/*@thymesVar id="selectedTab" type="com.rent.domain.menu.Tab"*/-->
+                <li th:each="tab : ${menu.selectedMenuItem.tabs}" th:if="${tab.available}"
+                    th:class="(${menu.selectedMenuItem.selectedTab.reference} == ${tab.reference}) ? 'tabcurrent' : 'tabplain'">
                     <a th:href="${tab.controllerUri}"
                        th:text="#{__${tab.reference}__}">
                         TabLink

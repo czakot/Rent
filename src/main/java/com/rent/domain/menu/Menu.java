@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Menu {
 
-    void changeRoleTo(Role role);
+    void setRole(Role role);
     void setSelectedMenuItemByControllerUri(String controllerUri);
     void setSelectedTabByControllerUri(String tabControllerUri);
     MenuItem getSelectedMenuItem();

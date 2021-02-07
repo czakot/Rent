@@ -13,8 +13,9 @@
 <body>
     <nav id="menu" th:fragment="menu">
         <div id="menuitem">
-            <!--/*@thymesVar id="menuItems" type="java.util.List<MenuItem>"*/-->
-            <a th:each="menuItem : ${menuItems}"
+            <!--/*@thymesVar id="menu" type="com.rent.domain.menu"*/-->
+            <!--/*@thymesVar id="menuItem" type="java.util.List<MenuItem>"*/-->
+            <a th:each="menuItem : ${menu.menuItems}"
                th:if="${menuItem.available}"
                th:href="'/menuselect' + ${menuItem.controllerUri}"
                th:text="#{__${menuItem.reference}__}">

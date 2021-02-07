@@ -12,7 +12,6 @@ public class HomeController {
 
     UserService userService;
 
-
     @RequestMapping({"/", "/index"})
     public String index(Authentication authentication, Model model) {
         if (authentication!=null && authentication.isAuthenticated()) {

@@ -85,6 +85,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return true;
     }
 
+    // todo check key duplication that a key never be used again
+    // todo length settings from properties, but a minimum be built in
+    // todo only hash should be stored, use as a password
+    // todo expiry date
     public String generateKey() {
         char[] word = new char[16];
         for (int j = 0; j < word.length; j++) {

@@ -43,5 +43,8 @@ body {
     --rent-blue: #1f6991;
     --rent-orange: #e95d0f;
     --rent-spinach: #93a543;
+    --rent-horizontal-separator: #becd7f;
+    --rent-table-row-odd: #f5f5f5;
+    --rent-table-row-even: #e1e1e1;
 }
 

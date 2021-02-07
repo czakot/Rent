@@ -54,10 +54,11 @@
                                 <select id="roleselector" name="roleselector">
                                     <!--/*@thymesVar id="authority" type="org.springframework.security.core.authority.SimpleGrantedAuthority"*/-->
                                     <!--/*@thymesVar id="currentRole" type="com.rent.domain.Role"*/-->
+                                    <!--/*@thymesVar id="menu" type="com.rent.domain.menu"*/-->
                                     <option th:each="authority: ${#authentication.getPrincipal().getAuthorities()}"
                                             th:value="${authority.getAuthority().substring(5)}"
                                             th:text="#{__${authority.getAuthority().substring(5)}__}"
-                                            th:selected="${authority.getAuthority().substring(5)} == ${currentRole.name()}">
+                                            th:selected="${authority.getAuthority().substring(5)} == ${menu.currentRole.name()}">
                                         Role list
                                     </option>
                                 </select>

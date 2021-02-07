@@ -7,12 +7,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Rent - Userprofile basics</title>
+    <link rel="stylesheet" href="../../../static/css/auth/authpages.css" th:href="@{/css/content/tables.css}"/>
 </head>
 <body>
     <div id="content" layout:fragment="content">
-            1. email<br>
-            2. full name<br>
-            3. identifier
+        <div class="horizontal-separator"></div>
+        <table class="striped">
+            <tr>
+                <!--/*@thymesVar id="email" type="java.lang.String"*/-->
+                <td th:text="#{emailAddr}">E-mail</td>
+                <td th:text="${email}">email address</td>
+            </tr>
+            <tr>
+                <!--/*@thymesVar id="fullName" type="java.lang.String"*/-->
+                <td th:text="#{fullName}">Fullname</td>
+                <td th:text="${fullName}">full name</td>
+            </tr>
+            <!--/*@thymesVar id="roles" type="Set<Role>"*/-->
+            <tr>
+                <td th:text="#{Roles}"></td>
+                <td>
+                    <th:block th:each="role : ${roles}" style="display: inline-block">
+                        [<span th:text="#{__${role}__}">role</span>]
+                    </th:block>
+                </td>
+            </tr>
+            <tr>
+                <td>3. identifier</td><td></td>
+            </tr>
+            <tr>
+                <td>4. change password</td><td></td>
+            </tr>
+        </table>
+        <div class="horizontal-separator"></div>
     </div>
 </body>
 </html>

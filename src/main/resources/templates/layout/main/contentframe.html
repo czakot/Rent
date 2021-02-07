@@ -14,7 +14,8 @@
     <!--/*@thymesVar id="selectedMenuItem" type="com.rent.domain.menu.MenuItem"*/-->
     <div id="main-content" layout:fragment="main-content">
         <!--/*@thymesVar id="reference" type="java.lang.String"*/-->
-        <h1 id="main-content-title" th:text="#{__${selectedMenuItem.reference}__}">
+        <!--/*@thymesVar id="menu" type="com.rent.domain.menu"*/-->
+        <h1 id="main-content-title" th:text="#{__${menu.selectedMenuItem.reference}__}">
             Main-content title
         </h1>
         <!--
@@ -23,8 +24,8 @@
         -->
         <iframe id="ifrm"
                 title="content"
-                th:src="${#lists.isEmpty(selectedMenuItem.tabs)} ?
-                        ${selectedMenuItem.controllerUri} : ${selectedMenuItem.selectedTab.controllerUri}">
+                th:src="${#lists.isEmpty(menu.selectedMenuItem.tabs)} ?
+                        ${menu.selectedMenuItem.controllerUri} : ${menu.selectedMenuItem.selectedTab.controllerUri}">
             IFrame for optional tabs and content (height need to be set in js onload)
         </iframe>
     </div>
