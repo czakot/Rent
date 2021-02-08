@@ -1,33 +1,69 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Jun 14, 2020, 2:12:12 PM
-    Author     : czakot
-*/
-
-#scrollframe {
-    overflow-y: auto;
-}
+/*@import "/css/bodycommon.css";*/
 
 .middle-40-percent {
     width: 40%;
     margin: auto;
 }
 
-.form-border {
-    padding: 0px 20px 20px 20px;
-    border-style: solid;
-    border-width: 1px;
+.auth-border {
+    padding: 20px 20px 20px 20px;
+    border: solid 1px var(--rent-gray-border);
     border-radius: 5px;
-    border-color: #dddddd;
 }
 
-.form-border input[type="text"], input[type="password"],
-             button[type="submit"], input[type="email"] {
-    margin-top: 20px;
+.auth-border .auth-control, .auth-border .auth-button {
+    margin-bottom: 25px;
+}
+
+.auth-control {
+    width: 100%;
+    padding: .375rem .75rem;
+    border: solid 1px var(--rent-gray-border);
+    border-radius: .25rem;
+}
+
+.auth-control:focus {
+    outline: 0;
+    box-shadow: 0 0 0 .2rem var(--rent-ctrl-box-shadow);
+}
+
+form button {
+    display: block;
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.auth-button {
+    padding: .375rem .75rem;
+    color: #fff;
+    background-color: var(--rent-btn);
+    border: solid 1px var(--rent-btn);
+    border-radius: .25rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.auth-button:not(:disabled) {
+    cursor: pointer;
+}
+
+.auth-button:active, .auth-button:hover, .auth-button:focus {
+    background-color: var(--rent-btn-picked);
+    border-color: var(--rent-btn-picked-border);
+}
+
+.auth-button:hover {
+    text-decoration: none;
+}
+
+.auth-button:focus {
+    box-shadow: 0 0 0 .2rem var(--rent-btn-box-shadow);
+    outline: 0;
+}
+
+.auth-control:last-child, .auth-button:last-child {
+    margin-bottom: 0;
 }
 
 #pwdmismatchmsg {

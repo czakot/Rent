@@ -14,6 +14,7 @@ body {
 :root {
     /* FONTS */
     font-family: -apple-system,BlinkMacSystemFont,
+    "Liberation Sans",
     "Segoe UI",
     Roboto,
     "Helvetica Neue",
@@ -35,16 +36,28 @@ body {
     --rent-white: #ffffff;
     --rent-black: #000000;
     --rent-green: #008000;
+
     --rent-gray-light: #F5F5F5;
     --rent-gray-border: #DCDCDC;
     --rent-gray-hover: #dddddd;
     --rent-gray-deep: #999999;
-    --rent-blue-deep: #024d6b;
+
     --rent-blue: #1f6991;
+    --rent-blue-deep: #024d6b;
+    --rent-btn: #007bff;
+    --rent-btn-picked: #0069d9;
+    --rent-btn-picked-border: #0062cc;
+    --rent-btn-box-shadow: #268fff80;
+
     --rent-orange: #e95d0f;
     --rent-spinach: #93a543;
+
     --rent-horizontal-separator: #becd7f;
     --rent-table-row-odd: #f5f5f5;
     --rent-table-row-even: #e1e1e1;
+
+    --rent-ctrl-focus: #495057;
+    --rent-ctrl-focus-border: #80bdff;
+    --rent-ctrl-box-shadow: #007bff40
 }
 

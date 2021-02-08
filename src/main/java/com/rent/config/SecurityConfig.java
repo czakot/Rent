@@ -80,8 +80,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/db/**").permitAll() // for H2Console
 //                .antMatchers("/db/**").hasRole("ADMIN") // for H2Console
                 .antMatchers("/", "/index").anonymous()
-                .antMatchers("/login", "/registration").anonymous()
-                .antMatchers("/getauthdata", "/registrationprocess", "/activation/*").anonymous()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/registration").anonymous()
+                .antMatchers("/registrationprocess", "/activation/*").anonymous()
                 .antMatchers("/forgottenpassword").anonymous()
                 .antMatchers("/homebyuserrole", "/roleselection").authenticated()
                 ;
@@ -91,7 +92,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSec
                 .authorizeRequests()
                 .anyRequest().denyAll()
-//                .anyRequest().authenticated()
                 .and()
 
             .requiresChannel().anyRequest().requiresSecure() // instead of server.ssl.enabled = true
@@ -121,7 +121,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    private void generateAntMatchersFromMenuInitTree(HttpSecurity httpSec) throws Exception {
+    private void generateAntMatchersFromMenuInitTree(HttpSecurity httpSec) {
         for (MenuInitValueNode menuInitValueNode : menuInitTree) {
             generateAntMatchersFromMenuInitValueNode(httpSec, menuInitValueNode);
         }

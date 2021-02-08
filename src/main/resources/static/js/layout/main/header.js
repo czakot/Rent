@@ -19,6 +19,7 @@ function setAuthLinks() {
     if (authlinks !== null) {
         switch (window.location.pathname) {
             case "/":
+            case "/forgottenpassword":
                 const loginlink = document.getElementById("loginlink");
                 if (loginlink !== null) {
                     loginlink.href = "/login";

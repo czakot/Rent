@@ -21,6 +21,22 @@ public class AuthController {
     private UserService userService;
     private AuthMessages authMessages;
 
+    @GetMapping("/forgottenpassword")
+    public String forgottenPassword(Model model) {
+        model.addAttribute("adminExists", userService.adminExists());
+        return "/auth/forgottenpassword";
+    }
+
+    @PostMapping("/generatepassword")
+    public String generatePassword() {
+        // check email existence, in case of fail create appropriate authMessages and return to /forgottenpassword
+        // create arbitrary random password
+        // save password
+        // send email with password
+        // create authMessages
+        return "/auth/login";
+    }
+
     @GetMapping({"/login", "/registration"})
     public String auth(@RequestParam (required = false, defaultValue = "false") Boolean holdMessages,
                        @RequestParam (required = false, defaultValue = "false") Boolean expired,
